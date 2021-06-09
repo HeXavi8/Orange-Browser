@@ -28,14 +28,14 @@ public class HistoryRecyclerviewAdapter extends RecyclerView.Adapter<HistoryRecy
 
 
     private Context mContext;
-    private ArrayList<Student> myList;
+    private ArrayList<HistoryItem> myList;
     private int itemLayoutId;
 
     private historyViewHolder holder;
-    private Student student;
+    private HistoryItem historyItem;
     private Instant Glide;
 
-    public HistoryRecyclerviewAdapter(Context context, ArrayList<Student> arrayList,int itemLayoutId) {
+    public HistoryRecyclerviewAdapter(Context context, ArrayList<HistoryItem> arrayList,int itemLayoutId) {
 
         this.mContext = context;
         this.myList = arrayList;
@@ -56,7 +56,7 @@ public class HistoryRecyclerviewAdapter extends RecyclerView.Adapter<HistoryRecy
 
     public historyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 //        Log.i("main","onCreateViewHolder---myList.size()=="+myList.size());
-        View view = LayoutInflater.from(mContext).inflate(itemLayoutId, null, true);//R.layout.layout_students_grid_item
+        View view = LayoutInflater.from(mContext).inflate(itemLayoutId, null, true);//R.layout.layout_historyItem_grid_item
 
         holder = new historyViewHolder(view);
 
@@ -77,37 +77,21 @@ public class HistoryRecyclerviewAdapter extends RecyclerView.Adapter<HistoryRecy
     public void onBindViewHolder(historyViewHolder holder, final int position) {
 //        Log.i("main","onBindViewHolder---myList====="+myList.size()+"-------position=="+position);
 
-        student = myList.get(position);
+        historyItem = myList.get(position);
 
-        holder.tv_name.setText("姓名："+student.getName());
-        holder.tv_age.setText("年龄："+student.getAge()+"");
-
-        //如果设置了网上图片url的就按照网上的设置，否则设置本地的图片
-//        if(student.getHeadImgUrl()!=null && !student.getHeadImgUrl().isEmpty())
-//        {
-//            try {
-//                Glide.with(mContext).load(student.getHeadImgUrl()).into(holder.iv_headImg);
-//            }catch (Exception e)
-//            {
-//                //如果网上的图片路径出错则加载本地的图片
-//                Glide.with(mContext).load(student.getHeadImgId()).into(holder.iv_headImg);
-//            }
-//
-//        }else {
-//            //加载项目本地图片
-//            Glide.with(mContext).load(student.getHeadImgId()).into(holder.iv_headImg);
-//        }
+        holder.tv_title.setText("名字："+historyItem.getTitle());
+        holder.tv_url.setText("URL："+historyItem.getUrl()+"");
 
         holder.itemView.setTag(position);
 
         //根据选中与否来设置checkbox
-        holder.checkbox.setChecked(student.isSelected());
+        holder.checkbox.setChecked(historyItem.isSelected());
 
         //整个item的点击事件在 adapter.setItemClickListener监听，这里也对checkbox单独设置监听
         holder.checkbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                myList.get(position).setSelected(!student.isSelected());
+                myList.get(position).setSelected(!historyItem.isSelected());
             }
         });
 
@@ -115,7 +99,7 @@ public class HistoryRecyclerviewAdapter extends RecyclerView.Adapter<HistoryRecy
         if(mCountCheckBoxListener!=null)
         {
             int checkNum = 0;
-            for(Student stu:myList)
+            for(HistoryItem stu:myList)
             {
                 if(stu.isSelected())
                 {
@@ -133,16 +117,15 @@ public class HistoryRecyclerviewAdapter extends RecyclerView.Adapter<HistoryRecy
      */
     public class historyViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView iv_headImg;
-        private TextView tv_name;
-        private TextView tv_age;
+        private TextView tv_title;
+        private TextView tv_url;
         private CheckBox checkbox;
 
         public historyViewHolder(View itemView) {
             super(itemView);
-            iv_headImg = itemView.findViewById(R.id.iv_headImg);
-            tv_name = itemView.findViewById(R.id.tv_name);
-            tv_age = itemView.findViewById(R.id.tv_age);
+            tv_title = itemView.findViewById(R.id.tv_title);
+            tv_url = itemView.findViewById(R.id.tv_url);
+
             checkbox = itemView.findViewById(R.id.checkbox);
         }
 
