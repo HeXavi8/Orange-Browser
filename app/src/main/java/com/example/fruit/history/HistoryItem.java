@@ -37,7 +37,7 @@ public class HistoryItem {
 
     public HistoryItem(String title, String url) {
         this.title = title;
-        this.url = title;
+        this.url = url;
 
     }
 

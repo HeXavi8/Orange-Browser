@@ -33,7 +33,7 @@ public class HistoryRecyclerviewAdapter extends RecyclerView.Adapter<HistoryRecy
 
     private historyViewHolder holder;
     private HistoryItem historyItem;
-    private Instant Glide;
+    //private Instant Glide;
 
     public HistoryRecyclerviewAdapter(Context context, ArrayList<HistoryItem> arrayList,int itemLayoutId) {
 
@@ -56,12 +56,18 @@ public class HistoryRecyclerviewAdapter extends RecyclerView.Adapter<HistoryRecy
 
     public historyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 //        Log.i("main","onCreateViewHolder---myList.size()=="+myList.size());
-        View view = LayoutInflater.from(mContext).inflate(itemLayoutId, null, true);//R.layout.layout_historyItem_grid_item
+        View view = LayoutInflater.from(mContext).inflate(R.layout.history_item, null, true);//R.layout.layout_historyItem_grid_item
 
         holder = new historyViewHolder(view);
 
         //给每条布局设置点击事件  也可以用其他方式
         view.setOnClickListener(this);
+//        view.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
 
         //长按事件监听
         view.setOnLongClickListener(this);
@@ -173,7 +179,6 @@ public class HistoryRecyclerviewAdapter extends RecyclerView.Adapter<HistoryRecy
 
 
     //统计勾选个数监听
-
     public CountCheckBoxListener mCountCheckBoxListener;
     public interface CountCheckBoxListener {
         void countNumber(int checkNum,int total);
