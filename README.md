@@ -1,2 +1,0 @@
-# FruitBrowser
-Android browser application
