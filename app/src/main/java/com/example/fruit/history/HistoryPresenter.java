@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 
 import com.example.fruit.bean.History;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HistoryPresenter {
@@ -55,6 +56,10 @@ public class HistoryPresenter {
         new Thread((new Runnable() {
             @Override
             public void run() {
+                System.out.println("aaaa"+toBeDeleted.size());
+                for (int i= 0;i<toBeDeleted.size();i++) {
+                    System.out.println(toBeDeleted.get(i).getTitle());
+                }
                 mHistoryModel.deleteSelected(toBeDeleted);
             }
         })).start();

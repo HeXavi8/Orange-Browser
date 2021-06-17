@@ -6,6 +6,4 @@ import java.util.List;
 
 public interface HistoryView {
     void showAll(List<History> histories);
-
-    void showDeleteSelected();
 }

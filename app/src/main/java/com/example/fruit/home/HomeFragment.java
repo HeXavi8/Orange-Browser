@@ -45,8 +45,9 @@ public class HomeFragment extends Fragment {
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
                 if (i == EditorInfo.IME_ACTION_SEARCH) {
                     mContent = mSearchContent.getText().toString();
-                    activity.setURL(mContent);
-                    activity.replaceFragment(new SearchFragment());
+                    SearchFragment searchFragment = new SearchFragment();
+                    searchFragment.setURL(mContent);
+                    activity.replaceFragment(searchFragment);
                     return true;
                 }
                 return false;

@@ -40,6 +40,10 @@ public class SearchFragment extends Fragment {
     protected View mCustomView = null;
     private static final String QUERY = "https://www.sogou.com/web?query=";
 
+    public void setURL(String url) {
+        mURL = url;
+    }
+
     private class MyWebChromeClient extends WebChromeClient{
 
         @Override
@@ -137,7 +141,6 @@ public class SearchFragment extends Fragment {
             }
         });
         mActivity.getTopSearch().setVisibility(View.VISIBLE);
-        mURL = mActivity.getURL();
         System.out.println(mURL);
         if (isURL(mURL)) {
             mSearchRes.loadUrl(mURL);

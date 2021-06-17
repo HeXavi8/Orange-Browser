@@ -34,7 +34,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
-    public static SharedPreferences mHistory;
     private LinearLayout mTopSearch;
     private EditText mSearchUrl;
     private LinearLayout mNavigationBar;
@@ -44,14 +43,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private LinearLayout mHome;
     private LinearLayout mPaging;
     private PopupWindow mPopupWindow;
-    private String mURL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        mHistory = getSharedPreferences("History", MODE_PRIVATE);
         mTopSearch = (LinearLayout)findViewById(R.id.search_bar);
         mNavigationBar =(LinearLayout)findViewById(R.id.navigation_bar);
         mSearchUrl = (EditText)findViewById(R.id.search_url);
@@ -174,18 +171,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return false;
     }
 
-    public String getURL() {
-        if (mURL == null) {
-            return "";
-        } else {
-            return mURL;
-        }
-    }
-
-    public void setURL(String url) {
-        mURL = url;
-    }
-
     public LinearLayout getTopSearch() {
         return mTopSearch;
     }
@@ -227,9 +212,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 //    yx:fragment没有 dispatchTouchEVENT
-public interface MyTouchListener {
-    void onTouchEvent(MotionEvent event);
-}
+    public interface MyTouchListener {
+        void onTouchEvent(MotionEvent event);
+    }
 
     // 保存MyTouchListener接口的列表
     private List<MyTouchListener> myTouchListeners = new ArrayList<>();

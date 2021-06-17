@@ -10,7 +10,7 @@ public class LoginModel {
 
     public LoginModel() {
         mUser = new User(null, "", "");
-        mDbController = new DBController(MyAppliaction.getContext());
+        mDbController = DBController.getInstance(MyAppliaction.getContext());
     }
 
     public boolean checkUserAndPassword () {

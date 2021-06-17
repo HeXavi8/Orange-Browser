@@ -10,7 +10,7 @@ public class HistoryModel {
     private DBController mDBController;
 
     public HistoryModel() {
-        mDBController = new DBController(MyAppliaction.getContext());
+        mDBController = DBController.getInstance(MyAppliaction.getContext());
     }
 
     public List<History> getAllHistory() {

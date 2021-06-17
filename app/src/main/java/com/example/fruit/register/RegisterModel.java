@@ -10,7 +10,7 @@ public class RegisterModel {
 
     public RegisterModel() {
         mUser = new User(null, "", "");
-        mDBController = new DBController(MyAppliaction.getContext());
+        mDBController = DBController.getInstance(MyAppliaction.getContext());
     }
 
     public boolean checkUserExist(String username) {
