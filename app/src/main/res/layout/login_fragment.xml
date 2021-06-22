@@ -59,13 +59,13 @@
             android:theme="@style/MyEditText"/>
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/login_btn"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
             android:background="@drawable/login_btn_shape"
-            android:backgroundTint="@color/main_color"
             android:gravity="center"
+            android:textSize="18sp"
             android:text="@string/login_btn" />
 
         <LinearLayout

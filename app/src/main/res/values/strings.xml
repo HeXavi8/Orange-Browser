@@ -6,9 +6,12 @@
     <string name="add_into_collection">添加收藏</string>
     <string name="my_collection">我的收藏</string>
     <string name="history">历史记录</string>
+    <string name="collection">收藏</string>
     <string name="exiting">退出</string>
     <string name="setting_in_pop_window">设置</string>
     <string name="cancel">取消</string>
+    <string name="save_successfully">保存成功</string>
+    <string name="save_photo">保存本地</string>
     <!--end-->
     <string name="setting">设置</string>
     <string name="phone_hint">请输入手机号</string>
@@ -26,4 +29,10 @@
     <string name="have_registered">已有账号？</string>
     <string name="delete_all_history">清空</string>
     <string name="delete">删除</string>
+    <string name="logout">退出登录</string>
+    <string name="logout_text">退出后不会删除任何历史数据，下次登录依然可以使用本账号</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="change_name_text">修改昵称</string>
+    <string name="change_name_btn">修改</string>
 </resources>

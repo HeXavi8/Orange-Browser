@@ -7,42 +7,56 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethod;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.fruit.MainActivity;
 import com.example.fruit.R;
+import com.example.fruit.bean.User;
 import com.example.fruit.home.HomeFragment;
 import com.example.fruit.register.RegisterFragment;
+import  com.example.fruit.login.LoginView;
+import  com.example.fruit.login.LoginPresenter;
+import  com.example.fruit.utils.Util;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class LoginFragment extends Fragment {
+public class LoginFragment extends Fragment implements LoginView {
     private MainActivity activity;
     private TextView toRegister;
     private EditText userPhone;
     private EditText userPassword;
     private ImageView backBtn;
+    private String username;
+    private String password;
+    private LoginPresenter loginPresenter;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.login_fragment, container, false);
-        toRegister = (TextView)view.findViewById(R.id.to_register);
-        userPhone = (EditText)view.findViewById(R.id.user_phone);
-        userPassword = (EditText)view.findViewById(R.id.user_password);
-        backBtn = (ImageView)view.findViewById(R.id.back_btn);
+        loginPresenter = new LoginPresenter(this);
+        TextView toRegister = view.findViewById(R.id.to_register);
+        EditText userPhone =view.findViewById(R.id.user_phone);
+        EditText userPassword=view.findViewById(R.id.user_password);
+        ImageView backBtn=view.findViewById(R.id.back_btn);
+        Button loginBtn=view.findViewById(R.id.login_btn);
+        loginBtn.setEnabled(false);
+//        登录成功的时候:调用两个（utils/登录状态改变，登录用户名）
         activity = (MainActivity) getActivity();
         //点击 空白处，收起键盘的事件绑定
         MainActivity.MyTouchListener myTouchListener = new MainActivity.MyTouchListener() {
@@ -83,11 +97,53 @@ public class LoginFragment extends Fragment {
                     } else if(!inputUserPhone.matches(phoneRegex)) {
                         userPhone.setError("请输入11位数的正确手机号");
                     }
+                        else{
+                            loginBtn.setEnabled(true);
+                        }
+                }
+            }
+        });
+
+        //点击登录按钮
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String inputPhone = userPhone.getText().toString();
+                String inputPassword=userPassword.getText().toString();
+                username = inputPhone;
+                password = inputPassword;
+                if( "".equals(inputPhone)||"".equals(inputPassword)){
+                    Toast toast=Toast.makeText(activity,"密码不能为空",Toast.LENGTH_SHORT);
+                    //toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
+                }
+
+                // 查询手机号
+                else {
+                   loginPresenter.login(inputPhone,inputPassword);
                 }
             }
         });
 
         return view;
+    }
+
+    @Override
+    public void showLoginSuccessfully(String customizeName) {
+        //登录成功
+        Util.getInstance().setLoginState(true);
+        Util.getInstance().setUserName(username);
+        Util.getInstance().setCustomizeName(customizeName);
+        //跳转到首页
+        activity.replaceFragment((new HomeFragment()));
+    }
+
+    @Override
+    public void showLoginFailed() {
+        Toast toast=Toast.makeText(activity,"账号密码错误", Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
+
     }
 
 

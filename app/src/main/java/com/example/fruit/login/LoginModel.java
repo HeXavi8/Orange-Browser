@@ -9,16 +9,17 @@ public class LoginModel {
     private User mUser;
 
     public LoginModel() {
-        mUser = new User(null, "", "");
+        mUser = new User(null, "", "", "");
         mDbController = DBController.getInstance(MyAppliaction.getContext());
     }
 
-    public boolean checkUserAndPassword () {
+    public User checkUserAndPassword () {
         return mDbController.checkUserAndPassword(mUser.getName(), mUser.getPassword());
     }
 
     public void setUser(String username, String password) {
         mUser.setName(username);
         mUser.setPassword(password);
+        mUser.setCustomizeName(username);
     }
 }

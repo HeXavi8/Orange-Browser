@@ -9,7 +9,7 @@ public class RegisterModel {
     private User mUser;
 
     public RegisterModel() {
-        mUser = new User(null, "", "");
+        mUser = new User(null, "", "", "");
         mDBController = DBController.getInstance(MyAppliaction.getContext());
     }
 
@@ -20,6 +20,7 @@ public class RegisterModel {
     public void insertUser(String username, String password) {
         mUser.setName(username);
         mUser.setPassword(password);
+        mUser.setCustomizeName(username);
         mDBController.insertUser(mUser);
     }
 }

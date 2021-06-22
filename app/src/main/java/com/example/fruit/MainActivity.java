@@ -2,10 +2,10 @@ package com.example.fruit;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.SharedPreferences;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -23,17 +23,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.fruit.collection.CollectionFragment;
 import com.example.fruit.history.HistoryFragment;
 import com.example.fruit.home.HomeFragment;
+import com.example.fruit.login.LoginFragment;
 import com.example.fruit.search.SearchFragment;
 import com.example.fruit.setting.SettingFragment;
+import com.example.fruit.utils.Util;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, MainView{
     private LinearLayout mTopSearch;
     private EditText mSearchUrl;
     private LinearLayout mNavigationBar;
@@ -43,11 +46,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private LinearLayout mHome;
     private LinearLayout mPaging;
     private PopupWindow mPopupWindow;
-
+    private Window mWindow;
+    private WindowManager.LayoutParams mLayoutParams;
+    
+    private String mCollectionURL;
+    private String mCollectionTitle;
+    private MainPresenter mMainPresenter;
+    @SuppressLint("JavascriptInterface")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mWindow = this.getWindow();
+        mLayoutParams = mWindow.getAttributes();
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         mTopSearch = (LinearLayout)findViewById(R.id.search_bar);
         mNavigationBar =(LinearLayout)findViewById(R.id.navigation_bar);
@@ -64,6 +75,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mHome.setOnClickListener(this);
         mPaging.setOnClickListener(this);
         replaceFragment(new HomeFragment());
+
+        mMainPresenter = new MainPresenter(this);
+
     }
 
     @Override
@@ -86,9 +100,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mTopSearch.setVisibility(View.GONE);
                 mPopupWindow.dismiss();
                 break;
-            case R.id.add_collection:
+            case R.id.add_collection_layout:
+                clickAddCollection();
                 break;
-            case R.id.collection:
+            case R.id.my_collection:
                 replaceFragment(new CollectionFragment());
                 mTopSearch.setVisibility(View.GONE);
                 mBack.setEnabled(false);
@@ -97,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 getImageBack().setImageDrawable(getResources().getDrawable(R.drawable.back_page));
                 getImageForward().setImageDrawable(getResources().getDrawable(R.drawable.go_page));
                 break;
-            case R.id.history:
+            case R.id.my_history:
                 replaceFragment(new HistoryFragment());
                 mTopSearch.setVisibility(View.GONE);
                 mBack.setEnabled(false);
@@ -109,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.exit:
                 finish();
                 break;
-            case R.id.setting:
+            case R.id.my_setting:
                 replaceFragment(new SettingFragment());
                 mTopSearch.setVisibility(View.GONE);
                 mBack.setEnabled(false);
@@ -121,11 +136,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.cancel_pop_window:
                 mPopupWindow.dismiss();
                 break;
+            case R.id.login_msg:
+                mPopupWindow.dismiss();
+                replaceFragment(toWhichFragment(Util.getLoginState()));
+                break;
             default:
         }
     }
 
-    public void replaceFragment(Fragment fragment) {
+    public void replaceFragment(Fragment fragment) {//fragment跳转函数
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.show_page, fragment);
@@ -133,7 +152,51 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         transaction.commit();
     }
 
+    public Fragment toWhichFragment(Boolean isLogin){
+        if(isLogin){
+            return new SettingFragment();
+        }
+        else{
+            return new LoginFragment();
+        }
+
+    }
+
+    /*
+       1.判断登录，未登录跳到登录界面
+       2.得到当前的fragment
+       3.得到webview的url和title
+       4.把url和title传入MainPresenter的addCollection函数中
+    */
+    private void clickAddCollection() {
+        Boolean isLogin= Util.getInstance().getLoginState();//登录状态true or false
+
+        if(isLogin){
+            Fragment currentFragment = getFragmentManager().findFragmentById(R.id.show_page);//得到当前fragment
+            if (currentFragment != null && currentFragment instanceof SearchFragment) {//判断是否为
+                mCollectionTitle = ((SearchFragment) currentFragment).getCurrentWebTitle();//获得当前页面title
+                mCollectionURL = ((SearchFragment) currentFragment).getCurrentWebURL();//获得当前页面url
+                System.out.println("当前页面url和title" +mCollectionTitle+mCollectionURL);//检测获取结果
+                mMainPresenter.addCollection(mCollectionURL,mCollectionTitle);//加入到collection中
+            }
+
+        }else{
+            System.out.println("请先注册或登录");//需要先登录才能点击收藏
+            Toast.makeText(this,"请先注册或登录",Toast.LENGTH_SHORT).show();
+            mPopupWindow.dismiss();//菜单框收回
+            mTopSearch.setVisibility(View.GONE);
+            replaceFragment(new LoginFragment());//跳转到login界面
+        }
+    }
+
+    @Override
+    public void showAddCollection() {
+        Toast.makeText(this, "已收藏", Toast.LENGTH_SHORT).show();
+    }
+
     private void showPopWindow() {
+        mLayoutParams.alpha = 0.9f;
+        mWindow.setAttributes(mLayoutParams);
         View contentView = LayoutInflater.from(MainActivity.this)
                 .inflate(R.layout.pop_window, null);
         mPopupWindow = new PopupWindow(contentView,
@@ -143,21 +206,43 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
         mPopupWindow.setOutsideTouchable(true);
         mPopupWindow.setAnimationStyle(R.style.pop_window_anim_style);
-        ImageView addCollection = (ImageView)contentView.findViewById(R.id.add_collection);
-        ImageView myCollection = (ImageView)contentView.findViewById(R.id.collection);
-        ImageView myHistory = (ImageView)contentView.findViewById(R.id.history);
-        ImageView exit = (ImageView)contentView.findViewById(R.id.exit);
-        ImageView mySetting = (ImageView)contentView.findViewById(R.id.setting);
+        LinearLayout addCollection = (LinearLayout) contentView.findViewById(R.id.add_collection_layout);
+        LinearLayout myCollection = (LinearLayout) contentView.findViewById(R.id.my_collection);
+        LinearLayout myHistory = (LinearLayout) contentView.findViewById(R.id.my_history);
+        LinearLayout exit = (LinearLayout) contentView.findViewById(R.id.exit);
+        LinearLayout mySetting = (LinearLayout) contentView.findViewById(R.id.my_setting);
         Button cancelPopWindow = (Button)contentView.findViewById(R.id.cancel_pop_window);
+        LinearLayout loginMsg=contentView.findViewById(R.id.login_msg);
+        TextView loginText=contentView.findViewById(R.id.msg_text);
         addCollection.setOnClickListener(this);
         myCollection.setOnClickListener(this);
         myHistory.setOnClickListener(this);
         exit.setOnClickListener(this);
         mySetting.setOnClickListener(this);
         cancelPopWindow.setOnClickListener(this);
+        loginMsg.setOnClickListener(this);
+        Fragment currentFragment = getFragmentManager().findFragmentById(R.id.show_page);
+        if (currentFragment != null && currentFragment instanceof SearchFragment) {
+            addCollection.setVisibility(View.VISIBLE);
+        } else {
+            addCollection.setVisibility(View.GONE);
+        }
         View rootView = LayoutInflater.from(MainActivity.this).inflate(R.layout.activity_main,
                 null);
         mPopupWindow.showAtLocation(rootView, Gravity.BOTTOM, 0, 0);
+        mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                mLayoutParams.alpha = 1.0f;
+                mWindow.setAttributes(mLayoutParams);
+            }
+        });
+        // 根据登录状态该改变 登录信息
+        Boolean isLogin= Util.getInstance().getLoginState();
+        if(isLogin){
+            String userName=Util.getInstance().getCustomizeName();
+            loginText.setText(userName);
+        }
     }
 
     @Override
@@ -252,4 +337,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.popBackStack();
     }
+
 }

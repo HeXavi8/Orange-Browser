@@ -17,12 +17,7 @@ public class Collection {
     @Generated(hash = 1149123052)
     public Collection() {
     }
-    public String getName() {
-        return this.name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
+
     public String getUrl() {
         return this.url;
     }
@@ -34,5 +29,11 @@ public class Collection {
     }
     public void setTitle(String title) {
         this.title = title;
+    }
+    public String getName() {
+        return this.name;
+    }
+    public void setName(String name) {
+        this.name = name;
     }
 }

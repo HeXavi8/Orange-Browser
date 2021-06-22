@@ -1,18 +1,24 @@
 package com.example.fruit.register;
 
 import android.app.Fragment;
+import android.content.res.ColorStateList;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 
 import androidx.annotation.Nullable;
 
@@ -20,6 +26,10 @@ import com.example.fruit.MainActivity;
 import com.example.fruit.R;
 import com.example.fruit.home.HomeFragment;
 import com.example.fruit.login.LoginFragment;
+
+import com.example.fruit.dao.DBController;
+import  com.example.fruit.register.RegisterPresenter;
+import  com.example.fruit.register.RegisterView;
 
 public class RegisterFragment extends Fragment {
     @Nullable
@@ -31,6 +41,9 @@ public class RegisterFragment extends Fragment {
         EditText registerPhone=view.findViewById(R.id.user_phone);
         EditText registerPassword2=view.findViewById(R.id.user_password2);
         EditText registerPassword=view.findViewById(R.id.user_password);
+        Button registerBut=view.findViewById(R.id.register_but);
+        registerBut.setEnabled(false);
+
         final MainActivity activity=(MainActivity) getActivity();
 
 //        点击登录按钮，跳转到登录页面
@@ -49,7 +62,9 @@ public class RegisterFragment extends Fragment {
             }
         });
 
-        // 手机号码格式检查，如果不符合手机号码格式，出现错误提示消息
+//针对 输入框 注册按钮：
+// 手机号码格式检查，如果不符合手机号码格式，出现错误提示消息
+
         registerPhone.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -74,10 +89,15 @@ public class RegisterFragment extends Fragment {
                 String phoneRegex = "[1][34578]\\d{9}" ;
                 String inputPhone = registerPhone.getText().toString();
                 if(TextUtils.isEmpty(inputPhone)&&"".equals(inputPhone)){
+                    registerBut.setEnabled(false);
                     registerPhone.setError("请输入手机号");
                 }
                 else if(!inputPhone.matches(phoneRegex)){
+                    registerBut.setEnabled(false);
                     registerPhone.setError("请输入11位数的正确手机号");
+                }
+                else{
+                    registerBut.setEnabled(true);
                 }
 
             }
@@ -103,13 +123,62 @@ public class RegisterFragment extends Fragment {
                 if(TextUtils.isEmpty(inputPassword2) && "".equals(inputPassword2)){
                     registerPassword2.setError("请重复设置密码");
                 }
-                else if(!(inputPassword.equals(inputPassword2))){
-                    registerPassword2.setError("请保持两次输入的密码一致");
-                }
-
 
             }
         });
+
+
+
+        //点击注册按钮
+        registerBut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String inputPhone = registerPhone.getText().toString();
+                String inputPassword=registerPassword.getText().toString();
+                String inputPassword2=registerPassword2.getText().toString();
+                if( "".equals(inputPhone)||"".equals(inputPassword)||"".equals(inputPassword2)){
+                   Toast toast=Toast.makeText(activity,"密码不能为空",Toast.LENGTH_SHORT);
+                   toast.setGravity(Gravity.CENTER, 0, 0);
+                   toast.show();
+                }
+                else if(inputPassword.length()<6||inputPassword.length()>12){
+                    Toast toast=Toast.makeText(activity,"密码的长度应为6~12",Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
+                }
+                else if(!(inputPassword.equals(inputPassword2))){
+                    Toast toast=Toast.makeText(activity,"请保持两次输入的密码一致",Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
+                }
+                // 查询手机号
+                else {
+                    RegisterView registerView=new RegisterView() {
+                        @Override
+                        public void showRegisterSuccessfully() {
+                            Toast toast=Toast.makeText(activity,"注册成功", Toast.LENGTH_SHORT);
+                            toast.setGravity(Gravity.CENTER, 0, 0);
+                            toast.show();
+                            activity.replaceFragment((new LoginFragment()));
+                        }
+
+                        @Override
+                        public void showUsernameExist() {
+                            Toast toast=Toast.makeText(activity,"该手机号已注册", Toast.LENGTH_SHORT);
+                            toast.setGravity(Gravity.CENTER, 0, 0);
+                            toast.show();
+                        }
+                    };
+                    RegisterPresenter registerPresenter=new RegisterPresenter(registerView);
+                    registerPresenter.register(inputPhone,inputPassword);
+
+
+                   }
+
+
+                }
+        });
+
         return view;
     }
 

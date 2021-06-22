@@ -5,17 +5,20 @@ import android.os.Message;
 
 import androidx.annotation.NonNull;
 
+import com.example.fruit.bean.User;
+
 public class LoginPresenter {
     private static final int LOGIN_SUCCESSFULLY = 1;
     private static final int LOGIN_FAILED = 2;
     private LoginModel mLoginModel;
     private LoginView mLoginView;
+    private String mCustomizeName;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(@NonNull Message msg) {
             switch (msg.what) {
                 case LOGIN_SUCCESSFULLY:
-                    mLoginView.showLoginSuccessfully();
+                    mLoginView.showLoginSuccessfully(mCustomizeName);
                     break;
                 case LOGIN_FAILED:
                     mLoginView.showLoginFailed();
@@ -34,9 +37,10 @@ public class LoginPresenter {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                boolean res = mLoginModel.checkUserAndPassword();
+                User res = mLoginModel.checkUserAndPassword();
                 Message message = new Message();
-                if (res) {
+                if (res != null) {
+                    mCustomizeName = res.getCustomizeName();
                     message.what = LOGIN_SUCCESSFULLY;
                 } else {
                     message.what = LOGIN_FAILED;

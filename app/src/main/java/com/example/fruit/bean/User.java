@@ -5,6 +5,8 @@ import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Index;
 import org.greenrobot.greendao.annotation.Generated;
 
+import java.sql.Blob;
+
 @Entity
 public class User {
     @Id(autoincrement = true)
@@ -12,11 +14,13 @@ public class User {
     @Index(unique = true)
     private String name;
     private String password;
-    @Generated(hash = 1691991404)
-    public User(Long id, String name, String password) {
+    private String customizeName;
+    @Generated(hash = 1661209600)
+    public User(Long id, String name, String password, String customizeName) {
         this.id = id;
         this.name = name;
         this.password = password;
+        this.customizeName = customizeName;
     }
     @Generated(hash = 586692638)
     public User() {
@@ -38,5 +42,11 @@ public class User {
     }
     public void setPassword(String password) {
         this.password = password;
+    }
+    public String getCustomizeName() {
+        return this.customizeName;
+    }
+    public void setCustomizeName(String customizeName) {
+        this.customizeName = customizeName;
     }
 }

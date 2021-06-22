@@ -1,4 +1,5 @@
-package com.example.fruit.history;
+package com.example.fruit.collection;
+
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,58 +11,61 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fruit.R;
-import com.example.fruit.bean.History;
+import com.example.fruit.bean.Collection;
+
+import com.example.fruit.collection.CollectionAdapter;
+import com.example.fruit.collection.CollectionFragment;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder> {
-    private List<History> mHistoryItems;
-    private HistoryFragment mHistoryFragment;
+public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.ViewHolder>{
+    private List<Collection> mCollectionItems;
+    private CollectionFragment mCollectionFragment;
     private boolean ifShowCheckBox;
-
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         View itemView;
         TextView title;
         TextView url;
         CheckBox checkBox;
-        TextView time;
 
         public ViewHolder(@NonNull @org.jetbrains.annotations.NotNull View itemView) {
             super(itemView);
             this.itemView = itemView;
             title = itemView.findViewById(R.id.tv_title);
             url = itemView.findViewById(R.id.tv_url);
-            time = itemView.findViewById(R.id.tv_time);
             checkBox = itemView.findViewById(R.id.checkbox);
             checkBox.setClickable(false);
         }
     }
 
-    public HistoryAdapter(List<History> historyItems, HistoryFragment historyFragment) {
-        mHistoryItems = historyItems;
-        mHistoryFragment = historyFragment;
+    public CollectionAdapter(List<Collection> collectionItems, CollectionFragment collectionFragment) {
+        mCollectionItems = collectionItems;
+        mCollectionFragment = collectionFragment;
         ifShowCheckBox = false;
     }
+
 
     @NonNull
     @NotNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.history_item,
+    //与collection_item.xml绑定
+    public CollectionAdapter.ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.collection_item,
                 parent, false);
-        ViewHolder viewHolder = new ViewHolder(view);
+        CollectionAdapter.ViewHolder viewHolder = new CollectionAdapter.ViewHolder(view);
         return viewHolder;
     }
 
+
     @Override
-    public void onBindViewHolder(@NonNull @NotNull HistoryAdapter.ViewHolder holder, int position) {
-        History historyItem = mHistoryItems.get(position);
-        holder.title.setText(historyItem.getTitle());
-        holder.url.setText(historyItem.getUrl());
-        holder.time.setText(historyItem.getTime());
+    public void onBindViewHolder(@NonNull @NotNull CollectionAdapter.ViewHolder holder, int position) {
+        Collection collectionItem = mCollectionItems.get(position);
+        holder.title.setText(collectionItem.getTitle());
+        holder.url.setText(collectionItem.getUrl());
+        //holder.time.setText(collectionItem.getTime());
         if (ifShowCheckBox) {
             holder.checkBox.setVisibility(View.VISIBLE);
         } else {
@@ -76,9 +80,9 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
                     } else {
                         holder.checkBox.setChecked(true);
                     }
-                    mHistoryFragment.onClick(view, position);
+                    mCollectionFragment.onClick(view, position);
                 } else {
-                    mHistoryFragment.goToSearch(holder.url.getText().toString());
+                    mCollectionFragment.goToSearch(holder.url.getText().toString());
                 }
             }
         });
@@ -86,17 +90,19 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             @Override
             public boolean onLongClick(View view) {
                 ifShowCheckBox = true;
-                return mHistoryFragment.onLongClick(view, position);
+                return mCollectionFragment.onLongClick(view, position);
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return mHistoryItems.size();
+        return mCollectionItems.size();
     }
 
     public void setShowCheckBox(Boolean val) {
         ifShowCheckBox = val;
     }
+
+
 }

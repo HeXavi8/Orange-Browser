@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".search.PhotoBrowserActivity"
+    android:background="@color/black"
+    android:orientation="vertical">
+
+    <com.github.chrisbanes.photoview.PhotoView
+        android:id="@+id/photo_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_alignParentBottom="true"
+    android:layout_marginBottom="20dp">
+    <ImageView
+        android:id="@+id/rotate_left"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@id/save_to_local"
+        android:layout_marginRight="50dp"
+        android:src="@drawable/rotate_left"/>
+    <Button
+        android:id="@+id/save_to_local"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/save_photo_border"
+        android:textColor="@color/icon"
+        android:textSize="14dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="@string/save_photo"/>
+    <ImageView
+        android:id="@+id/rotate_right"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_centerVertical="true"
+        android:src="@drawable/rotate_right"
+        android:layout_marginLeft="50dp"
+        android:layout_toRightOf="@id/save_to_local"/>
+</RelativeLayout>
+
+
+</RelativeLayout>

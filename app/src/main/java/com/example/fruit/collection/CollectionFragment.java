@@ -1,36 +1,158 @@
 package com.example.fruit.collection;
 
-import android.app.Fragment;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
-import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Bundle;
+import android.view.View;
+
+import com.example.fruit.MainActivity;
 import com.example.fruit.R;
+import com.example.fruit.bean.Collection;
 
-//public class CollectionFragment extends Fragment {
-//    @Nullable
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-//        View view = inflater.inflate(R.layout.collection_fragment, container, false);
-//        return view;
-//    }
+import com.example.fruit.collection.CollectionAdapter;
+import com.example.fruit.collection.CollectionPresenter;
+import com.example.fruit.collection.CollectionView;
+import com.example.fruit.collection.OnItemClickListener;
 
-    public class CollectionFragment extends Fragment {
-        private View view;//定义view用来设置fragment的layout
-        public RecyclerView mCollectRecyclerView;//定义RecyclerView
+import com.example.fruit.search.SearchFragment;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+
+import android.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+
+import androidx.annotation.Nullable;
+
+    public class CollectionFragment extends Fragment implements CollectionView, View.OnClickListener, OnItemClickListener {
+        private CollectionPresenter mCollectionPresenter;
+        private List<Collection> mCollectionItems = new ArrayList<>();
+        private List<String> mSelected = new ArrayList<>();
+        private List<Collection> mSelectedItems = new ArrayList<>();
+        private CollectionAdapter mCollectionRecyclerviewAdapter;
+        private LinearLayoutManager mLinearLayoutManager;
+        private MainActivity mActivity;
+
+        private RecyclerView mCollectionList;
+        private Button mDeleteAll;
+        private Button mDeleteSelected;
+        private ImageView mGoBack;
+
 
         @Nullable
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             //获取fragment的layout
-            view = inflater.inflate(R.layout.collection_fragment, container, false);
-            //对recycleview进行配置
+            View view = inflater.inflate(R.layout.collection_fragment, container, false);//定义view用来设置fragment的layout
+            mCollectionPresenter = new CollectionPresenter(this);
+            mActivity = (MainActivity)getActivity();
+            mGoBack = (ImageView)view.findViewById(R.id.setting_back);
+            mDeleteAll = (Button)view.findViewById(R.id.delete_all_collection);
+            mDeleteSelected = (Button)view.findViewById(R.id.delete);
+            mGoBack.setOnClickListener(this);
+            mDeleteAll.setOnClickListener(this);
+            mDeleteSelected.setOnClickListener(this);
+            mCollectionList = (RecyclerView)view.findViewById(R.id.recyclerview);
+            mLinearLayoutManager = new LinearLayoutManager(getActivity());
+            mCollectionList.setLayoutManager(mLinearLayoutManager);
+            mCollectionPresenter.getCollections();
 
             return view;
 
         }
+
+
+        @Override
+        public void showAllCollection(List<Collection> collections) {//显示所有收藏
+            if (collections != null) {
+                for (int i = collections.size()-1; i >= 0; i--) {
+                    mCollectionItems.add(collections.get(i));
+                }
+            }
+            mCollectionRecyclerviewAdapter= new CollectionAdapter(mCollectionItems, this);
+            mCollectionList.setAdapter(mCollectionRecyclerviewAdapter);
+        }
+
+        @Override
+        public void onClick(View view) {//点击操作
+            switch (view.getId()) {
+                case R.id.delete_all_collection:
+                    mCollectionItems.clear();
+                    mCollectionRecyclerviewAdapter.notifyDataSetChanged();
+                    mCollectionPresenter.deleteAllCollection();
+                    break;
+                case R.id.delete:
+                    getSelectedItems();
+                    mSelected.clear();
+                    mCollectionRecyclerviewAdapter.setShowCheckBox(false);
+                    mDeleteSelected.setVisibility(View.GONE);
+                    mDeleteAll.setVisibility(View.VISIBLE);
+                    refreshUI();
+                    mCollectionPresenter.deleteSelectedCollection(mSelectedItems);
+                    break;
+                case R.id.setting_back:
+                    mActivity.onBackPressed();
+                    break;
+            }
+        }
+
+
+        public void goToSearch(String url) {//点击跳转到该页面
+            SearchFragment searchFragment = new SearchFragment();
+            searchFragment.setURL(url);
+            mActivity.replaceFragment(searchFragment);
+        }
+
+        private void refreshUI() {//更新界面
+            if (mCollectionRecyclerviewAdapter == null) {
+                mCollectionRecyclerviewAdapter = new CollectionAdapter(mCollectionItems, this);
+                mCollectionList.setAdapter(mCollectionRecyclerviewAdapter);
+            } else {
+                mCollectionRecyclerviewAdapter.notifyDataSetChanged();
+            }
+        }
+
+
+        @Override
+        public void onClick(View view, int pos) {//点击
+            if (mSelected.contains(String.valueOf(pos))) {
+                mSelected.remove(String.valueOf(pos));//移除
+            } else {
+                mSelected.add(String.valueOf(pos));//添加
+            }
+        }
+
+        @Override
+        public boolean onLongClick(View view, int pos) {//长按
+            refreshUI();
+            mDeleteAll.setVisibility(View.GONE);//不能全部删除
+            mDeleteSelected.setVisibility(View.VISIBLE);//显示checkbox
+            return true;
+        }
+
+        private void getSelectedItems() {//获取到所有点击的items
+            if (!mSelected.isEmpty()) {
+                if (mSelectedItems.isEmpty()) {
+                    for (int i = 0; i < mSelected.size(); i++) {
+                        int pos = Integer.parseInt(mSelected.get(i));
+                        mSelectedItems.add(mCollectionItems.get(pos));
+                    }
+                    for (int i = 0; i < mSelectedItems.size(); i++) {
+                        mCollectionItems.remove(mSelectedItems.get(i));
+                    }
+                } else {
+                    mSelectedItems.clear();
+                }
+            }
+        }
+
+
     }

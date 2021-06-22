@@ -7,14 +7,33 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="PhotoTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
 
     <style name="pop_window_anim_style">
         <item name="android:windowEnterAnimation">@anim/pop_show</item>
         <item name="android:windowExitAnimation">@anim/pop_hidden</item>
     </style>
+
+    <style name="photo_browser_anim_style">
+        <item name="android:windowEnterAnimation">@anim/photo_browser_in</item>
+        <item name="android:windowExitAnimation">@anim/photo_browser_out</item>
+    </style>
+
 <!--  自定义edittext的样式-->
     <style name="MyEditText" parent="Theme.AppCompat.Light">
         <item name="colorControlNormal">@color/no_focus_color</item>
         <item name="colorControlActivated">@color/main_color</item>
     </style>
+
+<!--    自定义按钮禁用时的样式-->
+<!--    <style name="MainButtonTheme" >-->
+<!--        <item name="colorControlHighlight">@color/main_color</item>-->
+<!--       <item name="android:colorButtonNormal"></item>-->
+<!--        <item name="android:textColor">@color/white</item>-->
+<!--    </style>-->
+
 </resources>

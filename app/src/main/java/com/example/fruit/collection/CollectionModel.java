@@ -20,10 +20,6 @@ public class CollectionModel {
         return mDBController.getUserCollection(mUsername);
     }
 
-    public void addACollection(String url, String title) {
-        mDBController.addCollection(mUsername, url, title);
-    }
-
     public void deleteAllUserCollection() {
         mDBController.deleteAllCollection(mUsername);
     }

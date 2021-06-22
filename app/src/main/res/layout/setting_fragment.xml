@@ -47,6 +47,7 @@
                 android:layout_marginLeft="15dp"
                 android:src="@drawable/user"/>
             <TextView
+                android:id="@+id/setting_user_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="25dp"
@@ -105,11 +106,31 @@
                     android:text="@string/history"/>
             </LinearLayout>
         </LinearLayout>
+
     </RelativeLayout>
+
 
     <View
         android:layout_width="match_parent"
         android:layout_height="10dp"
         android:background="@color/menu_line"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/menu_line"
+        android:orientation="vertical">
+
+
+        <Button
+            android:id="@+id/logout_btn"
+            android:layout_marginTop="400dp"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/logout_btn_shape"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/logout" />
+    </LinearLayout>
 
 </LinearLayout>

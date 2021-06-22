@@ -3,8 +3,8 @@ package com.example.fruit.collection;
 public class CollectionItem {
 
     public String imgPath;//图片地址
-    private String title;//历史记录名字
-    private String url;//历史记录URL
+    private String title;//收藏名字
+    private String url;//收藏URL
     private boolean isSelected;//是否选中
 
 
@@ -47,7 +47,7 @@ public class CollectionItem {
 
     }
 
-    public CollectionItem(String title, String url, String imgPath) {
+    public CollectionItem(String title, String url,String imgPath) {
         this.title = title;
         this.url = url;
         this.imgPath = imgPath;
@@ -58,7 +58,6 @@ public class CollectionItem {
         return "HistoryItem{" +
                 "title='" + title + '\'' +
                 ", url=" + url +
-                ",imgPath='" + imgPath +
                 '}';
     }
 

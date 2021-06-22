@@ -12,11 +12,10 @@ import com.example.fruit.bean.HistoryDao;
 import com.example.fruit.bean.User;
 import com.example.fruit.bean.UserDao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DBController {
-    private static final String DB_NAME = "fruit.db";
+    private static final String DB_NAME = "Fruits.db";
     private DaoMaster.DevOpenHelper mHelpler;
     private SQLiteDatabase mDb;
     private DaoMaster mDaoMaster;
@@ -60,11 +59,11 @@ public class DBController {
         return mUserDao.insert(user);
     }
 
-    public boolean checkUserAndPassword(String whereUser, String wherePassword) {
-        List<User>users = (List<User>)mUserDao.queryBuilder()
+    public User checkUserAndPassword(String whereUser, String wherePassword) {
+        User user = mUserDao.queryBuilder()
                 .where(UserDao.Properties.Name.eq(whereUser),
-                        UserDao.Properties.Password.eq(wherePassword)).build().list();
-        return !users.isEmpty();
+                        UserDao.Properties.Password.eq(wherePassword)).build().unique();
+        return user;
     }
 
     public boolean checkUserExist(String whereUser) {
@@ -125,15 +124,15 @@ public class DBController {
         return res;
     }
 
-    public long addCollection(String username, String url, String title) {
+    public void addCollection(String username, String url, String title) {
         List<Collection> exist = mCollectionDao.queryBuilder()
                 .where(CollectionDao.Properties.Name.eq(username),
-                CollectionDao.Properties.Url.eq(url), CollectionDao.Properties.Title.eq(title))
+                        CollectionDao.Properties.Url.eq(url), CollectionDao.Properties.Title.eq(title))
                 .build().list();
         if (exist == null || exist.isEmpty()) {
-            return mCollectionDao.insert(new Collection(username, url, title));
+            mCollectionDao.insert(new Collection(username, url, title));
         } else {
-            return -1;
+            return;
         }
     }
 
@@ -150,7 +149,9 @@ public class DBController {
                     mCollectionDao.queryBuilder()
                             .where(CollectionDao.Properties.Name.eq(toBeDeleted.get(i).getName()),
                             CollectionDao.Properties.Url.eq(toBeDeleted.get(i).getUrl()),
-                            CollectionDao.Properties.Title.eq(toBeDeleted.get(i).getTitle()));
+                            CollectionDao.Properties.Title.eq(toBeDeleted.get(i).getTitle()))
+                            .buildDelete()
+                            .executeDeleteWithoutDetachingEntities();
                 }
                 mDb.setTransactionSuccessful();
             } catch (Exception e) {
@@ -158,6 +159,15 @@ public class DBController {
             } finally {
                 mDb.endTransaction();
             }
+        }
+    }
+
+    public void changeUsername(String name, String newName) {
+        User findUser = mUserDao.queryBuilder().where(UserDao.Properties.Name.eq(name))
+                .build().unique();
+        if (findUser != null) {
+            findUser.setCustomizeName(newName);
+            mUserDao.update(findUser);
         }
     }
 }

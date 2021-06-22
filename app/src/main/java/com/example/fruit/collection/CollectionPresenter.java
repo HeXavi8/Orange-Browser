@@ -15,12 +15,13 @@ public class CollectionPresenter {
 
     private CollectionModel mCollectionModel;
     private CollectionView mCollectionView;
+    private List<Collection> mCollections;
     private Handler mHandler = new android.os.Handler(){
         @Override
         public void handleMessage(@NonNull Message msg) {
             switch (msg.what) {
                 case SHOW_ALL_COLLECTION:
-                    mCollectionView.showAllCollection();
+                    mCollectionView.showAllCollection(mCollections);
                     break;
             }
         }
@@ -31,23 +32,14 @@ public class CollectionPresenter {
         mCollectionView = collectionView;
     }
 
-    public void getAllCollection() {
+    public void getCollections() {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                mCollectionModel.getCollection();
+                mCollections = mCollectionModel.getCollection();
                 Message message = new Message();
                 message.what = SHOW_ALL_COLLECTION;
                 mHandler.sendMessage(message);
-            }
-        }).start();
-    }
-
-    public void addACollection(String url, String title) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                mCollectionModel.addACollection(url, title);
             }
         }).start();
     }

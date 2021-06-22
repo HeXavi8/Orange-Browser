@@ -10,10 +10,13 @@
     <color name="background">#fafafa</color>
     <color name="menu_line">#F0F0F0</color>
     <color name="navigation_bar_line">#BEBEBE</color>
+    <color name="black">#000000</color>
+    <color name="icon">#707070</color>
     <!--lixiaofei-->
 
 <!--    walden 的颜色-->
     <color name="main_color">#EAB7B7</color>
     <color name="no_focus_color">#AEADAD</color>
-    <color name="delete_all_color">#c93756</color>
+    <color name="btn_disable_color">#E7E5E4</color>
+    <color name="delete_all_color">#C93756</color>
 </resources>

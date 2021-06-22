@@ -68,14 +68,15 @@
             android:theme="@style/MyEditText"/>
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/register_but"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
             android:background="@drawable/login_btn_shape"
-            android:backgroundTint="@color/main_color"
             android:gravity="center"
-            android:text="@string/register_btn" />
+            android:text="@string/register_btn"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
         <LinearLayout
             android:layout_width="300dp"
             android:layout_height="100dp"

@@ -26,6 +26,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".search.PhotoBrowserActivity"
+            android:theme="@style/PhotoTheme"></activity>
     </application>
 
 </manifest>

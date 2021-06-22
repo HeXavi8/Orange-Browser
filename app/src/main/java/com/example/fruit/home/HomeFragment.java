@@ -3,6 +3,7 @@ package com.example.fruit.home;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 
 import androidx.annotation.Nullable;
 
@@ -19,6 +22,8 @@ import com.example.fruit.MainActivity;
 import com.example.fruit.R;
 import com.example.fruit.login.LoginFragment;
 import com.example.fruit.search.SearchFragment;
+import com.example.fruit.setting.SettingFragment;
+import com.example.fruit.utils.Util;
 
 public class HomeFragment extends Fragment {
     private ImageView mUser;
@@ -37,7 +42,12 @@ public class HomeFragment extends Fragment {
         mUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                activity.replaceFragment(new LoginFragment());
+
+                boolean isLogin=Util.getInstance().getLoginState();
+                if(isLogin){
+                 activity.replaceFragment(new SettingFragment());
+                }
+                else{activity.replaceFragment(new LoginFragment());}
             }
         });
         mSearchContent.setOnEditorActionListener(new TextView.OnEditorActionListener() {

@@ -11,6 +11,7 @@
         android:orientation="vertical"
         android:background="@drawable/pop_window_border">
         <LinearLayout
+            android:id="@+id/login_msg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="5dp">
@@ -20,7 +21,7 @@
                 android:src="@drawable/user"
                 android:layout_margin="10dp"/>
             <TextView
-                android:id="@+id/go_to_login"
+                android:id="@+id/msg_text"
                 android:textStyle="bold"
                 android:textSize="17dp"
                 android:layout_width="wrap_content"
@@ -35,9 +36,11 @@
             android:paddingBottom="10dp">
 
             <LinearLayout
+                android:id="@+id/add_collection_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:visibility="gone"
                 android:orientation="vertical"
                 android:gravity="center">
                 <LinearLayout
@@ -64,6 +67,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/my_collection"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -93,6 +97,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/my_history"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -122,6 +127,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/my_setting"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -151,6 +157,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/exit"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -163,7 +170,6 @@
                     android:elevation="5dp"
                     android:background="@drawable/menu_icon_bg_border">
                     <ImageView
-                        android:id="@+id/exit"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:padding="15dp"
