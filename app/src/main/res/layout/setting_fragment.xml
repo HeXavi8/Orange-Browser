@@ -67,22 +67,16 @@
             android:layout_below="@id/setting_user_field"
             android:gravity="center">
             <LinearLayout
+                android:id="@+id/to_collection"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical"
                 android:gravity="center">
                 <TextView
-                    android:id="@+id/setting_number_collection"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20dp"
-                    android:textStyle="bold"
-                    tools:text="16"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="10dp"
+                    android:textSize="15dp"
                     android:text="@string/my_collection"/>
             </LinearLayout>
             <View
@@ -90,22 +84,16 @@
                 android:layout_height="25dp"
                 android:background="@color/navigation_bar_line"/>
             <LinearLayout
+                android:id="@+id/to_history"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_weight="1"
                 android:gravity="center">
                 <TextView
-                    android:id="@+id/setting_number_history"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20dp"
-                    android:textStyle="bold"
-                    tools:text="196"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="10dp"
+                    android:textSize="15dp"
                     android:text="@string/history"/>
             </LinearLayout>
         </LinearLayout>
@@ -129,7 +117,8 @@
             android:clickable="true"
             android:background="@drawable/logout_btn_shape"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:visibility="gone">
             <TextView
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
@@ -141,6 +130,7 @@
                 android:textSize="16dp"/>
 
             <TextView
+                android:id="@+id/phone_number"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
                 android:layout_width="wrap_content"
@@ -162,7 +152,8 @@
             android:layout_width="match_parent"
             android:clickable="true"
             android:background="@drawable/logout_btn_shape"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:visibility="gone">
             <TextView
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
@@ -192,7 +183,8 @@
             android:layout_width="match_parent"
             android:clickable="true"
             android:background="@drawable/logout_btn_shape"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:visibility="gone">
             <TextView
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
@@ -221,7 +213,8 @@
             android:layout_width="match_parent"
             android:clickable="true"
             android:background="@drawable/logout_btn_shape"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:visibility="gone">
             <TextView
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"

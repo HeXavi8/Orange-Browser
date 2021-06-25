@@ -5,13 +5,19 @@ import android.os.Message;
 
 import androidx.annotation.NonNull;
 
+import com.example.fruit.R;
+
 
 public class SettingsPresenter {
     private static final int NAME_CHANGED = 0;
     private static final int PROFILE_CHANGED = 1;
+    private static final int CHECK_FALSE = 2;
+    private static final int CHECK_SUCCESS = 3;
+    private static final int DELETE_USER = 4;
 
     private SettingsModel mSettingsModel;
     private SettingsView mSettingsView;
+    private Boolean mCheckRes;
 
     private Handler mHandler = new Handler() {
         @Override
@@ -22,6 +28,15 @@ public class SettingsPresenter {
                     break;
                 case PROFILE_CHANGED:
                     mSettingsView.showProfileAfterChange();
+                    break;
+                case CHECK_FALSE:
+                    mSettingsView.showCheckPasswordFalse();
+                    break;
+                case CHECK_SUCCESS:
+                    mSettingsView.showCheckPasswordSuccess();
+                    break;
+                case DELETE_USER:
+                    mSettingsView.showDeleteUser();
                     break;
             }
         }
@@ -51,6 +66,35 @@ public class SettingsPresenter {
                 mSettingsModel.setProfile(profile);
                 Message message = new Message();
                 message.what = PROFILE_CHANGED;
+                mHandler.sendMessage(message);
+            }
+        }).start();
+    }
+
+    public void changePassword(String password, String newPassword) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mCheckRes = mSettingsModel.checkPassword(password);
+                Message message = new Message();
+                if (mCheckRes) {
+                    mSettingsModel.changePassword(newPassword);
+                    message.what = CHECK_SUCCESS;
+                } else {
+                    message.what = CHECK_FALSE;
+                }
+                mHandler.sendMessage(message);
+            }
+        }).start();
+    }
+
+    public void deleteUser() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mSettingsModel.deleteUser();
+                Message message = new Message();
+                message.what = DELETE_USER;
                 mHandler.sendMessage(message);
             }
         }).start();

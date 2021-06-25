@@ -16,6 +16,9 @@
     <string name="dialog_message">您访问的网页存在潜在危险，是否继续访问？</string>
     <string name="OK">确认</string>
     <string name="CANCEL">取消</string>
+    <string name="change_password">修改密码</string>
+    <string name="logoff_text">注销后会删除除历史记录外的所有用户数据</string>
+    <string name="logoff">注销</string>
     <!--end-->
     <string name="setting">设置</string>
     <string name="phone_hint">请输入手机号</string>
@@ -43,7 +46,7 @@
     <string name="wuhen_mode">无痕浏览</string>
     <string name="delete_all_history_text">确认清空历史记录</string>
     <string name="delete_all_collection_text">确认清空所有收藏</string>
-
+    <string name="login_text">登录后才能使用该功能</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="change_name_text">修改昵称</string>

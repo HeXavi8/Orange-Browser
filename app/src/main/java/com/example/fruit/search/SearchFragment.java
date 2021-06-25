@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.os.Handler;
 import android.os.Message;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -38,6 +39,7 @@ import com.example.fruit.R;
 import com.example.fruit.bean.Collection;
 import com.example.fruit.bean.History;
 import com.example.fruit.home.HomeFragment;
+import com.example.fruit.utils.Util;
 
 
 import java.io.IOException;
@@ -150,6 +152,20 @@ public class SearchFragment extends Fragment {
         mSearchRes.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         mSearchRes.getSettings().setSupportMultipleWindows(true);
         mSearchRes.getSettings().setBuiltInZoomControls(true);
+
+        mSearchRes.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if(event.getAction()==KeyEvent.ACTION_DOWN){
+                    if(keyCode == KeyEvent.KEYCODE_BACK&&mSearchRes.canGoBack()){
+                        mSearchRes.goBack();
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+
         mSearchRes.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
          //手机浏览器模式调试
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -306,23 +322,24 @@ public class SearchFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String date = sdf.format(new Date());
-        WebBackForwardList res = mSearchRes.copyBackForwardList();
+        if (!Util.getInstance().getNoHistory()) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String date = sdf.format(new Date());
+            WebBackForwardList res = mSearchRes.copyBackForwardList();
 
-        List<History> historyList = new ArrayList<History>();
-        History history = new History();
+            List<History> historyList = new ArrayList<History>();
+            History history = new History();
 
-        for (int i = 0; i < res.getSize(); i++) {
-            history.setTitle(res.getItemAtIndex(i).getTitle());
-            history.setUrl(res.getItemAtIndex(i).getUrl());
-            history.setTime(date);
-            historyList.add(history);
+            for (int i = 0; i < res.getSize(); i++) {
+                history.setTitle(res.getItemAtIndex(i).getTitle());
+                history.setUrl(res.getItemAtIndex(i).getUrl());
+                history.setTime(date);
+                historyList.add(history);
+            }
+
+            //加入到presenter
+            mSearchPresenter.insertHistories(historyList);
         }
-
-        //加入到presenter
-        mSearchPresenter.insertHistories(historyList);
-
     };
 
     //set当前web页面的URL给到收藏collection

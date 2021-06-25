@@ -12,6 +12,7 @@ import com.example.fruit.MainActivity;
 import com.example.fruit.R;
 import com.example.fruit.bean.History;
 import com.example.fruit.search.SearchFragment;
+import com.example.fruit.utils.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +65,12 @@ public class HistoryFragment extends Fragment implements HistoryView, View.OnCli
         mHistoryList = (RecyclerView)view.findViewById(R.id.recyclerview);
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
         mHistoryList.setLayoutManager(mLinearLayoutManager);
-        mHistoryPresenter.getHistories();
+        if (Util.getInstance().getNoHistory()) {
+            mHistoryRecyclerviewAdapter= new HistoryAdapter(mHistoryItems, this);
+            mHistoryList.setAdapter(mHistoryRecyclerviewAdapter);
+        } else {
+            mHistoryPresenter.getHistories();
+        }
         return view;
     }
 

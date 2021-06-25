@@ -1,18 +1,11 @@
 package com.example.fruit;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import android.content.Context;
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.DialogInterface;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -32,20 +25,16 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.fruit.bean.QuickPage;
 import com.example.fruit.collection.CollectionFragment;
 import com.example.fruit.history.HistoryFragment;
 import com.example.fruit.home.HomeFragment;
 import com.example.fruit.login.LoginFragment;
-import com.example.fruit.quick.QuickPageAdapter;
 import com.example.fruit.search.SearchFragment;
 import com.example.fruit.setting.SettingFragment;
 import com.example.fruit.utils.Util;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.bumptech.glide.Glide;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, MainView{
     private LinearLayout mTopSearch;
@@ -60,11 +49,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private PopupWindow mPopupWindow;
     private Window mWindow;
     private WindowManager.LayoutParams mLayoutParams;
+    
     private String mCollectionURL;
     private String mCollectionTitle;
-
     private MainPresenter mMainPresenter;
-
     @SuppressLint("JavascriptInterface")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,13 +93,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mPaging.setOnClickListener(this);
         replaceFragment(new HomeFragment());
 
-
         mMainPresenter = new MainPresenter(this);
 
     }
-
-
-
 
     @Override
     public void onClick(View view) {
@@ -375,6 +359,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fragmentManager.popBackStack();
         mNavigationBar.setVisibility(View.VISIBLE);
     }
-
 
 }

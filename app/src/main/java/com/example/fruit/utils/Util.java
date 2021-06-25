@@ -59,4 +59,20 @@ public class Util {
     public static String getProfile() {
         return mSP.getString("profile", null);
     }
+
+    public static void setNight(Boolean ifNight) {
+        mEditor.putBoolean("night", ifNight).commit();
+    }
+
+    public static Boolean getNight() {
+        return mSP.getBoolean("night", false);
+    }
+
+    public static void setNoHistory(Boolean ifNoHistory) {
+        mEditor.putBoolean("noHistory", ifNoHistory).commit();
+    }
+
+    public static Boolean getNoHistory() {
+        return mSP.getBoolean("noHistory", false);
+    }
 }

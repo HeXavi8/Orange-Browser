@@ -185,4 +185,20 @@ public class DBController {
             mUserDao.update(findUser);
         }
     }
+
+    public void changePassword(String name, String newPassword) {
+        User findUser = mUserDao.queryBuilder().where(UserDao.Properties.Name.eq(name))
+                .build().unique();
+        if (findUser != null) {
+            findUser.setPassword(newPassword);
+            mUserDao.update(findUser);
+        }
+    }
+
+    public void deleteUser(String name) {
+        mCollectionDao.queryBuilder().where(CollectionDao.Properties.Name.eq(name))
+                .buildDelete().executeDeleteWithoutDetachingEntities();
+        mUserDao.queryBuilder().where(UserDao.Properties.Name.eq(name))
+                .buildDelete().executeDeleteWithoutDetachingEntities();
+    }
 }

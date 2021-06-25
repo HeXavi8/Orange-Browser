@@ -79,7 +79,7 @@ public class HomeFragment extends Fragment {
             public void onClick(View view) {
                 boolean isLogin=Util.getInstance().getLoginState();
                 if(isLogin){
-                 activity.replaceFragment(new SettingFragment());
+                    activity.replaceFragment(new SettingFragment());
                 }
                 else{activity.replaceFragment(new LoginFragment());}
             }
@@ -188,13 +188,13 @@ public class HomeFragment extends Fragment {
                         mQuickPageAdapter.notifyItemChanged(position);
                     }
                 }).setNeutralButton("删除",new DialogInterface.OnClickListener(){
-                  @Override
-                  public void onClick(DialogInterface dialog, int i) {
-                      // 删除该快捷页面
-                      mQuickPagePageList.remove(position);
-                      //刷新列表
-                      mQuickPageAdapter.notifyDataSetChanged();
-                 }
+            @Override
+            public void onClick(DialogInterface dialog, int i) {
+                // 删除该快捷页面
+                mQuickPagePageList.remove(position);
+                //刷新列表
+                mQuickPageAdapter.notifyDataSetChanged();
+            }
         });
 
         AlertDialog dialog = builder.create();
