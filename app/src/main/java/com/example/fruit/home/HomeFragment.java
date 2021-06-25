@@ -64,13 +64,12 @@ public class HomeFragment extends Fragment {
 
         mQuickPageRecyclerView = (RecyclerView)view.findViewById(R.id.quick_recyclerview);//快捷页recyclerview
         mQuickPagePageList = new ArrayList<QuickPage>();//数据列表集合
-        mQuickPagePageList.add(new QuickPage("百度","https://www.baidu.com",R.mipmap.quick_page,false));
-        mQuickPagePageList.add(new QuickPage("网易","https://www.163.com",R.mipmap.quick_page,false));
-        mQuickPagePageList.add(new QuickPage("谷歌","https://www.google.com",R.mipmap.quick_page,false));
-        mQuickPagePageList.add(new QuickPage("百度","https://www.baidu.com",R.mipmap.quick_page,false));
-        mQuickPagePageList.add(new QuickPage("网易","https://www.163.com",R.mipmap.quick_page,false));
-        mQuickPagePageList.add(new QuickPage("谷歌","https://www.google.com",R.mipmap.quick_page,false));
-        mQuickPagePageList.add(new QuickPage("添加快捷页","",R.drawable.add_quick_page,true));
+        mQuickPagePageList.add(new QuickPage("百度","https://www.baidu.com",R.mipmap.quick_page,"https://www.google.com/s2/favicons?sz=64&domain_url=www.baidu.com",false));
+        mQuickPagePageList.add(new QuickPage("网易","https://www.163.com",R.mipmap.quick_page,"https://www.google.com/s2/favicons?sz=64&domain_url=www.163.com",false));
+        mQuickPagePageList.add(new QuickPage("谷歌","https://www.google.com",R.mipmap.quick_page,"https://www.google.com/s2/favicons?sz=64&domain_url=www.google.com",false));
+        mQuickPagePageList.add(new QuickPage("搜狐","https://www.sohu.com",R.mipmap.quick_page,"https://www.google.com/s2/favicons?sz=64&domain_url=www.apple.com",false));
+        mQuickPagePageList.add(new QuickPage("苹果","https://www.apple.com",R.mipmap.quick_page,"https://www.google.com/s2/favicons?sz=64&domain_url=www.apple.com",false));
+        mQuickPagePageList.add(new QuickPage("添加快捷页","",R.drawable.add_quick_page,"",true));
         initRecyclerView();//初始化quick page的recyclerveiw
 
 
@@ -163,8 +162,17 @@ public class HomeFragment extends Fragment {
         final EditText et_title = view.findViewById(R.id.et_title);//名称
         final EditText et_url = view.findViewById(R.id.et_url);//URL
 
-        //加载图片
-        Glide.with(context).load(quickPage.getImgPath()).into(iv_headImg);
+        //设置头像，这里设置出的头像不是按照原来的可能，这里可能有错，要按照selStudent的来设置要修改一下才行
+        //如果设置了网上图片url的就按照网上的设置，否则设置本地的图片
+        if(quickPage.getImgPathUrl()!=null && !quickPage.getImgPathUrl().isEmpty())
+        {
+            Glide.with(context).load(quickPage.getImgPathUrl()).into(iv_headImg);
+        }else {
+            Glide.with(context).load(quickPage.getImgPathId()).into(iv_headImg);
+        }
+
+//        //加载图片
+//        Glide.with(context).load(quickPage.getImgPathId()).into(iv_headImg);
 
         //设置数据
         et_title.setText(quickPage.getTitle());
@@ -213,8 +221,17 @@ public class HomeFragment extends Fragment {
         final EditText et_title = view.findViewById(R.id.et_title);//名称
         final EditText et_url = view.findViewById(R.id.et_url);//URL
 
-        //加载图片
-        Glide.with(context).load(quickPage.getImgPath()).into(iv_headImg);
+        //设置头像，这里设置出的头像不是按照原来的可能，这里可能有错，要按照selStudent的来设置要修改一下才行
+        //如果设置了网上图片url的就按照网上的设置，否则设置本地的图片
+        if(quickPage.getImgPathUrl()!=null && !quickPage.getImgPathUrl().isEmpty())
+        {
+            Glide.with(context).load(quickPage.getImgPathUrl()).into(iv_headImg);
+        }else {
+            Glide.with(context).load(quickPage.getImgPathId()).into(iv_headImg);
+        }
+
+//        //加载图片
+//        Glide.with(context).load(quickPage.getImgPathId()).into(iv_headImg);
 
         //设置为空
         et_title.setText("");
@@ -235,7 +252,7 @@ public class HomeFragment extends Fragment {
                         mQuickPageURL = "https://"+et_url.getText().toString();//输入URL
 
                         //添加数据
-                        mQuickPagePageList.add(new QuickPage(mQuickPageTitle,mQuickPageURL,R.mipmap.quick_page,false));
+                        mQuickPagePageList.add(new QuickPage(mQuickPageTitle,mQuickPageURL,R.mipmap.quick_page,"https://www.google.com/s2/favicons?sz=64&domain_url="+mQuickPageURL,false));
 
                         //刷新列表
                         mQuickPageAdapter.notifyItemChanged(position);

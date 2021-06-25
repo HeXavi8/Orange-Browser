@@ -75,8 +75,24 @@ public class QuickPageAdapter extends RecyclerView.Adapter<QuickPageAdapter.Quic
 
         //mQuickViewHolder.tv_url.setText("URL："+mQuickPage.getUrl()+"");
 
-        //设置图片
-        Glide.with(mContext).load(mQuickPage.getImgPath()).into(mQuickViewHolder.iv_headImg);
+//        //设置图片
+//        Glide.with(mContext).load(mQuickPage.getImgPathId()).into(mQuickViewHolder.iv_headImg);
+        //如果设置了网上图片url的就按照网上的设置，否则设置本地的图片
+        if(mQuickPage.getImgPathUrl()!=null && !mQuickPage.getImgPathUrl().isEmpty())
+        {
+            try {
+                Glide.with(mContext).load(mQuickPage.getImgPathUrl()).into(mQuickViewHolder.iv_headImg);
+            }catch (Exception e)
+            {
+                //如果网上的图片路径出错则加载本地的图片
+                Glide.with(mContext).load(mQuickPage.getImgPathId()).into(mQuickViewHolder.iv_headImg);
+            }
+
+        }else {
+            //加载项目本地图片
+            Glide.with(mContext).load(mQuickPage.getImgPathId()).into(mQuickViewHolder.iv_headImg);
+        }
+        
 
         mQuickViewHolder.itemView.setTag(position);
 
