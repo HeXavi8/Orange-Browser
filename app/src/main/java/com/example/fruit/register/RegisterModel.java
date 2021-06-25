@@ -9,7 +9,7 @@ public class RegisterModel {
     private User mUser;
 
     public RegisterModel() {
-        mUser = new User(null, "", "", "");
+        mUser = new User(null, "", "", "",null);
         mDBController = DBController.getInstance(MyAppliaction.getContext());
     }
 

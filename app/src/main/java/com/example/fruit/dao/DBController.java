@@ -15,7 +15,7 @@ import com.example.fruit.bean.UserDao;
 import java.util.List;
 
 public class DBController {
-    private static final String DB_NAME = "Fruits.db";
+    private static final String DB_NAME = "_Fruits.db";
     private DaoMaster.DevOpenHelper mHelpler;
     private SQLiteDatabase mDb;
     private DaoMaster mDaoMaster;
@@ -167,6 +167,21 @@ public class DBController {
                 .build().unique();
         if (findUser != null) {
             findUser.setCustomizeName(newName);
+            mUserDao.update(findUser);
+        }
+    }
+
+    public String getProfile(String name) {
+        User findUser = mUserDao.queryBuilder().where(UserDao.Properties.Name.eq(name))
+                .build().unique();
+        return findUser.getProfile();
+    }
+
+    public void setProfile(String name, String profile) {
+        User findUser = mUserDao.queryBuilder().where(UserDao.Properties.Name.eq(name))
+                .build().unique();
+        if (findUser != null) {
+            findUser.setProfile(profile);
             mUserDao.update(findUser);
         }
     }

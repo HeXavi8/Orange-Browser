@@ -16,4 +16,8 @@ public class SettingsModel {
     public void changeName(String newName) {
         mDBController.changeUsername(mUsername, newName);
     }
+
+    public void setProfile(String profile) {
+        mDBController.setProfile(mUsername, profile);
+    }
 }

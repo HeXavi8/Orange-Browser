@@ -77,7 +77,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
             case R.id.logout_btn:
                 showLogoutWindow();
                 break;
-            case R.id.confirm_logout_btn:
+            case R.id.confirm_btn:
                 mLogoutWindow.dismiss();
                 replaceFragment(new HomeFragment());
                 Util.getInstance().setLoginState(false);
@@ -103,7 +103,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         mLayoutParams.alpha=0.9f;
         mWindow.setAttributes(mLayoutParams);
         View contentView = LayoutInflater.from(mActivity)
-                .inflate(R.layout.logout_window, null);
+                .inflate(R.layout.confirm_window, null);
 
         mLogoutWindow =new PopupWindow(contentView,
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -116,7 +116,10 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         mLogoutWindow.showAtLocation(rootView, Gravity.BOTTOM,0,0);
 
         //退出按钮 和 取消按钮 事件
-        Button confirmBut=contentView.findViewById(R.id.confirm_logout_btn);
+        TextView confirmText = contentView.findViewById(R.id.confirm_text);
+        confirmText.setText(R.string.logout_text);
+        Button confirmBut=contentView.findViewById(R.id.confirm_btn);
+        confirmBut.setText(R.string.logout);
         Button cancelBut=contentView.findViewById(R.id.cancel_btn);
         confirmBut.setOnClickListener(this);
         cancelBut.setOnClickListener(this);
@@ -174,6 +177,11 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                         Toast toast=Toast.makeText(mActivity,"修改成功", Toast.LENGTH_SHORT);
                         toast.setGravity(Gravity.CENTER, 0, 0);
                         toast.show();
+                    }
+
+                    @Override
+                    public void showProfileAfterChange() {
+
                     }
                 };
                 SettingsPresenter settingsPresenter=new SettingsPresenter(settingsView);

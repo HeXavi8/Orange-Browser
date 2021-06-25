@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
-    <LinearLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/logout_window_shape"
     android:orientation="vertical">
     <TextView
-        android:id="@+id/logout_text"
+        android:id="@+id/confirm_text"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:textSize="12sp"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="@string/logout_text" />
+        android:text="" />
     <View
         android:layout_height="1dp"
         android:background="@color/menu_line"
@@ -22,12 +21,12 @@
     </View>
 
     <Button
-        android:id="@+id/confirm_logout_btn"
+        android:id="@+id/confirm_btn"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/logout_btn_shape"
-        android:text="@string/logout"
+        android:text=""
         android:textColor="@android:color/holo_red_dark" />
     <View
         android:layout_height="5dp"
@@ -41,4 +40,4 @@
         android:layout_height="wrap_content"
         android:background="@drawable/logout_btn_shape"
         android:text="@string/cancel" />
-    </LinearLayout>
+</LinearLayout>

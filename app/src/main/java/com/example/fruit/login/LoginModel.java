@@ -9,7 +9,7 @@ public class LoginModel {
     private User mUser;
 
     public LoginModel() {
-        mUser = new User(null, "", "", "");
+        mUser = new User(null, "", "", "",null);
         mDbController = DBController.getInstance(MyAppliaction.getContext());
     }
 

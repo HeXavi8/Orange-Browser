@@ -12,13 +12,14 @@ public class LoginPresenter {
     private static final int LOGIN_FAILED = 2;
     private LoginModel mLoginModel;
     private LoginView mLoginView;
-    private String mCustomizeName;
+    private User mUser;
+
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(@NonNull Message msg) {
             switch (msg.what) {
                 case LOGIN_SUCCESSFULLY:
-                    mLoginView.showLoginSuccessfully(mCustomizeName);
+                    mLoginView.showLoginSuccessfully(mUser);
                     break;
                 case LOGIN_FAILED:
                     mLoginView.showLoginFailed();
@@ -40,7 +41,7 @@ public class LoginPresenter {
                 User res = mLoginModel.checkUserAndPassword();
                 Message message = new Message();
                 if (res != null) {
-                    mCustomizeName = res.getCustomizeName();
+                    mUser = res;
                     message.what = LOGIN_SUCCESSFULLY;
                 } else {
                     message.what = LOGIN_FAILED;

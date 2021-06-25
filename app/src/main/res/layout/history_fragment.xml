@@ -30,7 +30,7 @@
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_marginRight="10dp"
-            android:text="@string/delete_all_history"
+            android:text="@string/delete_all"
             android:visibility="visible"
             android:textColor="@color/delete_all_color"
             android:textSize="16dp"

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:gravity="center_vertical">
+
+    <ImageView
+        android:id="@+id/iv_headImg"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@mipmap/ic_launcher"
+        android:layout_marginLeft="5dp"/>
+
+    <RelativeLayout
+        android:id="@+id/rel_"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:id="@+id/linelayout_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="名称："
+                android:textSize="15sp"/>
+            <EditText
+                android:id="@+id/et_title"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/tv_title"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linelayout_url"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_below="@id/linelayout_name">
+            <TextView
+                android:id="@+id/tv_url"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="URL："
+                android:textSize="15sp"/>
+            <EditText
+                android:id="@+id/et_url"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/tv_url"/>
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 
 public class SettingsPresenter {
     private static final int NAME_CHANGED = 0;
+    private static final int PROFILE_CHANGED = 1;
 
     private SettingsModel mSettingsModel;
     private SettingsView mSettingsView;
@@ -18,6 +19,9 @@ public class SettingsPresenter {
             switch (msg.what) {
                 case NAME_CHANGED:
                     mSettingsView.showChangeName();
+                    break;
+                case PROFILE_CHANGED:
+                    mSettingsView.showProfileAfterChange();
                     break;
             }
         }
@@ -35,6 +39,18 @@ public class SettingsPresenter {
                 mSettingsModel.changeName(newName);
                 Message message = new Message();
                 message.what = NAME_CHANGED;
+                mHandler.sendMessage(message);
+            }
+        }).start();
+    }
+
+    public void changeProfile(String profile) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mSettingsModel.setProfile(profile);
+                Message message = new Message();
+                message.what = PROFILE_CHANGED;
                 mHandler.sendMessage(message);
             }
         }).start();

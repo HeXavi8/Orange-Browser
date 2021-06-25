@@ -129,11 +129,12 @@ public class LoginFragment extends Fragment implements LoginView {
     }
 
     @Override
-    public void showLoginSuccessfully(String customizeName) {
+    public void showLoginSuccessfully(User user) {
         //登录成功
         Util.getInstance().setLoginState(true);
         Util.getInstance().setUserName(username);
-        Util.getInstance().setCustomizeName(customizeName);
+        Util.getInstance().setCustomizeName(user.getCustomizeName());
+        Util.getInstance().setProfile(user.getProfile());
         //跳转到首页
         activity.replaceFragment((new HomeFragment()));
     }

@@ -1,11 +1,18 @@
 package com.example.fruit;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import android.content.Context;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -25,16 +32,20 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.fruit.bean.QuickPage;
 import com.example.fruit.collection.CollectionFragment;
 import com.example.fruit.history.HistoryFragment;
 import com.example.fruit.home.HomeFragment;
 import com.example.fruit.login.LoginFragment;
+import com.example.fruit.quick.QuickPageAdapter;
 import com.example.fruit.search.SearchFragment;
 import com.example.fruit.setting.SettingFragment;
 import com.example.fruit.utils.Util;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.bumptech.glide.Glide;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, MainView{
     private LinearLayout mTopSearch;
@@ -45,13 +56,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private LinearLayout mMenu;
     private LinearLayout mHome;
     private LinearLayout mPaging;
+    private EditText mWebUrl;
     private PopupWindow mPopupWindow;
     private Window mWindow;
     private WindowManager.LayoutParams mLayoutParams;
+
+//    private RecyclerView mQuickPageRecyclerView;//快捷页recyclerView
+//    private QuickPageAdapter mQuickPageAdapter;//快捷页adapter
+//    private ArrayList<QuickPage> mQuickPagePageList;//快捷页list
+//    private QuickPage selectedQucikPage;//选中的那个quick page
+//    private String mQuickPageURL;
+//    private String mQuickPageTitle;
+//    private String mQuickPageImgPath;
     
     private String mCollectionURL;
     private String mCollectionTitle;
+
     private MainPresenter mMainPresenter;
+
     @SuppressLint("JavascriptInterface")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +83,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mLayoutParams = mWindow.getAttributes();
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         mTopSearch = (LinearLayout)findViewById(R.id.search_bar);
+        mWebUrl = (EditText)findViewById(R.id.search_url);
+        mWebUrl.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+        mWebUrl.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (i == EditorInfo.IME_ACTION_SEARCH) {
+                    String content;
+                    content = mWebUrl.getText().toString();
+                    SearchFragment searchFragment = (SearchFragment)getFragmentManager()
+                            .findFragmentById(R.id.show_page);
+                    searchFragment.load(content);
+                    return true;
+                }
+                return false;
+            }
+        });
         mNavigationBar =(LinearLayout)findViewById(R.id.navigation_bar);
         mSearchUrl = (EditText)findViewById(R.id.search_url);
         mSearchUrl.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
@@ -76,9 +114,56 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mPaging.setOnClickListener(this);
         replaceFragment(new HomeFragment());
 
+//        mQuickPageRecyclerView = findViewById(R.id.quick_recyclerview);//快捷页recyclerview
+//        mQuickPagePageList = new ArrayList<QuickPage>();//数据列表集合
+//        mQuickPagePageList.add(new QuickPage("百度","www.baidu.com","src/main/res/drawable/add_quick_page.png"));
+//        mQuickPagePageList.add(new QuickPage("网易","www.163.com","src/main/res/drawable/add_quick_page.png"));
+//        mQuickPagePageList.add(new QuickPage("谷歌","www.google.com","src/main/res/drawable/add_quick_page.png"));
+//        initRecyclerView();
+
         mMainPresenter = new MainPresenter(this);
 
     }
+
+//    /**
+//     * 初始化quick page的recyclerview
+//     */
+//    private void initRecyclerView()
+//    {
+//        //设置recyclerview
+//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+//        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);//RecyclerView.HORIZONTAL
+//        mQuickPageRecyclerView.setLayoutManager(linearLayoutManager);
+//        mQuickPageAdapter = new QuickPageAdapter(this,mQuickPagePageList);
+//        mQuickPageRecyclerView.setAdapter(mQuickPageAdapter);
+//
+//
+//        //设置item点击事件,初始化之后要重新设置点击监听事件等，不设置可能不起作用
+//        mQuickPageAdapter.setItemClickListener(new QuickPageAdapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(int position) {
+//                selectedQucikPage = mQuickPagePageList.get(position);
+//                //选中状态置为相反的
+//                mQuickPageURL = selectedQucikPage.getUrl();
+//                goToSearch(mQuickPageURL);
+//                //mQuickPageTitle
+//                //mQuickPageImgPath
+//
+//                //刷新点击选中的那个，也可以全部刷新  adapter.notifyDataSetChanged();
+//                mQuickPageAdapter.notifyItemChanged(position);
+//            }
+//        });
+//
+//        //item长按事件监听
+//        mQuickPageAdapter.setItemLongClickListener(new QuickPageAdapter.OnItemLongClickListener() {
+//            @Override
+//            public void onItemLongClick(int position) {
+//                showQuickPageDialog(MainActivity.this,position);
+//            }
+//        });
+//
+//    }
+
 
     @Override
     public void onClick(View view) {
@@ -102,10 +187,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.add_collection_layout:
                 clickAddCollection();
+                mPopupWindow.dismiss();
                 break;
             case R.id.my_collection:
                 replaceFragment(new CollectionFragment());
                 mTopSearch.setVisibility(View.GONE);
+                mNavigationBar.setVisibility(View.GONE);
                 mBack.setEnabled(false);
                 mForward.setEnabled(false);
                 mPopupWindow.dismiss();
@@ -115,6 +202,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.my_history:
                 replaceFragment(new HistoryFragment());
                 mTopSearch.setVisibility(View.GONE);
+                mNavigationBar.setVisibility(View.GONE);
                 mBack.setEnabled(false);
                 mForward.setEnabled(false);
                 mPopupWindow.dismiss();
@@ -127,6 +215,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.my_setting:
                 replaceFragment(new SettingFragment());
                 mTopSearch.setVisibility(View.GONE);
+                mNavigationBar.setVisibility(View.GONE);
                 mBack.setEnabled(false);
                 mForward.setEnabled(false);
                 mPopupWindow.dismiss();
@@ -336,6 +425,56 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onBackPressed() {
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.popBackStack();
+        mNavigationBar.setVisibility(View.VISIBLE);
     }
+//
+//    //点击跳转到该页面
+//    public void goToSearch(String url) {
+//        SearchFragment searchFragment = new SearchFragment();
+//        searchFragment.setURL(url);
+//        replaceFragment(searchFragment);
+//    }
+//
+//    //显示快捷页的编辑对话框
+//    private void showQuickPageDialog(Context context, final int position)
+//    {
+//        final QuickPage quickPage = mQuickPagePageList.get(position);
+//        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//        View view = View.inflate(context, R.layout.quick_page_dialog,null);
+//        ImageView iv_headImg = view.findViewById(R.id.iv_headImg);//图片
+//        final EditText et_title = view.findViewById(R.id.et_title);//名称
+//        final EditText et_url = view.findViewById(R.id.et_url);//URL
+//
+//        //加载头像
+//        Glide.with(context).load(quickPage.getImgPath()).into(iv_headImg);
+//
+//        //设置数据
+//        et_title.setText(quickPage.getTitle());
+//        et_url.setText(quickPage.getUrl()+"");
+//
+//        //移动光标到末尾
+//        //SomeUtils.moveFocus(et_title);
+//
+//        builder.setView(view);
+//        builder.setCancelable(true); //点返回是否隐藏
+//        builder.setTitle("输入修改（暂修改名字、url）");
+//
+//        builder.setNegativeButton("取消",null)
+//                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//                        //修改选中item的内容
+//                        quickPage.setTitle(et_title.getText().toString());
+//                        quickPage.setUrl(et_url.getText().toString());
+//                        //刷新列表
+//                        mQuickPageAdapter.notifyItemChanged(position);
+//                    }
+//                });
+//
+//        AlertDialog dialog = builder.create();
+//        dialog.setCanceledOnTouchOutside(true);//点dialog的外面隐藏
+//        dialog.show();
+//
+//    }
 
 }

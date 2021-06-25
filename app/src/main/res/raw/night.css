@@ -1,0 +1,32 @@
+
+/*所有元素的背景色都设置为黑夜模式，原来使用#201f26（rgb）会影响celltick资讯详情页里列表项的图片显示，这里改用rgba，有0.8的透明度*/
+*, *:before, *:after {
+    box-sizing: inherit;
+    background-color: rgba(32, 31, 38, 0.8) !important;
+}
+
+/*背景颜色和一般字体颜色*/
+div,h1,h2,h3,h4,h5,h6,p,body,em,html,link,textarea,form,select,input,span,button,em,menu,aside,table,tr,td,nav,dl,dt,dd,amp-iframe,main{
+    /*background-color: rgba(32, 31, 38, 0.8) !important;*/
+    color: #888888!important;
+    border-color: #555555 !important;
+    text-shadow            : 0 0 0 #000; /*去掉文本的阴影效果*/
+}
+
+/*超链接*/
+a{
+    color:#3c5180 !important;
+}
+
+strong {
+	display: block;
+}
+
+img, video, iframe, canvas, svg,amp-social-share,
+embed[type='application/x-shockwave-flash'],
+object[type='application/x-shockwave-flash'],
+*[style*='url('] {
+    -webkit-filter : opacity(50%);
+    -ms-filter     : opacity(50%);
+    filter         : opacity(50%);
+}

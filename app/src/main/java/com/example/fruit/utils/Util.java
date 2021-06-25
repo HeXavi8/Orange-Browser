@@ -51,4 +51,12 @@ public class Util {
     public static String getCustomizeName() {
         return mSP.getString("name", "");
     }
+
+    public static void setProfile(String profile) {
+        mEditor.putString("profile", profile).commit();
+    }
+
+    public static String getProfile() {
+        return mSP.getString("profile", null);
+    }
 }

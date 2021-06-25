@@ -12,6 +12,10 @@
     <string name="cancel">取消</string>
     <string name="save_successfully">保存成功</string>
     <string name="save_photo">保存本地</string>
+    <string name="dialog_title">警告</string>
+    <string name="dialog_message">您访问的网页存在潜在危险，是否继续访问？</string>
+    <string name="OK">确认</string>
+    <string name="CANCEL">取消</string>
     <!--end-->
     <string name="setting">设置</string>
     <string name="phone_hint">请输入手机号</string>
@@ -27,10 +31,19 @@
     <string name="register_btn">注册</string>
     <string name="now_to_login">立即登录</string>
     <string name="have_registered">已有账号？</string>
-    <string name="delete_all_history">清空</string>
+    <string name="delete_all">清空</string>
     <string name="delete">删除</string>
     <string name="logout">退出登录</string>
     <string name="logout_text">退出后不会删除任何历史数据，下次登录依然可以使用本账号</string>
+    <string name="change_usr_name">修改昵称</string>
+    <string name="change_usr_password">修改密码</string>
+    <string name="usr_phone">手机号</string>
+    <string name="close_account">注销账号</string>
+    <string name="dark_mode">夜间模式</string>
+    <string name="wuhen_mode">无痕浏览</string>
+    <string name="delete_all_history_text">确认清空历史记录</string>
+    <string name="delete_all_collection_text">确认清空所有收藏</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="change_name_text">修改昵称</string>

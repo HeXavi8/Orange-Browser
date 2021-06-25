@@ -15,12 +15,15 @@ public class User {
     private String name;
     private String password;
     private String customizeName;
-    @Generated(hash = 1661209600)
-    public User(Long id, String name, String password, String customizeName) {
+    private String profile;
+    @Generated(hash = 1711170821)
+    public User(Long id, String name, String password, String customizeName,
+            String profile) {
         this.id = id;
         this.name = name;
         this.password = password;
         this.customizeName = customizeName;
+        this.profile = profile;
     }
     @Generated(hash = 586692638)
     public User() {
@@ -48,5 +51,11 @@ public class User {
     }
     public void setCustomizeName(String customizeName) {
         this.customizeName = customizeName;
+    }
+    public String getProfile() {
+        return this.profile;
+    }
+    public void setProfile(String profile) {
+        this.profile = profile;
     }
 }

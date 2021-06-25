@@ -19,6 +19,8 @@ import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -52,10 +54,11 @@ public class PhotoBrowserActivity extends AppCompatActivity implements View.OnCl
     private Button mSaveToLocal;
     private static final String TAG = "TEST";
     private Bitmap mBitmap;
+    private Animation mAnimation;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
         int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
 
         getWindow().getDecorView().setSystemUiVisibility(option);
@@ -193,10 +196,50 @@ public class PhotoBrowserActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.rotate_left:
-                mPhotoView.setRotationBy(90);
+                mAnimation = AnimationUtils.loadAnimation(this,R.anim.rotate_left);
+                mAnimation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        mPhotoView.setRotationBy(90);
+                        mAnimation.setFillAfter(false);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+                mAnimation.setFillAfter(true);
+                mPhotoView.startAnimation(mAnimation);
+
                 break;
             case R.id.rotate_right:
-                mPhotoView.setRotationBy(270);
+                mAnimation = AnimationUtils.loadAnimation(this,R.anim.rotate_right);
+                mAnimation.setFillAfter(true);
+                mPhotoView.startAnimation(mAnimation);
+                mAnimation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        mPhotoView.setRotationBy(-90);
+                        mAnimation.setFillAfter(false);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+
                 break;
             case R.id.save_to_local:
                 saveImageToGallery2(this,mBitmap);

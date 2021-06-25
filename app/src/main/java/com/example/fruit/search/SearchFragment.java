@@ -1,12 +1,18 @@
 package com.example.fruit.search;
 
+
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
+import android.util.Base64;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,6 +21,7 @@ import android.view.inputmethod.EditorInfo;
 import android.webkit.WebBackForwardList;
 import android.view.WindowManager;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -22,13 +29,19 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.fruit.MainActivity;
+import com.example.fruit.MyAppliaction;
 import com.example.fruit.R;
 import com.example.fruit.bean.Collection;
 import com.example.fruit.bean.History;
+import com.example.fruit.home.HomeFragment;
 
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -49,7 +62,20 @@ public class SearchFragment extends Fragment {
     private FrameLayout mFullVideo;
     private ProgressBar progressBar;
     protected View mCustomView = null;
+    private String mLoad;
     private static final String QUERY = "https://www.sogou.com/web?query=";
+    private static final int SHOW_DIALOG = 0;
+
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            switch (msg.what) {
+                case SHOW_DIALOG:
+                    showDialog(mLoad);
+                    break;
+            }
+        }
+    };
 
     public void setURL(String url) {
         mURL = url;
@@ -125,12 +151,35 @@ public class SearchFragment extends Fragment {
         mSearchRes.getSettings().setSupportMultipleWindows(true);
         mSearchRes.getSettings().setBuiltInZoomControls(true);
         mSearchRes.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+         //手机浏览器模式调试
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            mSearchRes.setWebContentsDebuggingEnabled(true);
+        }
+        //开启夜间模式的代码
+//
+//        String css="javascript: (function() {\n" +
+//                "    css = document.createElement('link');" +
+//                "    css.href = 'data:text/css,html,body,applet,object,h1,h2,h3,h4,h5,h6,blockquote,pre,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,p,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,th,td{background:rgba(0,0,0,0) !important;color:#fff !important;border-color:#A0A0A0 !important;}div,input,button,textarea,select,option,optgroup{background-color:#000 !important;color:#fff !important;border-color:#A0A0A0 !important;}a,a *{color:#ffffff !important; text-decoration:none !important;font-weight:bold !important;background-color:rgba(0,0,0,0) !important;}a:active,a:hover,a:active *,a:hover *{color:#1F72D0 !important;background-color:rgba(0,0,0,0) !important;}p,span{font color:#FF0000 !important;color:#ffffff !important;background-color:rgba(0,0,0,0) !important;}html{-webkit-filter: contrast(50%);}';\n" +
+//                "    document.getElementsByTagName('html')[0].Backgroud(css);" +
+//                "  \n" +
+//                "})();";
+//
+//        mSearchRes.loadUrl(css);
+//       System.out.print("hhhhh");
+//       System.out.print(css);
+//        mSearchRes.loadUrl("javascript:function()");
 
         mSearchRes.setWebViewClient(new MyWebViewClient(){
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
-                mActivity.getSearchUrl().setText(url);
+                if (BlockerTool.isBlock(MyAppliaction.getContext(), url)) {
+                    mLoad = url;
+                    Message message = new Message();
+                    message.what = SHOW_DIALOG;
+                    mHandler.sendMessage(message);
+                } else {
+                    view.loadUrl(url);
+                }
                 return true;
             }
 
@@ -138,13 +187,8 @@ public class SearchFragment extends Fragment {
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 mCollectionURL = url;
 
-                //不能在此处调用getTitle()，应该在onPageFinished()
-                //mCollectionTitle = mSearchRes.getTitle();
-
                 setCurrentWebURL(mCollectionURL);
                 setCurrentWebTitle(mCollectionTitle);
-
-                System.out.println("check onPageStarted"+"URL"+mCollectionURL+"Title"+mCollectionTitle);//检测
 
                 mActivity.getSearchUrl().setText(url);
                 if (view.canGoBack()) {
@@ -163,6 +207,13 @@ public class SearchFragment extends Fragment {
                     mActivity.getImageForward().setImageDrawable(getResources()
                             .getDrawable(R.drawable.go_page));
                 }
+
+                //开启夜间模式
+                try {
+                    openNigth();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -170,8 +221,8 @@ public class SearchFragment extends Fragment {
                 mSearchRes.getSettings().setBlockNetworkImage(false);
                 addImageClickListner();
 
-                //注意这个坑，getTitle()需要在onPageFinished调用而不能在onPageStarted中使用
-                //否则getTitle()返回的还是URL
+                //注意这个坑，getTitle()要放在onPageFinished中，而不能放在onPageStarted中
+                //否则获取到的title就是url
                 mCollectionTitle = mSearchRes.getTitle();
 
             }
@@ -185,14 +236,48 @@ public class SearchFragment extends Fragment {
             }
         });
         mActivity.getTopSearch().setVisibility(View.VISIBLE);
-        if (isURL(mURL)) {
-            mSearchRes.loadUrl(mURL);
-            mActivity.getSearchUrl().setText(mURL);
-        } else {
-            mSearchRes.loadUrl(QUERY + mURL);
-            mActivity.getSearchUrl().setText(QUERY + mURL);
-        }
+        load(mURL);
         return view;
+    }
+
+    private void showDialog(String url) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+        dialog.setTitle(R.string.dialog_title);
+        dialog.setMessage(R.string.dialog_message);
+        dialog.setCancelable(false);
+        dialog.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                mSearchRes.loadUrl(url);
+            }
+        });
+        dialog.setNegativeButton(R.string.CANCEL, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (mSearchRes.canGoBack()) {
+                    mSearchRes.goBack();
+                } else {
+                    mActivity.replaceFragment(new HomeFragment());
+                    mActivity.getTopSearch().setVisibility(View.GONE);
+                }
+            }
+        });
+        dialog.show();
+    }
+
+    public void load(String input) {
+        if (BlockerTool.isBlock(getActivity(), input)) {
+            showDialog(input);
+        } else {
+            if (isURL(input)) {
+                mSearchRes.loadUrl(input);
+                mActivity.getSearchUrl().setText(input);
+            } else {
+                mSearchRes.loadUrl(QUERY + input);
+                mActivity.getSearchUrl().setText(QUERY + input);
+            }
+        }
+
     }
 
     private boolean isURL(String str){
@@ -240,7 +325,6 @@ public class SearchFragment extends Fragment {
 
     };
 
-
     //set当前web页面的URL给到收藏collection
     public void setCurrentWebURL(String mCollectionURL){
         System.out.println("set URL:"+mCollectionURL);
@@ -270,14 +354,42 @@ public class SearchFragment extends Fragment {
         mSearchRes.loadUrl("javascript:(function(){" +
                 "var objs = document.getElementsByTagName(\"img\"); " +
                 "for(var i=0;i<objs.length;i++)  " +
-                "{"
-                + "    objs[i].onclick=function()  " +
-                "    {  "
+                "{"+
+                "console.dir(objs[i]);"
+                +"if(objs[i].onclick===null||objs[i].onclick==='')" +
+                "   { objs[i].onclick=function()  " +
+                "    {  "+
+                " window.event ? window.event.cancelBubble = true : event.stopPropagation();"
                 + "        window.imagelistner.openImage(this.src);  " +
                 "    }  " +
-                "}" +
+                "}}" +
                 "})()");
-        Log.d(TAG,"注入");
+    }
+
+    //新的方式开启夜间模式
+    private void openNigth() throws IOException {
+        InputStream is = mActivity.getResources().openRawResource(R.raw.night);
+        System.out.print("打开夜间模式");
+        byte[] buffer = new byte[0];
+        try {
+            buffer = new byte[is.available()];
+            is.read(buffer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        String nightcode = Base64.encodeToString(buffer, Base64.NO_WRAP);
+        mSearchRes.loadUrl("" +
+                "javascript:(function() {" +
+                "console.log('he');"+
+                "var parent = document.getElementsByTagName('head').item(0);" +
+                "var style = document.createElement('style');" + "style.type = 'text/css';" +
+                "style.innerHTML = window.atob('" + nightcode + "');" + "parent.appendChild(style)" + "})();");
     }
 
 
