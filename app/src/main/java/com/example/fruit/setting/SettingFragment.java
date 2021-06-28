@@ -6,6 +6,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,8 +25,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import com.example.fruit.MainActivity;
+import com.example.fruit.MyAppliaction;
 import com.example.fruit.R;
 import com.example.fruit.collection.CollectionFragment;
 import com.example.fruit.history.HistoryFragment;
@@ -81,8 +85,8 @@ public class SettingFragment extends Fragment implements View.OnClickListener, S
         Button logoutBtn=view.findViewById(R.id.logout_btn);
         logoutBtn.setOnClickListener(this);
         //如果已经登录，则显示 用户名称 、显示退出登录的按钮
-        user_text=(TextView)view.findViewById(R.id.setting_user_text);
 
+        user_text=(TextView)view.findViewById(R.id.setting_user_text);
         Boolean isLogin= Util.getInstance().getLoginState();
         if(isLogin){
             mPhone.setVisibility(View.VISIBLE);
@@ -118,8 +122,49 @@ public class SettingFragment extends Fragment implements View.OnClickListener, S
                 }
             });
         }
+
+        //点击switch按钮
+        //        点击夜间模式按钮
+        Switch openDarkBtn=view.findViewById(R.id.dark_mode_switch);
+        //状态
+        openDarkBtn.setChecked(Util.getNight());
+        openDarkBtn.setOnCheckedChangeListener
+                (new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        Log.v("Switch State=", ""+isChecked);
+                        System.out.print("监听");
+                        Util.setNight(isChecked);
+                        mActivity.setNightMode();
+
+                    }
+                });
+
+
+        //重启的时候仍然打开我们的 设置界面
+//        if (savedInstanceState != null) {
+//            FragmentManager manager = getChildFragmentManager();
+//           Fragment settingFragment = manager.getFragment(savedInstanceState, "setting");
+//        } else {
+//           //
+//        }
+//
+//
+//        public void onSaveInstanceState(Bundle outState) {
+//            super.onSaveInstanceState(outState);
+//            FragmentManager manager = getChildFragmentManager();
+//            manager.putFragment(outState, "douban", );
+//        }
+
+
+
+
+
         return view;
     }
+
+
+
 
     @Override
     public void onClick(View view) {
@@ -342,6 +387,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener, S
                 mSettingNameWindow.dismiss();
                 mLayoutParams.alpha = 1.0f;
                 mWindow.setAttributes(mLayoutParams);
+
             }
         });
     }

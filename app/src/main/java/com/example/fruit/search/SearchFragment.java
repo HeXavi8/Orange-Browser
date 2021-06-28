@@ -171,19 +171,7 @@ public class SearchFragment extends Fragment {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             mSearchRes.setWebContentsDebuggingEnabled(true);
         }
-        //开启夜间模式的代码
-//
-//        String css="javascript: (function() {\n" +
-//                "    css = document.createElement('link');" +
-//                "    css.href = 'data:text/css,html,body,applet,object,h1,h2,h3,h4,h5,h6,blockquote,pre,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,p,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,th,td{background:rgba(0,0,0,0) !important;color:#fff !important;border-color:#A0A0A0 !important;}div,input,button,textarea,select,option,optgroup{background-color:#000 !important;color:#fff !important;border-color:#A0A0A0 !important;}a,a *{color:#ffffff !important; text-decoration:none !important;font-weight:bold !important;background-color:rgba(0,0,0,0) !important;}a:active,a:hover,a:active *,a:hover *{color:#1F72D0 !important;background-color:rgba(0,0,0,0) !important;}p,span{font color:#FF0000 !important;color:#ffffff !important;background-color:rgba(0,0,0,0) !important;}html{-webkit-filter: contrast(50%);}';\n" +
-//                "    document.getElementsByTagName('html')[0].Backgroud(css);" +
-//                "  \n" +
-//                "})();";
-//
-//        mSearchRes.loadUrl(css);
-//       System.out.print("hhhhh");
-//       System.out.print(css);
-//        mSearchRes.loadUrl("javascript:function()");
+
 
         mSearchRes.setWebViewClient(new MyWebViewClient(){
             @Override
@@ -202,10 +190,8 @@ public class SearchFragment extends Fragment {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 mCollectionURL = url;
-
                 setCurrentWebURL(mCollectionURL);
                 setCurrentWebTitle(mCollectionTitle);
-
                 mActivity.getSearchUrl().setText(url);
                 if (view.canGoBack()) {
                     mActivity.getImageBack().setImageDrawable(getResources()
@@ -224,12 +210,15 @@ public class SearchFragment extends Fragment {
                             .getDrawable(R.drawable.go_page));
                 }
 
-                //开启夜间模式
-                try {
-                    openNigth();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                //如果打开了夜间模式，修改webview
+                if(Util.getNight()) {
+                    try {
+                        openNigth();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
+
             }
 
             @Override
@@ -383,7 +372,7 @@ public class SearchFragment extends Fragment {
                 "})()");
     }
 
-    //新的方式开启夜间模式
+    //webview开启夜间模式
     private void openNigth() throws IOException {
         InputStream is = mActivity.getResources().openRawResource(R.raw.night);
         System.out.print("打开夜间模式");

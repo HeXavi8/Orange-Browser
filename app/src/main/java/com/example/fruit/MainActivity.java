@@ -1,13 +1,18 @@
 package com.example.fruit;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.drawable.BitmapDrawable;
+import android.nfc.Tag;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -49,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private PopupWindow mPopupWindow;
     private Window mWindow;
     private WindowManager.LayoutParams mLayoutParams;
+    private androidx.fragment.app.Fragment myFragment;
     
     private String mCollectionURL;
     private String mCollectionTitle;
@@ -92,8 +98,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mHome.setOnClickListener(this);
         mPaging.setOnClickListener(this);
         replaceFragment(new HomeFragment());
-
         mMainPresenter = new MainPresenter(this);
+
+
+        //有无保存状态
+        if (savedInstanceState != null) {
+            Log.d("nishuo","buzhida");
+            myFragment = getSupportFragmentManager().getFragment(savedInstanceState, "fragment");
+
+        }
+
+
 
     }
 
@@ -359,5 +374,52 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fragmentManager.popBackStack();
         mNavigationBar.setVisibility(View.VISIBLE);
     }
+
+    /*根据是否开启夜间模式判断*/
+    public void setNightMode() {
+        //  获取当前模式//日间 切换 夜间
+        if(Util.getNight()) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+
+        }
+        else{
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+       // finish();
+        //startActivity(new Intent(MainActivity.this, MainActivity.class));
+        //overridePendingTransition(R.anim.nigth_fade_in, R.anim.night_fade_out);
+
+
+    }
+
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        Log.d("HHHH", "in onSaveInstanceState >> this:" + this + " outState:" + outState);
+        super.onSaveInstanceState(outState);
+
+//        if (true){
+//            Log.d("hhhhh", "onSaveInstanceState: hhhhh");
+//            getSupportFragmentManager().putFragment(outState, "SettingFragment",settingfra);
+//
+//        }
+        if (myFragment != null) {
+            Log.d("HHHH", "buzhidaodaodao");
+            getSupportFragmentManager().putFragment(outState, "fragment", myFragment);
+        }
+
+
+
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        Log.d("HHH", "in onRestoreInstanceState >> this:" + this +
+                " savedInstanceState:" + savedInstanceState);
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+
+
 
 }

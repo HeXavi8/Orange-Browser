@@ -64,10 +64,11 @@ public class HomeFragment extends Fragment {
 
         mQuickPageRecyclerView = (RecyclerView)view.findViewById(R.id.quick_recyclerview);//快捷页recyclerview
         mQuickPagePageList = new ArrayList<QuickPage>();//数据列表集合
+        //使用了google的一个API获取到图标icon：https://www.google.com/s2/favicons?sz=64&domain_url=
         mQuickPagePageList.add(new QuickPage("百度","https://www.baidu.com",R.mipmap.quick_page,"https://www.google.com/s2/favicons?sz=64&domain_url=www.baidu.com",false));
         mQuickPagePageList.add(new QuickPage("网易","https://www.163.com",R.mipmap.quick_page,"https://www.google.com/s2/favicons?sz=64&domain_url=www.163.com",false));
         mQuickPagePageList.add(new QuickPage("谷歌","https://www.google.com",R.mipmap.quick_page,"https://www.google.com/s2/favicons?sz=64&domain_url=www.google.com",false));
-        mQuickPagePageList.add(new QuickPage("搜狐","https://www.sohu.com",R.mipmap.quick_page,"https://www.google.com/s2/favicons?sz=64&domain_url=www.apple.com",false));
+        mQuickPagePageList.add(new QuickPage("搜狐","https://www.sohu.com",R.mipmap.quick_page,"https://www.google.com/s2/favicons?sz=64&domain_url=www.sohu.com",false));
         mQuickPagePageList.add(new QuickPage("苹果","https://www.apple.com",R.mipmap.quick_page,"https://www.google.com/s2/favicons?sz=64&domain_url=www.apple.com",false));
         mQuickPagePageList.add(new QuickPage("添加快捷页","",R.drawable.add_quick_page,"",true));
         initRecyclerView();//初始化quick page的recyclerveiw
