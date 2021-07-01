@@ -37,7 +37,7 @@ public class RegisterFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
       View view =inflater.inflate(R.layout.register_fragment,container,false);
         TextView toLogin = view.findViewById(R.id.to_login);
-        ImageView backBtn=view.findViewById(R.id.back_btn);
+        ImageView backBtn=view.findViewById(R.id.register_back);
         EditText registerPhone=view.findViewById(R.id.user_phone);
         EditText registerPassword2=view.findViewById(R.id.user_password2);
         EditText registerPassword=view.findViewById(R.id.user_password);

@@ -5,30 +5,35 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
+import android.media.AudioManager;
+import android.nfc.Tag;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
+import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
+import android.view.ViewTreeObserver;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebBackForwardList;
 import android.view.WindowManager;
 import android.webkit.WebChromeClient;
-import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,7 +41,6 @@ import androidx.annotation.Nullable;
 import com.example.fruit.MainActivity;
 import com.example.fruit.MyAppliaction;
 import com.example.fruit.R;
-import com.example.fruit.bean.Collection;
 import com.example.fruit.bean.History;
 import com.example.fruit.home.HomeFragment;
 import com.example.fruit.utils.Util;
@@ -44,12 +48,13 @@ import com.example.fruit.utils.Util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.FileAlreadyExistsException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class SearchFragment extends Fragment {
+public class SearchFragment extends Fragment{
 
     private static final String TAG = "TEST";
     private WebView mSearchRes;
@@ -60,13 +65,35 @@ public class SearchFragment extends Fragment {
 
     private MainActivity mActivity;
     private LinearLayout mNavigationBar;
+    private WindowManager.LayoutParams lpa;
+    private MainActivity.MyTouchListener myTouchListener, WebViewTouchListener;
     private SearchPresenter mSearchPresenter;
     private FrameLayout mFullVideo;
-    private ProgressBar progressBar;
     protected View mCustomView = null;
     private String mLoad;
     private static final String QUERY = "https://www.sogou.com/web?query=";
     private static final int SHOW_DIALOG = 0;
+
+    private GestureDetector mGestureDetector;
+    private int maxVolume,currentVolume;
+    private int playerWidth, playerHeight;
+    private AudioManager audiomanager;
+    private float mBrightness = -1f; // 亮度
+    private float mBrightnessHelperY;
+    private float mBrightnessHelperX;
+
+    private float mTopSearchY;
+
+    private static final float STEP_VOLUME = 2f;// 协调音量滑动时的步长，避免每次滑动都改变，导致改变过快
+    private boolean firstScroll = false;// 每次触摸屏幕后，第一次scroll的标志
+    private int GESTURE_FLAG = 0;// 1,调节进度，2，调节音量,3.调节亮度
+    private static final int GESTURE_MODIFY_PROGRESS = 1;
+    private static final int GESTURE_MODIFY_VOLUME = 2;
+    private static final int GESTURE_MODIFY_BRIGHT = 3;
+
+    private RelativeLayout change_vol_bright;
+    private ImageView mGestureImage;
+    private TextView mGestureTextView;
 
     private Handler mHandler = new Handler() {
         @Override
@@ -96,10 +123,33 @@ public class SearchFragment extends Fragment {
             mFullVideo.setVisibility(View.GONE);
             mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             mActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);//清除全屏
+            mActivity.unRegisterMyTouchListener(myTouchListener);
+            lpa.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
+            mActivity.getWindow().setAttributes(lpa);
+
         }
 
         @Override
         public void onShowCustomView(View view, CustomViewCallback callback) {
+            lpa = mActivity.getWindow().getAttributes();
+            mFullVideo.setFocusable(true);
+            mFullVideo.setClickable(true);
+            mFullVideo.setLongClickable(true);
+            audiomanager = (AudioManager)getActivity().getSystemService(Context.AUDIO_SERVICE);
+            maxVolume = audiomanager.getStreamMaxVolume(AudioManager.STREAM_MUSIC); // 获取系统最大音量
+            currentVolume = audiomanager.getStreamVolume(AudioManager.STREAM_MUSIC); // 获取当前值
+
+            ViewTreeObserver viewObserver = mFullVideo.getViewTreeObserver();
+            viewObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    mFullVideo.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                    playerWidth = mFullVideo.getWidth();
+                    playerHeight = mFullVideo.getHeight();
+                }
+            });
+
+            mActivity.registerMyTouchListener(myTouchListener);
             mCustomView = view;
             mFullVideo.setVisibility(View.VISIBLE);
             mFullVideo.addView(mCustomView);
@@ -117,14 +167,11 @@ public class SearchFragment extends Fragment {
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
-            progressBar.setVisibility(View.VISIBLE);
         }
 
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            progressBar.setVisibility(View.GONE);
-
         }
 
         @Override
@@ -133,6 +180,12 @@ public class SearchFragment extends Fragment {
             super.onReceivedError(view, errorCode, description, failingUrl);
 
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        mActivity.unRegisterMyTouchListener(WebViewTouchListener);
+        super.onDestroyView();
     }
 
     @Nullable
@@ -144,7 +197,6 @@ public class SearchFragment extends Fragment {
         mActivity = (MainActivity)getActivity();
         mSearchRes = (WebView)view.findViewById(R.id.web_view);
         mFullVideo = (FrameLayout)view.findViewById(R.id.full_video);
-        progressBar = (ProgressBar)view.findViewById(R.id.progress);
         mNavigationBar = (LinearLayout)view.findViewById(R.id.navigation_bar);
         mSearchRes.getSettings().setJavaScriptEnabled(true);
         mSearchRes.getSettings().setBlockNetworkImage(true);
@@ -152,6 +204,67 @@ public class SearchFragment extends Fragment {
         mSearchRes.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         mSearchRes.getSettings().setSupportMultipleWindows(true);
         mSearchRes.getSettings().setBuiltInZoomControls(true);
+        mSearchRes.setFocusable(true);
+        mSearchRes.setFocusableInTouchMode(true);
+
+        mGestureDetector = new GestureDetector(new gestureListener());
+        change_vol_bright = (RelativeLayout) view.findViewById(R.id.gesture_layout);
+        mGestureImage = (ImageView)view.findViewById(R.id.volume_bright_image);
+        mGestureTextView=(TextView)view.findViewById(R.id.percentage_volume_bright);
+
+
+
+
+        myTouchListener = new MainActivity.MyTouchListener() {
+            @Override
+            public void onTouchEvent(MotionEvent event) {
+                Log.d(TAG,"myTouchListener: "+Integer.toString(event.getAction()));
+                boolean detectedUp = event.getAction() == MotionEvent.ACTION_UP;
+                //处理手势事件（根据个人需要去返回和逻辑的处理）
+                if(!detectedUp){
+                    mGestureDetector.onTouchEvent(event);
+                }else {
+                    change_vol_bright.setVisibility(View.GONE);
+                }
+
+            }
+        };
+        mSearchRes.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+//                Log.d(TAG,"WebViewTouchListener: "+Integer.toString(event.getAction()));
+                if(event.getAction()==MotionEvent.ACTION_DOWN){
+                    mSearchRes.requestFocus();
+                    InputMethodManager imm = (InputMethodManager)mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(mSearchRes.getWindowToken(), 0);
+                }
+                else if(event.getAction()==MotionEvent.ACTION_MOVE){
+//                    mActivity.dispatchTouchEvent(event);
+                    return false;
+                }
+                return false;
+            }
+        });
+
+        WebViewTouchListener = new MainActivity.MyTouchListener() {
+            @Override
+            public void onTouchEvent(MotionEvent event) {
+                if(event.getAction()==MotionEvent.ACTION_DOWN){
+                    float mDownY = event.getRawY()-MainActivity.mTitleBarHeight;
+                    mTopSearchY = mActivity.getTopSearch().getBottom();
+//                    Log.d(TAG,"MyDown Y: "+mDownY);
+//                    Log.d(TAG,"TopSearch Y: "+mTopSearchY);
+                    if(mDownY>mTopSearchY){
+//                        Log.d(TAG,"WebViewTouchListener: "+Integer.toString(event.getAction()));
+                        mSearchRes.requestFocus();
+                        InputMethodManager imm = (InputMethodManager)mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(mSearchRes.getWindowToken(), 0);
+                        mActivity.setSearchUrl(getCurrentWebURL());
+                    }
+                }
+            }
+        };
+        mActivity.registerMyTouchListener(WebViewTouchListener);
 
         mSearchRes.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -193,6 +306,7 @@ public class SearchFragment extends Fragment {
                 setCurrentWebURL(mCollectionURL);
                 setCurrentWebTitle(mCollectionTitle);
                 mActivity.getSearchUrl().setText(url);
+                mActivity.getTopSearch().setFocusable(false);
                 if (view.canGoBack()) {
                     mActivity.getImageBack().setImageDrawable(getResources()
                             .getDrawable(R.drawable.back_page_enabled));
@@ -211,7 +325,7 @@ public class SearchFragment extends Fragment {
                 }
 
                 //如果打开了夜间模式，修改webview
-                if(Util.getNight()) {
+                if(!Util.getInstance().getNight()) {
                     try {
                         openNigth();
                     } catch (IOException e) {
@@ -234,17 +348,16 @@ public class SearchFragment extends Fragment {
 
         });
         mSearchRes.setWebChromeClient(new MyWebChromeClient());
-        mSearchRes.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                return false;
-            }
-        });
+//        mSearchRes.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View view, MotionEvent motionEvent) {
+//                return false;
+//            }
+//        });
         mActivity.getTopSearch().setVisibility(View.VISIBLE);
         load(mURL);
         return view;
     }
-
     private void showDialog(String url) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
         dialog.setTitle(R.string.dialog_title);
@@ -307,6 +420,7 @@ public class SearchFragment extends Fragment {
     public void forward() {
         mSearchRes.goForward();
     }
+
 
     @Override
     public void onPause() {
@@ -397,6 +511,114 @@ public class SearchFragment extends Fragment {
                 "var style = document.createElement('style');" + "style.type = 'text/css';" +
                 "style.innerHTML = window.atob('" + nightcode + "');" + "parent.appendChild(style)" + "})();");
     }
+//    public boolean onTouch(View v, MotionEvent event) {
+//        return mGestureDetector.onTouchEvent(event);
+//    }
 
+    private class gestureListener implements GestureDetector.OnGestureListener{
+
+        public boolean onDown(MotionEvent e) {
+            Log.i("MyGesture", "onDown");
+            firstScroll = true;
+            return false;
+        }
+
+        public void onShowPress(MotionEvent e) {
+            Log.i("MyGesture", "onShowPress");
+
+        }
+
+        public boolean onSingleTapUp(MotionEvent e) {
+            Log.i("MyGesture", "onSingleTapUp");
+
+            return true;
+        }
+
+        public boolean onScroll(MotionEvent e1, MotionEvent e2,
+                                float distanceX, float distanceY) {
+//            Log.i("MyGesture22", "onScroll:"+e1.getY() +"   "+distanceX);
+            change_vol_bright.bringToFront();
+            change_vol_bright.setVisibility(View.VISIBLE);
+            float mOldX = e1.getX(), mOldY = e1.getY();
+            int y = (int) e2.getRawY();
+            if(e1.getX()==mBrightnessHelperX){
+                mOldY = mBrightnessHelperY;
+            }
+            mBrightnessHelperY = e2.getRawY();
+            mBrightnessHelperX = e1.getX();
+            if (firstScroll) {// 以触摸屏幕后第一次滑动为标准，避免在屏幕上操作切换混乱
+                // 横向的距离变化大则调整进度，纵向的变化大则调整音量
+                if (Math.abs(distanceX) >= Math.abs(distanceY)) {
+                    GESTURE_FLAG = GESTURE_MODIFY_PROGRESS;
+                } else {
+                    if (mOldX > playerWidth * 3.0 / 5) {// 音量
+                        mGestureImage.setImageResource(R.drawable.player_volume);
+                        GESTURE_FLAG = GESTURE_MODIFY_VOLUME;
+                    } else if (mOldX < playerWidth * 2.0 / 5) {// 亮度
+                        mGestureImage.setImageResource(R.drawable.player_bright);
+                        GESTURE_FLAG = GESTURE_MODIFY_BRIGHT;
+                    }
+                }
+            }
+            Log.d("MyGesture",Integer.toString(GESTURE_FLAG));
+            // 如果每次触摸屏幕后第一次scroll是调节进度，那之后的scroll事件都处理音量进度，直到离开屏幕执行下一次操作
+            if (GESTURE_FLAG == GESTURE_MODIFY_PROGRESS) {
+
+            }
+            // 如果每次触摸屏幕后第一次scroll是调节音量，那之后的scroll事件都处理音量调节，直到离开屏幕执行下一次操作
+            else if (GESTURE_FLAG == GESTURE_MODIFY_VOLUME) {
+                currentVolume = audiomanager.getStreamVolume(AudioManager.STREAM_MUSIC); // 获取当前值
+                if (Math.abs(distanceY) > Math.abs(distanceX)) {// 纵向移动大于横向移动
+                    if (distanceY >= STEP_VOLUME) {// 音量调大,注意横屏时的坐标体系,尽管左上角是原点，但横向向上滑动时distanceY为正
+                        if (currentVolume < maxVolume) {// 为避免调节过快，distanceY应大于一个设定值
+                            currentVolume++;
+                        }
+                    } else if (distanceY <= -STEP_VOLUME) {// 音量调小
+                        if (currentVolume > 0) {
+                            currentVolume--;
+                            if (currentVolume == 0) {// 静音，设定静音独有的图片
+                            }
+                        }
+                    }
+                    double percentage_volume = currentVolume * 1.0 / maxVolume;
+                    mGestureTextView.setText((int)(percentage_volume*100)+"%");
+                    audiomanager.setStreamVolume(AudioManager.STREAM_MUSIC,currentVolume, 0);
+                }
+            }
+            // 如果每次触摸屏幕后第一次scroll是调节亮度，那之后的scroll事件都处理亮度调节，直到离开屏幕执行下一次操作
+            else if (GESTURE_FLAG == GESTURE_MODIFY_BRIGHT) {
+                if (mBrightness < 0) {
+                    Log.d("MyGesture","??");
+                    mBrightness = mActivity.getWindow().getAttributes().screenBrightness;
+                }
+                mBrightness = mActivity.getWindow().getAttributes().screenBrightness;
+                Log.d("MyGesture",Float.toString(mBrightness));
+                WindowManager.LayoutParams lpa = mActivity.getWindow().getAttributes();
+                lpa.screenBrightness = mBrightness + (mOldY - y) / playerHeight;
+                mBrightness = lpa.screenBrightness;
+                if (lpa.screenBrightness > 1.0f)
+                    lpa.screenBrightness = 1.0f;
+                else if (lpa.screenBrightness < 0.01f)
+                    lpa.screenBrightness = 0.01f;
+                mGestureTextView.setText((int) (lpa.screenBrightness * 100) + "%");
+                mActivity.getWindow().setAttributes(lpa);
+            }
+
+            firstScroll = false;// 第一次scroll执行完成，修改标志
+            return true;
+        }
+
+        public void onLongPress(MotionEvent e) {
+            Log.i("MyGesture", "onLongPress");
+        }
+
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+                               float velocityY) {
+            Log.i("MyGesture", "onFling");
+
+            return true;
+        }
+
+    };
 
 }

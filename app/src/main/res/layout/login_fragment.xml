@@ -3,33 +3,34 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
+    android:background="@color/background"
     android:layout_height="match_parent">
 
 <!--登录头部导航栏-->
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="61dp"
-        android:layout_marginTop="14dp"
-        android:orientation="horizontal">
-
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="7dp">
         <ImageView
-            android:id="@+id/back_btn"
-            android:layout_width="57dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:contentDescription="@string/login_back"
-            app:srcCompat="@drawable/back_page" />
-
+            android:id="@+id/login_back"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/back_page_enabled"/>
         <TextView
-            android:id="@+id/login_text"
-            android:layout_width="335dp"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="20dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/login_btn"
-            android:textSize="26sp" />
-    </LinearLayout>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:layout_centerInParent = "true"
+            android:text="@string/login_title"/>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/menu_line"/>
     <!--登录的输入框-->
     <LinearLayout
         android:layout_width="match_parent"

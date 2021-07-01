@@ -10,9 +10,13 @@
         android:id="@+id/confirm_text"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:textSize="12sp"
+        android:autoSizeMaxTextSize="12sp"
+        android:autoSizeMinTextSize="2sp"
+        android:autoSizeTextType="uniform"
+        android:maxLines="1"
         android:layout_weight="1"
         android:gravity="center"
+        android:background="@color/white"
         android:text="" />
     <View
         android:layout_height="1dp"

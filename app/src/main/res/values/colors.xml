@@ -7,11 +7,14 @@
     <color name="search_button_background_color">#409EFF</color>
     <color name="pop_window_background_color">#FFFFFF</color>
     <color name="white">#FFFFFF</color>
-    <color name="background">#fafafa</color>
+    <color name="background">#FDFDFD</color>
     <color name="menu_line">#F0F0F0</color>
     <color name="navigation_bar_line">#BEBEBE</color>
     <color name="black">#000000</color>
     <color name="icon">#707070</color>
+    <color name="search_hint">#FB7A34</color>
+    <color name="home_search_bar_color">#F1F1F1</color>
+    <color name="home_lnk_bg_color">#F6F6F6</color>
     <!--lixiaofei-->
 
     <!--Xavi He-->

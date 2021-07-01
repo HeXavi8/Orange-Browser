@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="400dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:background="@drawable/setting_name_window_shape">
+
+
+    <TextView
+        android:id="@+id/change_name_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:text="@string/change_image_text"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:textSize="25sp"/>
+    <View
+        android:layout_height="5dp"
+        android:background="@color/menu_line"
+        android:layout_width="fill_parent">
+    </View>
+
+    <TextView
+        android:id="@+id/from_photo_btn"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        android:text="@string/from_photo_text"
+        android:gravity="center"
+        android:textSize="20sp"/>
+    <View
+        android:layout_height="5dp"
+        android:layout_width="fill_parent"
+        android:background="@color/menu_line"
+        >
+    </View>
+    <TextView
+        android:id="@+id/take_photo_btn"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        android:text="@string/take_photo_text"
+        android:gravity="center"
+        android:textSize="20sp"/>
+
+</LinearLayout>

@@ -53,7 +53,7 @@ public class LoginFragment extends Fragment implements LoginView {
         TextView toRegister = view.findViewById(R.id.to_register);
         EditText userPhone =view.findViewById(R.id.user_phone);
         EditText userPassword=view.findViewById(R.id.user_password);
-        ImageView backBtn=view.findViewById(R.id.back_btn);
+        ImageView backBtn=view.findViewById(R.id.login_back);
         Button loginBtn=view.findViewById(R.id.login_btn);
         loginBtn.setEnabled(false);
 //        登录成功的时候:调用两个（utils/登录状态改变，登录用户名）

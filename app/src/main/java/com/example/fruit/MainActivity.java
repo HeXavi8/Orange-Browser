@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.BitmapDrawable;
@@ -22,6 +23,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -42,6 +44,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, MainView{
+    private static final String TAG = "TEST";
+    public static int mTitleBarHeight;
+
     private LinearLayout mTopSearch;
     private EditText mSearchUrl;
     private LinearLayout mNavigationBar;
@@ -51,14 +56,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private LinearLayout mHome;
     private LinearLayout mPaging;
     private EditText mWebUrl;
+    private Button mSearchButton;
     private PopupWindow mPopupWindow;
     private Window mWindow;
+    private ImageView mDeleteEdit;
     private WindowManager.LayoutParams mLayoutParams;
     private androidx.fragment.app.Fragment myFragment;
     
     private String mCollectionURL;
     private String mCollectionTitle;
     private MainPresenter mMainPresenter;
+    private Fragment hideFragment;
+    private Boolean mNightStyleBegin;
     @SuppressLint("JavascriptInterface")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,10 +75,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         mWindow = this.getWindow();
         mLayoutParams = mWindow.getAttributes();
+        mDeleteEdit = (ImageView)findViewById(R.id.delete_edit);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         mTopSearch = (LinearLayout)findViewById(R.id.search_bar);
+        mSearchButton = (Button) findViewById(R.id.top_search_btn);
         mWebUrl = (EditText)findViewById(R.id.search_url);
         mWebUrl.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+        //获取状态栏高度的资源id
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            mTitleBarHeight = getResources().getDimensionPixelSize(resourceId);
+        }
+        mDeleteEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mWebUrl.setText("");
+            }
+        });
+        mWebUrl.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    mDeleteEdit.setVisibility(View.VISIBLE);
+                }
+                else{
+                    mDeleteEdit.setVisibility(View.GONE);
+                }
+            }
+        });
         mWebUrl.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
@@ -79,6 +112,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     SearchFragment searchFragment = (SearchFragment)getFragmentManager()
                             .findFragmentById(R.id.show_page);
                     searchFragment.load(content);
+                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(mWebUrl.getWindowToken(), 0);
                     return true;
                 }
                 return false;
@@ -94,21 +129,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mPaging = (LinearLayout)findViewById(R.id.paging);
         mBack.setEnabled(false);
         mBack.setEnabled(false);
+        mSearchButton.setOnClickListener(this);
         mMenu.setOnClickListener(this);
         mHome.setOnClickListener(this);
         mPaging.setOnClickListener(this);
         replaceFragment(new HomeFragment());
         mMainPresenter = new MainPresenter(this);
+        mNightStyleBegin=Util.getInstance().getNight();
 
 
         //有无保存状态
         if (savedInstanceState != null) {
-            Log.d("nishuo","buzhida");
+
             myFragment = getSupportFragmentManager().getFragment(savedInstanceState, "fragment");
 
         }
 
-
+        //夜间模式是否开启
+        setNightMode(!mNightStyleBegin);
 
     }
 
@@ -121,7 +159,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.home:
                 mBack.setEnabled(false);
                 mForward.setEnabled(false);
-                replaceFragment(new HomeFragment());
+//                replaceFragment(new HomeFragment());
+                getFragmentManager().beginTransaction().replace(R.id.show_page, new HomeFragment()).commit();
                 mTopSearch.setVisibility(View.GONE);
                 getImageBack().setImageDrawable(getResources().getDrawable(R.drawable.back_page));
                 getImageForward().setImageDrawable(getResources().getDrawable(R.drawable.go_page));
@@ -176,6 +215,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mPopupWindow.dismiss();
                 replaceFragment(toWhichFragment(Util.getLoginState()));
                 break;
+            case R.id.reload_page:
+                mPopupWindow.dismiss();
+                if(getFragmentManager().findFragmentById(R.id.show_page) instanceof SearchFragment){
+                    String url = ((SearchFragment) getFragmentManager().findFragmentById(R.id.show_page)).getCurrentWebURL();
+                    ((SearchFragment) getFragmentManager().findFragmentById(R.id.show_page)).load(url);
+                }
+                break;
+            case R.id.top_search_btn:
+                if(getFragmentManager().findFragmentById(R.id.show_page) instanceof SearchFragment){
+                    ((SearchFragment) getFragmentManager().findFragmentById(R.id.show_page)).load(mWebUrl.getText().toString());
+                    mSearchButton.requestFocus();
+                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(mSearchButton.getWindowToken(), 0);
+                }
+                break;
             default:
         }
     }
@@ -183,8 +237,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void replaceFragment(Fragment fragment) {//fragment跳转函数
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.show_page, fragment);
-        transaction.addToBackStack(null);
+        hideFragment = getFragmentManager().findFragmentById(R.id.show_page);
+        if(hideFragment==null){
+            Log.d(TAG,"no exist");
+            transaction.add(R.id.show_page,fragment);
+        }
+        else{
+            Log.d(TAG,"exist");
+            transaction.hide(hideFragment).add(R.id.show_page,fragment);
+        }
+//        transaction.replace(R.id.show_page, fragment);
+//        transaction.addToBackStack(null);
         transaction.commit();
     }
 
@@ -227,7 +290,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void showAddCollection() {
-        Toast.makeText(this, "已收藏", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.add_collection_successfully, Toast.LENGTH_SHORT).show();
     }
 
     private void showPopWindow() {
@@ -243,6 +306,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mPopupWindow.setOutsideTouchable(true);
         mPopupWindow.setAnimationStyle(R.style.pop_window_anim_style);
         LinearLayout addCollection = (LinearLayout) contentView.findViewById(R.id.add_collection_layout);
+        LinearLayout mReload = (LinearLayout)contentView.findViewById(R.id.reload_page);
         LinearLayout myCollection = (LinearLayout) contentView.findViewById(R.id.my_collection);
         LinearLayout myHistory = (LinearLayout) contentView.findViewById(R.id.my_history);
         LinearLayout exit = (LinearLayout) contentView.findViewById(R.id.exit);
@@ -251,6 +315,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         LinearLayout loginMsg=contentView.findViewById(R.id.login_msg);
         TextView loginText=contentView.findViewById(R.id.msg_text);
         addCollection.setOnClickListener(this);
+        mReload.setOnClickListener(this);
         myCollection.setOnClickListener(this);
         myHistory.setOnClickListener(this);
         exit.setOnClickListener(this);
@@ -260,8 +325,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Fragment currentFragment = getFragmentManager().findFragmentById(R.id.show_page);
         if (currentFragment != null && currentFragment instanceof SearchFragment) {
             addCollection.setVisibility(View.VISIBLE);
+            mReload.setVisibility(View.VISIBLE);
         } else {
             addCollection.setVisibility(View.GONE);
+            mReload.setVisibility(View.GONE);
         }
         View rootView = LayoutInflater.from(MainActivity.this).inflate(R.layout.activity_main,
                 null);
@@ -302,6 +369,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public EditText getSearchUrl() {
         return mSearchUrl;
+    }
+
+    public void setSearchUrl(String str){
+        mSearchUrl.setText(str);
     }
 
     public void backClick(final SearchFragment searchFragment) {
@@ -363,6 +434,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
+//        Log.d(TAG,"Dispatch: "+ev.getAction());
         for (MyTouchListener listener : myTouchListeners) {
             listener.onTouchEvent(ev);
         }
@@ -371,18 +443,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void onBackPressed() {
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.popBackStack();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        Fragment currentFragment = getFragmentManager().findFragmentById(R.id.show_page);
+        if(hideFragment!=null)
+            Log.d(TAG,"exist");
+        transaction.remove(currentFragment).show(hideFragment).commit();
+//        fragmentManager.popBackStack();
+        if(!(hideFragment instanceof HomeFragment))
+            mTopSearch.setVisibility(View.VISIBLE);
         mNavigationBar.setVisibility(View.VISIBLE);
     }
 
     /*根据是否开启夜间模式判断*/
-    public void setNightMode() {
+    public void setNightMode(boolean nightMode) {
         //  获取当前模式//日间 切换 夜间
-        if(Util.getNight()) {
+        if(nightMode) {
+            Log.d("tag", "setNightMode: 开启夜间");
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
 
         }
         else{
+            Log.d("tag", "setNightMode: 开启日间");
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
        // finish();
@@ -418,8 +499,4 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 " savedInstanceState:" + savedInstanceState);
         super.onRestoreInstanceState(savedInstanceState);
     }
-
-
-
-
 }

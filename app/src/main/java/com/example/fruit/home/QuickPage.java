@@ -1,4 +1,4 @@
-package com.example.fruit.bean;
+package com.example.fruit.home;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;

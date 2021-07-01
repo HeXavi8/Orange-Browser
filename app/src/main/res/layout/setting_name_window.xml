@@ -12,6 +12,7 @@
         android:id="@+id/change_name_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:text="@string/change_name_text"
         android:gravity="center"
         android:layout_marginTop="20dp"
@@ -31,7 +32,7 @@
         android:inputType="textPersonName"
         android:text="Name"
         android:theme="@style/MyEditText"/>
-
+ 
     <Button
         android:id="@+id/change_btn"
         android:background="@drawable/login_btn_shape"

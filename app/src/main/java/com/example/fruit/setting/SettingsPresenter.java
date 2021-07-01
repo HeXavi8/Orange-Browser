@@ -2,10 +2,12 @@ package com.example.fruit.setting;
 
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.example.fruit.R;
+import com.example.fruit.utils.Util;
 
 
 public class SettingsPresenter {
@@ -14,6 +16,7 @@ public class SettingsPresenter {
     private static final int CHECK_FALSE = 2;
     private static final int CHECK_SUCCESS = 3;
     private static final int DELETE_USER = 4;
+    private static final int GET_PROFILE=5;
 
     private SettingsModel mSettingsModel;
     private SettingsView mSettingsView;
@@ -38,6 +41,7 @@ public class SettingsPresenter {
                 case DELETE_USER:
                     mSettingsView.showDeleteUser();
                     break;
+
             }
         }
     };
@@ -69,6 +73,7 @@ public class SettingsPresenter {
                 mHandler.sendMessage(message);
             }
         }).start();
+
     }
 
     public void changePassword(String password, String newPassword) {
@@ -98,5 +103,18 @@ public class SettingsPresenter {
                 mHandler.sendMessage(message);
             }
         }).start();
+    }
+    public void getProfile(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+               mSettingsModel.getProfile();
+                Message message = new Message();
+                message.what = GET_PROFILE;
+                mHandler.sendMessage(message);
+
+            }
+        }).start();
+
     }
 }

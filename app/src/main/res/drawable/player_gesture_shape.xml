@@ -2,12 +2,7 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
     <!-- 填充颜色 -->
-    <solid android:color="@color/white"></solid>
-
-    <!-- 线的宽度，颜色灰色 -->
-
-
+    <solid android:color="#D5D5D5"></solid>
     <!-- 矩形的圆角半径 -->
-    <corners android:radius="15dp"  />
-
+    <corners android:radius="10dp"/>
 </shape>

@@ -2,6 +2,7 @@
     <string name="app_name">Fruit</string>
     <!--lixiaofei-->
     <string name="search">搜索</string>
+    <string name="search_hint">搜索或输入网址</string>
     <string name="to_login">立即登录</string>
     <string name="add_into_collection">添加收藏</string>
     <string name="my_collection">我的收藏</string>
@@ -19,6 +20,7 @@
     <string name="change_password">修改密码</string>
     <string name="logoff_text">注销后会删除除历史记录外的所有用户数据</string>
     <string name="logoff">注销</string>
+    <string name="reload">刷新</string>
     <!--end-->
     <string name="setting">设置</string>
     <string name="phone_hint">请输入手机号</string>
@@ -51,4 +53,11 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="change_name_text">修改昵称</string>
     <string name="change_name_btn">修改</string>
+    <string name="change_image_text">更换头像</string>
+    <string name="from_photo_text">从相册中选取</string>
+    <string name="take_photo_text">拍摄照片</string>
+    <string name="login_title">登录</string>
+    <string name="add_collection_successfully">添加收藏成功</string>
+    <string name="add_lnk">添加快捷</string>
+    
 </resources>

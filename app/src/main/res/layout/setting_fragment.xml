@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
+    android:background="@color/background"
     android:layout_height="match_parent">
 
     <RelativeLayout
@@ -43,6 +44,7 @@
             android:orientation="horizontal">
             <ImageView
                 android:id="@+id/setting_user_photo"
+                android:background="@drawable/user_image"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_marginLeft="15dp"

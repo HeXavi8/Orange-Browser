@@ -8,7 +8,7 @@
     <color name="pop_window_background_color">#AA9F9F</color>
     <color name="white">#3E3C3C</color>
     <color name="background">#605454</color>
-    <color name="menu_line">#AAA1A1</color>
+    <color name="menu_line">#000000</color>
     <color name="navigation_bar_line">#7E7676</color>
     <color name="black">#000000</color>
     <color name="icon">#707070</color>

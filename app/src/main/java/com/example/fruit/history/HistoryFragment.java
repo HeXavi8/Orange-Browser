@@ -118,6 +118,7 @@ public class HistoryFragment extends Fragment implements HistoryView, View.OnCli
         SearchFragment searchFragment = new SearchFragment();
         searchFragment.setURL(url);
         mActivity.replaceFragment(searchFragment);
+        mActivity.getNavigationBar().setVisibility(View.VISIBLE);
     }
 
     private void refreshUI() {

@@ -9,13 +9,15 @@ import com.example.fruit.bean.DaoMaster;
 import com.example.fruit.bean.DaoSession;
 import com.example.fruit.bean.History;
 import com.example.fruit.bean.HistoryDao;
+import com.example.fruit.bean.Quick;
+import com.example.fruit.bean.QuickDao;
 import com.example.fruit.bean.User;
 import com.example.fruit.bean.UserDao;
 
 import java.util.List;
 
 public class DBController {
-    private static final String DB_NAME = "_Fruits.db";
+    private static final String DB_NAME = "fruits_db.db";
     private DaoMaster.DevOpenHelper mHelpler;
     private SQLiteDatabase mDb;
     private DaoMaster mDaoMaster;
@@ -24,6 +26,7 @@ public class DBController {
     private UserDao mUserDao;
     private HistoryDao mHistoryDao;
     private CollectionDao mCollectionDao;
+    private QuickDao mQuickDao;
     private static DBController sDbController;
 
     public static DBController getInstance(Context context) {
@@ -45,6 +48,7 @@ public class DBController {
         mUserDao = mDaoSession.getUserDao();
         mHistoryDao = mDaoSession.getHistoryDao();
         mCollectionDao = mDaoSession.getCollectionDao();
+        mQuickDao = mDaoSession.getQuickDao();
     }
 
     private SQLiteDatabase getWrittableDatabase() {
@@ -200,5 +204,35 @@ public class DBController {
                 .buildDelete().executeDeleteWithoutDetachingEntities();
         mUserDao.queryBuilder().where(UserDao.Properties.Name.eq(name))
                 .buildDelete().executeDeleteWithoutDetachingEntities();
+    }
+
+    public boolean insertQuick(String title, String url) {
+        Quick quick = new Quick(null, title, url);
+        Quick res = mQuickDao.queryBuilder().where(QuickDao.Properties.Title.eq(title),
+                QuickDao.Properties.Url.eq(url)).build().unique();
+        if (res != null) {
+            return false;
+        } else {
+            mQuickDao.insert(quick);
+            return true;
+        }
+    }
+
+    public List<Quick> getQuick() {
+        return mQuickDao.loadAll();
+    }
+
+    public void deleteQuick(String title, String url) {
+        mQuickDao.queryBuilder().where(QuickDao.Properties.Title.eq(title),
+                QuickDao.Properties.Url.eq(url))
+                .buildDelete().executeDeleteWithoutDetachingEntities();
+    }
+
+    public void changeQuick(String title, String url, String newTitle, String newUrl) {
+        Quick res = mQuickDao.queryBuilder().where(QuickDao.Properties.Title.eq(title),
+                QuickDao.Properties.Url.eq(url)).build().unique();
+        res.setTitle(newTitle);
+        res.setUrl(newUrl);
+        mQuickDao.update(res);
     }
 }

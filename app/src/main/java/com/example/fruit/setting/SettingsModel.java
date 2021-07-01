@@ -20,6 +20,9 @@ public class SettingsModel {
     public void setProfile(String profile) {
         mDBController.setProfile(mUsername, profile);
     }
+    public String getProfile(){
+        return mDBController.getProfile(mUsername);
+    }
 
     public boolean checkPassword(String password) {
         return mDBController.checkUserAndPassword(mUsername, password) != null;

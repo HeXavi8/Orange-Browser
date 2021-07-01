@@ -5,23 +5,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-    <ImageView
-        android:id="@+id/iv_headImg"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginLeft="25dp"
-        android:layout_marginTop="10dp"
-        android:src="@mipmap/ic_launcher" />
-
-    <TextView
-        android:id="@+id/tv_title"
-        android:layout_width="80dp"
-        android:layout_height="20dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="60dp"
-        android:singleLine="true"
-        android:text="添加快捷页"
-        android:textAlignment="center" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="22dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/lnk_icon_bg_border">
+            <ImageView
+                android:id="@+id/iv_headImg"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:padding="15dp"
+                android:src="@drawable/collection"/>
+        </LinearLayout>
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textSize="12dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="5dp"
+            android:text="@string/add_lnk"/>
+    </LinearLayout>
 
 </RelativeLayout>

@@ -17,7 +17,10 @@ public class CollectionModel {
     }
 
     public List<Collection> getCollection() {
-        return mDBController.getUserCollection(mUsername);
+        if (mUsername != null) {
+            return mDBController.getUserCollection(mUsername);
+        }
+        return null;
     }
 
     public void deleteAllUserCollection() {

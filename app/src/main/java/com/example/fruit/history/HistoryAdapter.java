@@ -79,6 +79,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
                     mHistoryFragment.onClick(view, position);
                 } else {
                     mHistoryFragment.goToSearch(holder.url.getText().toString());
+
                 }
             }
         });
