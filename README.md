@@ -71,4 +71,4 @@ dependencies {
 If you have any suggestions or would like to cooperate with us, please feel free to contact us. </br>
 
 ## License <a name="License"></a>
-[Apache-2.0 License](./LiCENSE)
+[Apache-2.0 License](https://github.com/HeXavi8/Orange-Browser/blob/main/LICENSE)
