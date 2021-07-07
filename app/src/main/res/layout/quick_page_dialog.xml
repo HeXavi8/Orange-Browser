@@ -40,7 +40,10 @@
                 android:layout_width="180dp"
                 android:singleLine="true"
                 android:textSize="16dp"
+                android:textColor="@color/quick_text"
                 android:theme="@style/MyEditText"
+                android:hint="@string/quick_name"
+                android:textColorHint="@color/quick_hint"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/tv_title"/>
         </LinearLayout>
@@ -63,7 +66,10 @@
                 android:layout_width="180dp"
                 android:singleLine="true"
                 android:textSize="16dp"
+                android:textColor="@color/quick_text"
                 android:theme="@style/MyEditText"
+                android:hint="@string/quick_url"
+                android:textColorHint="@color/quick_hint"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/tv_url"/>
         </LinearLayout>

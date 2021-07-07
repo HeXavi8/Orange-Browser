@@ -20,8 +20,4 @@ public class SearchModel {
     public void insertHistory(List<History> histories) {
         mDBController.insertHistory(histories);
     }
-
-//    public void insertCollection(String url, String title) {
-//        mDBController.addCollection(mUsername, url, title);
-//    }
 }

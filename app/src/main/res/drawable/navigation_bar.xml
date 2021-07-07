@@ -3,7 +3,7 @@
     <item>
         <shape>//边框的颜色
             <!--<solid android:color="@color/gray" />-->
-            <solid android:color="#F9F8F8" />
+            <solid android:color="@color/navigator_line" />
         </shape>
     </item>
 

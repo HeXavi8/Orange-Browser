@@ -5,19 +5,45 @@
     <color name="colorAccent">#5C7572</color>
     <!--lixiaofei-->
     <color name="search_button_background_color">#8095AC</color>
-    <color name="pop_window_background_color">#AA9F9F</color>
+<!--    <color name="pop_window_background_color">#AA9F9F</color>-->
+    <color name="pop_window_background_color">#232323</color>
     <color name="white">#181818</color>
-    <color name="background">#605454</color>
+    <color name="background">#181818</color>
+<!--    <color name="background">#605454</color>-->
     <color name="menu_line">#000000</color>
     <color name="navigation_bar_line">#7E7676</color>
     <color name="black">#000000</color>
     <color name="icon">#707070</color>
-    <!--lixiaofei-->
+    <!--HeXavi-->
+    <color name="navigator_line">#181818</color>
 
+    <color name="home_lnk_bg_color">#FDEFE0</color>
+
+    <color name="home_search_bar_color">#E59246</color>
+    <color name="history_title">#FDEFE0</color>
+    <color name="collection_title">#FDEFE0</color>
+
+    <color name="show_pop_button">#F0BF9D</color>
+
+    <color name="discover">#F0BF9D</color>
+    <color name="discover_title">#F0BF9D</color>
+    <color name="discover_content">#F0BF9D</color>
+    <color name="home_discover_bar_color">#F0BF9D</color>
+
+    <color name="quick_hint">#FFFFFF</color>
+    <color name="quick_text">#FFFFFF</color>
+
+    <color name="pop_user_title">#E57A46</color>
+
+    <color name="user_title">#FDEFE0</color>
     <!--    walden 的颜色-->
     <color name="main_color">#6E5D5D</color>
     <color name="no_focus_color">#AEADAD</color>
     <color name="btn_disable_color">#887E79</color>
-    <color name="delete_all_color">#502C33</color>
+    <color name="delete_all_color">#C93756</color>
     <color name="white_and_black_color">#000000</color>
+    <color name="subject_color">#181818</color>
+    <color name="change_text_color">#ffffff</color>
+    <color name="text_hint_color">#776E6E</color>
+    <color name="login_text_color">#cc000000</color>
 </resources>

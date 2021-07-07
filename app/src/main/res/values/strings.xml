@@ -1,6 +1,6 @@
 <resources>
     <string name="app_english_name">Orange Broswer</string>
-    <string name="app_name">橙子浏览器</string>
+    <string name="app_name">Orange</string>
     <!--lixiaofei-->
     <string name="search">搜索</string>
     <string name="search_hint">搜索或输入网址</string>
@@ -61,4 +61,36 @@
     <string name="take_photo_text">拍摄照片</string>
     <string name="add_collection_successfully">添加收藏成功</string>
     <string name="add_lnk">添加快捷</string>
+    <string name="quick_name">快捷网址名称</string>
+    <string name="quick_url">www.xxxx.com</string>
+
+
+    <string name="discover_title">ByteDance</string>
+    <string name="discover_content">Inspire Creativity, Enrich Life</string>
+    <string name="discover_culture_title">Culture</string>
+    <string name="discover_culture_content">ByteStyle is fundamental to corporate culture at ByteDance and represents the principles we uphold as employees.</string>
+    <string name="discover_content_1"> Raise the bar.
+        Wait for bigger gains.
+        Find the best solutions by widening your perspective.
+        Be attentive.
+    </string>
+    <string name="discover_content_2">Make your own discoveries.
+        Dive deep into facts.
+        Stay level-headed. Focus on impact.
+        Assume ownership, take risks, break the mold.
+    </string>
+    <string name="discover_content_3">Trust yourself, trust each other.
+        Be willing to offer and ask for help. Collaboration creates value.
+    </string>
+    <string name="discover_content_4">Dare to share your honest opinions.
+        It is okay to make mistakes.
+        Own it when you do.
+        Stick to the facts, identify issues.
+    </string>
+    <string name="discover_content_5">Take initiative and push boundaries — there is no task too big or too small.
+        Be resilient. Face reality and change it.
+    </string>
+    <string name="discover_content_6">Be tenacious in making sure that the diversity of the world is reflected in your team.
+        Welcome people as they are, value uniqueness.
+    </string>
 </resources>

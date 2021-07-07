@@ -711,7 +711,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener, S
      * @param mBitmap
      */
 
-
     private void setPicToView(Bitmap mBitmap) throws FileNotFoundException {
         // 获取sdcard的路径
        path =Environment.getExternalStorageDirectory().getAbsolutePath();

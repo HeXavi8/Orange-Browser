@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:background="@color/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+<LinearLayout
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
 
     <ImageView
         android:layout_marginTop="50dp"
@@ -46,8 +51,9 @@
             android:layout_marginRight="20dp"
             android:hint="@string/search_hint"
             android:textSize="15sp"
+            android:textColor="@color/search_text"
             android:layout_gravity="center"
-            android:textColorHint="@color/orange_theme_color"
+            android:textColorHint="@color/search_hint_text"
             android:singleLine="true"
             android:background="@null"/>
     </LinearLayout>
@@ -55,9 +61,68 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/quick_recyclerview"
         android:layout_marginTop="25dp"
-        android:layout_marginLeft="40dp"
-
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_gravity="center_vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="40dp"
+        android:textColor="@color/discover"
+        android:textSize="20dp"
+        android:text="Discover"/>
+
+    <LinearLayout
+        android:id="@+id/discover"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal"
+        android:background="@drawable/home_discover_bar_border">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="serif"
+                android:textSize="25dp"
+                android:layout_gravity="start"
+                android:layout_marginBottom="5dp"
+                android:textColor="@color/discover_title"
+                android:text="@string/discover_title"/>
+            <TextView
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="serif"
+                android:textSize="16dp"
+                android:layout_gravity="start"
+                android:textColor="@color/discover_content"
+                android:text="@string/discover_content"/>
+        </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/bytedance_logo"/>
+
+    </LinearLayout>
 
 </LinearLayout>
+
+</ScrollView>

@@ -11,11 +11,12 @@
         android:layout_marginBottom="7dp">
         <ImageView
             android:id="@+id/setting_back"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_marginTop="0.5dp"
             android:layout_marginLeft="10dp"
             android:layout_centerVertical="true"
-            android:src="@drawable/back_page_enabled"/>
+            android:src="@drawable/back_page"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -23,6 +24,7 @@
             android:textStyle="bold"
             android:layout_centerVertical="true"
             android:layout_centerInParent = "true"
+            android:textColor="@color/history_title"
             android:text="@string/history"/>
         <Button
             android:id="@+id/delete_all_history"
@@ -50,6 +52,11 @@
             android:background="@null"/>
 
     </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@color/menu_line"
+        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview"

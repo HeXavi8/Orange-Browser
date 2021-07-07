@@ -37,6 +37,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.fruit.discover.DiscoverFragment;
 import com.example.fruit.collection.CollectionFragment;
 import com.example.fruit.history.HistoryFragment;
 import com.example.fruit.home.HomeFragment;
@@ -70,9 +71,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String mCollectionURL;
     private String mCollectionTitle;
     private MainPresenter mMainPresenter;
-    private Fragment hideFragment;
     private Boolean mNightStyleBegin;
     @SuppressLint("JavascriptInterface")
+
+//    public static void goHome(Context context) {
+//        Intent intent = new Intent(context, MainActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        context.startActivity(intent);
+//    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -179,7 +186,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mPopupWindow.dismiss();
                 break;
             case R.id.my_collection:
-                replaceFragment(new CollectionFragment());
+                if (Util.getInstance().getLoginState()) {
+                    replaceFragment(new CollectionFragment());
+                } else {
+                    replaceFragment(new LoginFragment());
+                }
                 mTopSearch.setVisibility(View.GONE);
                 mNavigationBar.setVisibility(View.GONE);
                 mBack.setEnabled(false);
@@ -211,6 +222,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 getImageBack().setImageDrawable(getResources().getDrawable(R.drawable.back_page));
                 getImageForward().setImageDrawable(getResources().getDrawable(R.drawable.go_page));
                 break;
+
+            case R.id.discover:
+                replaceFragment(new DiscoverFragment());
+                mTopSearch.setVisibility(View.GONE);
+                mNavigationBar.setVisibility(View.GONE);
+                mBack.setEnabled(false);
+                mForward.setEnabled(false);
+                mPopupWindow.dismiss();
+                getImageBack().setImageDrawable(getResources().getDrawable(R.drawable.back_page));
+                getImageForward().setImageDrawable(getResources().getDrawable(R.drawable.go_page));
+                break;
+
             case R.id.cancel_pop_window:
                 mPopupWindow.dismiss();
                 break;

@@ -24,15 +24,4 @@ public class SearchPresenter {
             }
         }).start();
     }
-
-//    public void insertCollection(String url, String title) {
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                mSearchModel.insertCollection(url,title);
-//            }
-//        }).start();
-//    }
-
-
 }

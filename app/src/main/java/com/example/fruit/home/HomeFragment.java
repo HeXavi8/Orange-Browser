@@ -29,6 +29,7 @@ import com.example.fruit.MainActivity;
 import com.example.fruit.MyAppliaction;
 import com.example.fruit.R;
 import com.example.fruit.bean.Quick;
+import com.example.fruit.discover.DiscoverFragment;
 import com.example.fruit.search.SearchFragment;
 
 import java.util.ArrayList;
@@ -54,6 +55,7 @@ public class HomeFragment extends Fragment implements QuickView {
     private QuickPage mAddButton;
 
     private String mQuickPageTitle;
+    private LinearLayout mDiscover;
 
     @Override
     public void onDestroyView() {
@@ -90,6 +92,9 @@ public class HomeFragment extends Fragment implements QuickView {
         mHomeSearchBar = (LinearLayout)view.findViewById(R.id.search_bar);
         mSearchContent = (EditText)view.findViewById(R.id.search_content);
         mSearchContent.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+
+        mDiscover = (LinearLayout)view.findViewById(R.id.discover);
+
         final MainActivity activity = (MainActivity) getActivity();
         mActivity = (MainActivity)getActivity();
 
@@ -131,6 +136,14 @@ public class HomeFragment extends Fragment implements QuickView {
 //                else{activity.replaceFragment(new LoginFragment());}
 //            }
 //        });
+
+        mDiscover.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                    activity.replaceFragment(new DiscoverFragment());
+            }
+        });
+
         mSearchContent.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
@@ -236,7 +249,6 @@ public class HomeFragment extends Fragment implements QuickView {
         builder.setView(view);
         builder.setCancelable(true); //点返回是否隐藏
         builder.setTitle("编辑快捷页");
-
         builder.setNegativeButton("取消",null)
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
@@ -266,9 +278,9 @@ public class HomeFragment extends Fragment implements QuickView {
         AlertDialog dialog = builder.create();
         dialog.setCanceledOnTouchOutside(true);//点dialog的外面隐藏
         dialog.show();
-        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.orange_theme_color));
-        dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(getResources().getColor(R.color.orange_theme_color));
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.orange_theme_color));
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.search_hint_text));
+        dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(getResources().getColor(R.color.search_hint_text));
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.search_hint_text));
 
     }
 
@@ -326,8 +338,8 @@ public class HomeFragment extends Fragment implements QuickView {
         AlertDialog dialog = builder.create();
         dialog.setCanceledOnTouchOutside(true);//点dialog的外面隐藏
         dialog.show();
-        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.orange_theme_color));
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.orange_theme_color));
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.search_hint_text));
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.search_hint_text));
 
     }
 
@@ -345,7 +357,7 @@ public class HomeFragment extends Fragment implements QuickView {
     public void showAll(List<Quick> quicks) {
         if (quicks != null) {
             mQuickPagePageList.remove(mAddButton);
-            for (int i = 0; i < quicks.size(); i++) {
+            for (int i = 0; i < quicks.size(); i++) {//这里使用了一个google的API加载图标logo，可能加载缓慢或者失败
                 QuickPage quickPage = new QuickPage(quicks.get(i).getTitle(),
                         quicks.get(i).getUrl(), R.mipmap.quick_page,
                         "https://www.google.com/s2/favicons?sz=64&domain_url="+quicks.get(i).getUrl(),

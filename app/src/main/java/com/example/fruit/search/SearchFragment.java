@@ -72,6 +72,7 @@ public class SearchFragment extends Fragment{
     protected View mCustomView = null;
     private String mLoad;
     private static final String QUERY = "https://www.sogou.com/web?query=";
+    //private static final String QUERY = "https://cn.bing.com/search?q=";
     private static final int SHOW_DIALOG = 0;
 
     private GestureDetector mGestureDetector;
@@ -231,22 +232,6 @@ public class SearchFragment extends Fragment{
 
             }
         };
-//        mSearchRes.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-////                Log.d(TAG,"WebViewTouchListener: "+Integer.toString(event.getAction()));
-//                if(event.getAction()==MotionEvent.ACTION_DOWN){
-//                    mSearchRes.requestFocus();
-//                    InputMethodManager imm = (InputMethodManager)mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-//                    imm.hideSoftInputFromWindow(mSearchRes.getWindowToken(), 0);
-//                }
-//                else if(event.getAction()==MotionEvent.ACTION_MOVE){
-////                    mActivity.dispatchTouchEvent(event);
-//                    return false;
-//                }
-//                return false;
-//            }
-//        });
 
         WebViewTouchListener = new MainActivity.MyTouchListener() {
             @Override
@@ -254,10 +239,7 @@ public class SearchFragment extends Fragment{
                 if(event.getAction()==MotionEvent.ACTION_DOWN){
                     float mDownY = event.getRawY()-MainActivity.mTitleBarHeight;
                     mTopSearchY = mActivity.getTopSearch().getBottom();
-//                    Log.d(TAG,"MyDown Y: "+mDownY);
-//                    Log.d(TAG,"TopSearch Y: "+mTopSearchY);
                     if(mDownY>mTopSearchY){
-//                        Log.d(TAG,"WebViewTouchListener: "+Integer.toString(event.getAction()));
                         mSearchRes.requestFocus();
                         InputMethodManager imm = (InputMethodManager)mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(mSearchRes.getWindowToken(), 0);
@@ -289,7 +271,6 @@ public class SearchFragment extends Fragment{
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             mSearchRes.setWebContentsDebuggingEnabled(true);
         }
-
 
         mSearchRes.setWebViewClient(new MyWebViewClient(){
             @Override
@@ -345,36 +326,28 @@ public class SearchFragment extends Fragment{
                 mSearchRes.getSettings().setBlockNetworkImage(false);
                 addImageClickListner();
 
-                //注意这个坑，getTitle()要放在onPageFinished中，而不能放在onPageStarted中
-                //否则获取到的title就是url
                 mCollectionTitle = mSearchRes.getTitle();
 
             }
 
         });
         mSearchRes.setWebChromeClient(new MyWebChromeClient());
-//        mSearchRes.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View view, MotionEvent motionEvent) {
-//                return false;
-//            }
-//        });
         mActivity.getTopSearch().setVisibility(View.VISIBLE);
         load(mURL);
         return view;
     }
     private void showDialog(String url) {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
-        dialog.setTitle(R.string.dialog_title);
-        dialog.setMessage(R.string.dialog_message);
-        dialog.setCancelable(false);
-        dialog.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(R.string.dialog_title);
+        builder.setMessage(R.string.dialog_message);
+        builder.setCancelable(false);
+        builder.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 mSearchRes.loadUrl(url);
             }
         });
-        dialog.setNegativeButton(R.string.CANCEL, new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.CANCEL, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 if (mSearchRes.canGoBack()) {
@@ -385,7 +358,11 @@ public class SearchFragment extends Fragment{
                 }
             }
         });
+        AlertDialog dialog = builder.create();
         dialog.show();
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.search_hint_text));
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.search_hint_text));
+
     }
 
     public void load(String input) {
@@ -445,7 +422,6 @@ public class SearchFragment extends Fragment{
                 historyList.add(history);
             }
 
-            //加入到presenter
             mSearchPresenter.insertHistories(historyList);
         }
     };
@@ -473,7 +449,7 @@ public class SearchFragment extends Fragment{
         System.out.println("get Title:"+mCollectionTitle);
         return mCollectionTitle;
     };
-/*...................................................................*/
+
     private void addImageClickListner() {
         // 这段js函数的功能就是，遍历所有的img几点，并添加onclick函数，函数的功能是在图片点击的时候调用本地java接口并传递url过去
         mSearchRes.loadUrl("javascript:(function(){" +
@@ -516,9 +492,6 @@ public class SearchFragment extends Fragment{
                 "var style = document.createElement('style');" + "style.type = 'text/css';" +
                 "style.innerHTML = window.atob('" + nightcode + "');" + "parent.appendChild(style)" + "})();");
     }
-//    public boolean onTouch(View v, MotionEvent event) {
-//        return mGestureDetector.onTouchEvent(event);
-//    }
 
     private class gestureListener implements GestureDetector.OnGestureListener{
 
@@ -539,14 +512,13 @@ public class SearchFragment extends Fragment{
             return true;
         }
 
-        public boolean onScroll(MotionEvent e1, MotionEvent e2,
-                                float distanceX, float distanceY) {
+        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
 //            Log.i("MyGesture22", "onScroll:"+e1.getY() +"   "+distanceX);
             change_vol_bright.bringToFront();
             change_vol_bright.setVisibility(View.VISIBLE);
             float mOldX = e1.getX(), mOldY = e1.getY();
             int y = (int) e2.getRawY();
-            if(e1.getX()==mBrightnessHelperX){
+            if(e1.getX()==mBrightnessHelperX) {
                 mOldY = mBrightnessHelperY;
             }
             mBrightnessHelperY = e2.getRawY();

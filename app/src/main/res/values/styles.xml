@@ -25,9 +25,8 @@
 
 <!--  自定义edittext的样式-->
     <style name="MyEditText" parent="Theme.AppCompat.Light">
-        <item name="colorControlNormal">@color/no_focus_color</item>
-        <item name="colorControlActivated">@color/orange_theme_color</item>
-
+        <item name="colorControlNormal">@color/quick_line</item>
+        <item name="colorControlActivated">@color/quick_line</item>
     </style>
 
     <style name="MyCheckBox" parent="Theme.AppCompat.Light">

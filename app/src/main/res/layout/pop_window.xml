@@ -35,6 +35,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
+                    android:textColor="@color/pop_user_title"
                     android:text="@string/to_login"/>
 
             </LinearLayout>
@@ -67,7 +68,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="10dp">
+            android:paddingBottom="15dp">
 
             <LinearLayout
                 android:id="@+id/add_collection_layout"
@@ -87,7 +88,8 @@
                         android:id="@+id/add_collection"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:padding="15dp"
+                        android:padding="14dp"
+                        android:background="@drawable/menu_icon_bg_border"
                         android:src="@drawable/add_collection"/>
                 </LinearLayout>
                 <TextView
@@ -97,6 +99,7 @@
                     android:textSize="12dp"
                     android:layout_marginBottom="5dp"
                     android:text="@string/add_into_collection"
+                    android:textStyle="bold"
                     android:gravity="center_horizontal"/>
             </LinearLayout>
 
@@ -117,7 +120,8 @@
                         android:id="@+id/collection"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:padding="15dp"
+                        android:padding="14dp"
+                        android:background="@drawable/menu_icon_bg_border"
                         android:src="@drawable/collection"/>
                 </LinearLayout>
                 <TextView
@@ -127,6 +131,7 @@
                     android:textSize="12dp"
                     android:layout_marginBottom="5dp"
                     android:text="@string/my_collection"
+                    android:textStyle="bold"
                     android:gravity="center_horizontal"/>
             </LinearLayout>
 
@@ -147,7 +152,8 @@
                         android:id="@+id/history"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:padding="15dp"
+                        android:padding="14dp"
+                        android:background="@drawable/menu_icon_bg_border"
                         android:src="@drawable/history"/>
                 </LinearLayout>
                 <TextView
@@ -157,6 +163,7 @@
                     android:textSize="12dp"
                     android:layout_marginBottom="5dp"
                     android:text="@string/history"
+                    android:textStyle="bold"
                     android:gravity="center_horizontal"/>
             </LinearLayout>
 
@@ -177,7 +184,8 @@
                         android:id="@+id/setting"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:padding="15dp"
+                        android:padding="14dp"
+                        android:background="@drawable/menu_icon_bg_border"
                         android:src="@drawable/setting"/>
                 </LinearLayout>
                 <TextView
@@ -187,6 +195,7 @@
                     android:textSize="12dp"
                     android:layout_marginBottom="5dp"
                     android:text="@string/setting_in_pop_window"
+                    android:textStyle="bold"
                     android:gravity="center_horizontal"/>
             </LinearLayout>
 
@@ -206,7 +215,8 @@
                     <ImageView
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:padding="15dp"
+                        android:padding="14dp"
+                        android:background="@drawable/menu_icon_bg_border"
                         android:src="@drawable/quit"/>
                 </LinearLayout>
                 <TextView
@@ -216,19 +226,29 @@
                     android:textSize="12dp"
                     android:layout_marginBottom="5dp"
                     android:text="@string/exiting"
+                    android:textStyle="bold"
                     android:gravity="center_horizontal"/>
             </LinearLayout>
         </LinearLayout>
         <View
             android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/menu_line"/>
+            android:layout_marginLeft="35dp"
+            android:layout_marginRight="35dp"
+            android:layout_height="4px"
+            android:background="@color/pop_image_backgroudcolor"/>
 
         <Button
             android:id="@+id/cancel_pop_window"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="100dp"
+            android:layout_marginRight="100dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/cancel"
-            android:background="@null" />
+            android:textColor="@color/white"
+            android:textSize="18dp"
+            android:radius="10dp"
+            android:background="@drawable/button_circle_shape" />
     </LinearLayout>
 </LinearLayout>

@@ -187,7 +187,7 @@ public class PhotoBrowserActivity extends AppCompatActivity implements View.OnCl
             values.putNull(MediaStore.MediaColumns.DATE_EXPIRES);
             resolver.update(uri, values, null, null);
             Toast.makeText(context,R.string.save_successfully,Toast.LENGTH_SHORT).show();
-        }catch (IOException e){
+        }catch (IOException e) {
             e.printStackTrace();
         }
     }
