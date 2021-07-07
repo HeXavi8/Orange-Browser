@@ -26,7 +26,13 @@
 <!--  自定义edittext的样式-->
     <style name="MyEditText" parent="Theme.AppCompat.Light">
         <item name="colorControlNormal">@color/no_focus_color</item>
-        <item name="colorControlActivated">@color/main_color</item>
+        <item name="colorControlActivated">@color/orange_theme_color</item>
+
+    </style>
+
+    <style name="MyCheckBox" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">#ADB6AF</item>
+        <item name="colorControlActivated">@color/orange_theme_color</item>
     </style>
 
 <!--    自定义按钮禁用时的样式-->

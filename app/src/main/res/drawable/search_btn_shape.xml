@@ -6,7 +6,7 @@
             <!-- android:radius 弧形的半径 -->
             <corners android:radius="7dp" />
             <!-- 填充的颜色 -->
-            <solid android:color="#1E90FF" />
+            <solid android:color="@color/orange_theme_color" />
         </shape>
     </item>
 </ripple>

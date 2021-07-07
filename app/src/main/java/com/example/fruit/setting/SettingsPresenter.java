@@ -93,13 +93,18 @@ public class SettingsPresenter {
         }).start();
     }
 
-    public void deleteUser() {
+    public void deleteUser(String password) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                mSettingsModel.deleteUser();
+                mCheckRes = mSettingsModel.checkPassword(password);
                 Message message = new Message();
-                message.what = DELETE_USER;
+                if (mCheckRes) {
+                    mSettingsModel.deleteUser();
+                    message.what = DELETE_USER;
+                } else {
+                    message.what = CHECK_FALSE;
+                }
                 mHandler.sendMessage(message);
             }
         }).start();

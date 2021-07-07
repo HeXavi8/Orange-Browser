@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 
 import com.example.fruit.MainActivity;
@@ -47,6 +48,23 @@ public class HistoryFragment extends Fragment implements HistoryView, View.OnCli
     private Window mWindow;
     private WindowManager.LayoutParams mLayoutParams;
     private PopupWindow mDeleteAllHistoryWindow;
+    @Override
+    public void onResume(){
+        super.onResume();
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if(event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_BACK){
+                    getActivity().onBackPressed();
+                    ((MainActivity)getActivity()).getNavigationBar().setVisibility(View.GONE);
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
 
     @Nullable
     @Override
@@ -54,6 +72,8 @@ public class HistoryFragment extends Fragment implements HistoryView, View.OnCli
         View view = inflater.inflate(R.layout.history_fragment, container, false);
         mHistoryPresenter = new HistoryPresenter(this);
         mActivity = (MainActivity)getActivity();
+        mActivity.getNavigationBar().setVisibility(View.GONE);
+        mActivity.getTopSearch().setVisibility(View.GONE);
         mGoBack = (ImageView)view.findViewById(R.id.setting_back);
         mDeleteAll = (Button)view.findViewById(R.id.delete_all_history);
         mDeleteSelected = (Button)view.findViewById(R.id.delete);

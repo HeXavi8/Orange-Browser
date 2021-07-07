@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 
 import com.example.fruit.MainActivity;
@@ -49,6 +50,23 @@ public class CollectionFragment extends Fragment implements CollectionView, View
     private WindowManager.LayoutParams mLayoutParams;
     private PopupWindow mDeleteAllCollectionWindow;
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if(event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_BACK){
+                    getActivity().onBackPressed();
+                    ((MainActivity)getActivity()).getNavigationBar().setVisibility(View.GONE);
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
 
     @Nullable
     @Override

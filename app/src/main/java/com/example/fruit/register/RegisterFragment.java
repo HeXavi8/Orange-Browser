@@ -10,6 +10,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,12 +33,32 @@ import  com.example.fruit.register.RegisterPresenter;
 import  com.example.fruit.register.RegisterView;
 
 public class RegisterFragment extends Fragment {
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if(event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_BACK){
+                    getActivity().onBackPressed();
+                    ((MainActivity)getActivity()).getNavigationBar().setVisibility(View.GONE);
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
       View view =inflater.inflate(R.layout.register_fragment,container,false);
         TextView toLogin = view.findViewById(R.id.to_login);
-        ImageView backBtn=view.findViewById(R.id.register_back);
+        ImageView backBtn=view.findViewById(R.id.back_btn);
+        ((MainActivity)getActivity()).getNavigationBar().setVisibility(View.GONE);
+        ((MainActivity)getActivity()).getTopSearch().setVisibility(View.GONE);
         EditText registerPhone=view.findViewById(R.id.user_phone);
         EditText registerPassword2=view.findViewById(R.id.user_password2);
         EditText registerPassword=view.findViewById(R.id.user_password);
@@ -59,6 +80,7 @@ public class RegisterFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 activity.onBackPressed();
+                activity.getNavigationBar().setVisibility(View.GONE);
             }
         });
 

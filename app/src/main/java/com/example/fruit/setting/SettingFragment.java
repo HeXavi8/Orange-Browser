@@ -1,38 +1,39 @@
 package com.example.fruit.setting;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import static android.app.Activity.RESULT_OK;
+
+
 import android.content.Intent;
+
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
-import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
+
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -43,16 +44,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 
+import com.bumptech.glide.load.ImageHeaderParserUtils;
+import com.bumptech.glide.load.model.ResourceLoader;
 import com.example.fruit.BuildConfig;
 import com.example.fruit.MainActivity;
-import com.example.fruit.MyAppliaction;
 import com.example.fruit.R;
 import com.example.fruit.collection.CollectionFragment;
 import com.example.fruit.history.HistoryFragment;
@@ -64,6 +65,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+
+import javax.xml.datatype.DatatypeFactory;
 
 public class SettingFragment extends Fragment implements View.OnClickListener, SettingsView {
     private ImageView mGoBack;
@@ -86,21 +90,40 @@ public class SettingFragment extends Fragment implements View.OnClickListener, S
     private PopupWindow mSettingNameWindow;
     private PopupWindow mSettingPasswordWindow;
     private PopupWindow mSettingImageWindow;
+    private PopupWindow mSettingLogOffWindow;
     private SettingsPresenter mSettingsPresenter;
 
 
     //头像相关
-
     private Bitmap head;// 头像Bitmap
     private static String path  = Environment.getExternalStorageDirectory().toString();
     private String newImagePath;
+    private  Uri uritempFile;
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if(event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_BACK){
+                    mActivity.onBackPressed();
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.setting_fragment, container, false);
         mSettingsPresenter = new SettingsPresenter(this);
         mActivity = (MainActivity)getActivity();
+        mActivity.getNavigationBar().setVisibility(View.GONE);
+        mActivity.getTopSearch().setVisibility(View.GONE);
         mGoBack = (ImageView)view.findViewById(R.id.setting_back);
         mPhone = (RelativeLayout)view.findViewById(R.id.setting_usr_phone);
         mChangeUserName = (RelativeLayout)view.findViewById(R.id.setting_change_usr_name);
@@ -127,6 +150,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener, S
         LinearLayout userField=view.findViewById(R.id.setting_user_field);
         Button logoutBtn=view.findViewById(R.id.logout_btn);
         logoutBtn.setOnClickListener(this);
+
 
         //如果已经登录，则显示 用户名称 、显示退出登录的按钮
 
@@ -179,21 +203,25 @@ public class SettingFragment extends Fragment implements View.OnClickListener, S
 
         }
 
-      //重启的时候仍然打开我们的 设置界面
-//        if (savedInstanceState != null) {
-//            FragmentManager manager = getChildFragmentManager();
-//           Fragment settingFragment = manager.getFragment(savedInstanceState, "setting");
-//        } else {
-//           //
-//        }
-//
-//
-//        public void onSaveInstanceState(Bundle outState) {
-//            super.onSaveInstanceState(outState);
-//            FragmentManager manager = getChildFragmentManager();
-//            manager.putFragment(outState, "douban", );
-//        }
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            int REQUEST_CODE_CONTACT = 101;
+            String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+            //验证是否许可权限
+            for (String str : permissions) {
+                if (mActivity.checkSelfPermission(str) != PackageManager.PERMISSION_GRANTED) {
+                    //申请权限
+                    this.requestPermissions(permissions, REQUEST_CODE_CONTACT);
+                }
+            }
+            if (ContextCompat.checkSelfPermission(mActivity, Manifest.permission.CAMERA)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.CAMERA}, 1001);
+                StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+                StrictMode.setVmPolicy(builder.build());
+                builder.detectFileUriExposure();
+            }
+        }
 
 
         return view;
@@ -239,7 +267,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener, S
                 break;
             case R.id.dark_mode_switch:
                 mActivity.setNightMode(Util.getInstance().getNight());
-                Log.d("TAG", "onClick:开启夜间模式？ ");
                 Util.getInstance().setNight(!Util.getInstance().getNight());
 
                 break;
@@ -272,9 +299,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener, S
             @Override
             public void onClick(View view) {
                 mLogOffWindow.dismiss();
-                mSettingsPresenter.deleteUser();
-                mActivity.replaceFragment(new HomeFragment());
-                Util.getInstance().setLoginState(false);
+                logOffByConfirm();
             }
         });
         cancelBut.setOnClickListener(new View.OnClickListener() {
@@ -288,6 +313,47 @@ public class SettingFragment extends Fragment implements View.OnClickListener, S
             public void onDismiss() {
                 mLayoutParams.alpha = 1.0f;
                 mWindow.setAttributes(mLayoutParams);
+            }
+        });
+    }
+
+    private void logOffByConfirm() {
+        mLayoutParams.alpha=0.9f;
+        mWindow.setAttributes(mLayoutParams);
+        View contentView = LayoutInflater.from(mActivity)
+                .inflate(R.layout.confirm_password_window, null);
+
+        mSettingLogOffWindow=new PopupWindow(contentView,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                true);
+        mSettingLogOffWindow.setBackgroundDrawable(new BitmapDrawable());
+        mSettingLogOffWindow.setOutsideTouchable(true);
+        mSettingLogOffWindow.setAnimationStyle(R.style.pop_window_anim_style);
+        View rootView=LayoutInflater.from(mActivity).inflate(R.layout.setting_fragment,null);
+        mSettingLogOffWindow.showAtLocation(rootView,Gravity.CENTER,0,0);
+
+        mSettingLogOffWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                mLayoutParams.alpha = 1.0f;
+                mWindow.setAttributes(mLayoutParams);
+            }
+        });
+
+        EditText userPassword = contentView.findViewById(R.id.user_password);
+        Button yesBtn=contentView.findViewById(R.id.yes_btn);
+        yesBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String password = userPassword.getText().toString();
+                //修改数据库
+                mSettingsPresenter.deleteUser(password);
+                //弹窗关闭
+                mSettingLogOffWindow.dismiss();
+                mLayoutParams.alpha = 1.0f;
+                mWindow.setAttributes(mLayoutParams);
+
             }
         });
     }
@@ -319,6 +385,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener, S
             public void onClick(View view) {
                 mLogoutWindow.dismiss();
                 mActivity.replaceFragment(new HomeFragment());
+                mActivity.getNavigationBar().setVisibility(View.VISIBLE);
                 Util.getInstance().setLoginState(false);
             }
         });
@@ -467,6 +534,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener, S
 
     @Override
     public void showDeleteUser() {
+        mActivity.getNavigationBar().setVisibility(View.VISIBLE);
         Util.getInstance().setLoginState(false);
         mActivity.replaceFragment(new HomeFragment());
     }
@@ -519,7 +587,10 @@ public class SettingFragment extends Fragment implements View.OnClickListener, S
     @Override
     public void onStart() {
         super.onStart();
-        Bitmap bt = getBitmap(newImagePath);
+        Bitmap bt=null;
+        if (newImagePath!=null){
+            bt = getBitmap(newImagePath);
+        };
         if (bt != null) {
             @SuppressWarnings("deprecation")
             Drawable drawable = new BitmapDrawable(bt);
@@ -550,34 +621,35 @@ public class SettingFragment extends Fragment implements View.OnClickListener, S
 
                 break;
             case 3:
-                if (data != null) {
-                    Bundle extras = data.getExtras();
-                    head = extras.getParcelable("data");
-                    if (head != null) {
-                        /**
-                         * 上传服务器代码
-                         */
-                        try {
-                            setPicToView(head);// 将头像保存
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
+                if(data!=null) {
+                    try {
+
+                        //根据路径给头像赋值
+
+                        InputStream fileInputStream = getContext().getContentResolver().openInputStream(uritempFile);
+                        head = BitmapFactory.decodeStream(fileInputStream); //生成Bitmap
+                        if (head != null) {
+                            /**
+                             * 上传服务器代码
+                             */
+                            try {
+                                setPicToView(head);// 将头像保存
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                            }
                         }
-
-
-                        //调用我们的后端数据库
+                        mUserImage.setImageBitmap(head);
                         mSettingsPresenter.changeProfile(newImagePath);
                         Util.getInstance().setProfile(newImagePath);
-
-                        //修改我们的头像(圆角头像)
-                        Bitmap newImageBitmap=getBitmap(newImagePath);
-                        RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(getResources(), newImageBitmap); //创建RoundedBitmapDrawable对象
-                        roundedBitmapDrawable.setCornerRadius(newImageBitmap.getWidth()); //设置圆角Radius（根据实际需求）
+                        RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(getResources(), head); //创建RoundedBitmapDrawable对象
+                        roundedBitmapDrawable.setCornerRadius(head.getWidth()); //设置圆角Radius（根据实际需求）
                         roundedBitmapDrawable.setAntiAlias(true); //设置抗锯齿
                         mUserImage.setImageDrawable(roundedBitmapDrawable); //显示圆角
                         mActivity.replaceFragment(new SettingFragment());
 
+                    }catch(FileNotFoundException e) {
+                        e.printStackTrace(); }
 
-                    }
                 }
                 break;
             default:
@@ -593,7 +665,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener, S
         Bitmap bitmap = null;
         try {
             File file = new File(pathString);
-
             if (file.exists()) {
                 bitmap = BitmapFactory.decodeFile(pathString);
                 //文件存在
@@ -606,14 +677,13 @@ public class SettingFragment extends Fragment implements View.OnClickListener, S
         return bitmap;
     }
 
-
     /**
      * 调用系统的裁剪功能
      *
      * @param uri
      */
     public void cropPhoto(Uri uri) {
-        //
+
         Intent intent = new Intent("com.android.camera.action.CROP");
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         intent.setDataAndType(uri, "image/*");
@@ -624,11 +694,24 @@ public class SettingFragment extends Fragment implements View.OnClickListener, S
         // outputX outputY 是裁剪图片宽高
         intent.putExtra("outputX", 250);
         intent.putExtra("outputY", 250);
-        intent.putExtra("return-data", true);
+        //intent.putExtra("return-data", true);
+        uritempFile = Uri.parse("file://" + "/"+Environment.getExternalStorageDirectory().getPath()+"/"+System.currentTimeMillis() + ".jpg");
+
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, uritempFile);
+        // 图片输出格式
+        intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, uritempFile);
         startActivityForResult(intent, 3);
 
     }
-    //将裁剪后的图片写入相册中
+
+    /**
+     * 将图片保存
+     *
+     * @param mBitmap
+     */
+
+
     private void setPicToView(Bitmap mBitmap) throws FileNotFoundException {
         // 获取sdcard的路径
        path =Environment.getExternalStorageDirectory().getAbsolutePath();
@@ -659,8 +742,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener, S
         }
 
     }
-
-
 
 
 

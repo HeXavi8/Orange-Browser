@@ -195,6 +195,8 @@ public class SearchFragment extends Fragment{
         View view = inflater.inflate(R.layout.search_fragment, container, false);
         mSearchPresenter = new SearchPresenter();
         mActivity = (MainActivity)getActivity();
+        ((MainActivity)getActivity()).getNavigationBar().setVisibility(View.VISIBLE);
+        ((MainActivity)getActivity()).getTopSearch().setVisibility(View.VISIBLE);
         mSearchRes = (WebView)view.findViewById(R.id.web_view);
         mFullVideo = (FrameLayout)view.findViewById(R.id.full_video);
         mNavigationBar = (LinearLayout)view.findViewById(R.id.navigation_bar);
@@ -229,22 +231,22 @@ public class SearchFragment extends Fragment{
 
             }
         };
-        mSearchRes.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-//                Log.d(TAG,"WebViewTouchListener: "+Integer.toString(event.getAction()));
-                if(event.getAction()==MotionEvent.ACTION_DOWN){
-                    mSearchRes.requestFocus();
-                    InputMethodManager imm = (InputMethodManager)mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(mSearchRes.getWindowToken(), 0);
-                }
-                else if(event.getAction()==MotionEvent.ACTION_MOVE){
-//                    mActivity.dispatchTouchEvent(event);
-                    return false;
-                }
-                return false;
-            }
-        });
+//        mSearchRes.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+////                Log.d(TAG,"WebViewTouchListener: "+Integer.toString(event.getAction()));
+//                if(event.getAction()==MotionEvent.ACTION_DOWN){
+//                    mSearchRes.requestFocus();
+//                    InputMethodManager imm = (InputMethodManager)mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+//                    imm.hideSoftInputFromWindow(mSearchRes.getWindowToken(), 0);
+//                }
+//                else if(event.getAction()==MotionEvent.ACTION_MOVE){
+////                    mActivity.dispatchTouchEvent(event);
+//                    return false;
+//                }
+//                return false;
+//            }
+//        });
 
         WebViewTouchListener = new MainActivity.MyTouchListener() {
             @Override
@@ -273,6 +275,9 @@ public class SearchFragment extends Fragment{
                     if(keyCode == KeyEvent.KEYCODE_BACK&&mSearchRes.canGoBack()){
                         mSearchRes.goBack();
                         return true;
+                    }
+                    else if(keyCode == KeyEvent.KEYCODE_BACK){
+                        mActivity.replaceFragment(new HomeFragment());
                     }
                 }
                 return false;

@@ -29,10 +29,7 @@ import com.example.fruit.MainActivity;
 import com.example.fruit.MyAppliaction;
 import com.example.fruit.R;
 import com.example.fruit.bean.Quick;
-import com.example.fruit.login.LoginFragment;
 import com.example.fruit.search.SearchFragment;
-import com.example.fruit.setting.SettingFragment;
-import com.example.fruit.utils.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,14 +61,32 @@ public class HomeFragment extends Fragment implements QuickView {
         mActivity.unRegisterMyTouchListener(HomeFragmentListener);
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if(event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_BACK){
+                    mActivity.finish();
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.home_fragment, container, false);
         mQuickPresenter = new QuickPresenter(this);
-        mUser = (ImageView) view.findViewById(R.id.to_login);
         mLogo = (ImageView)view.findViewById(R.id.logo);
+        ((MainActivity)getActivity()).getNavigationBar().setVisibility(View.VISIBLE);
+        ((MainActivity)getActivity()).getTopSearch().setVisibility(View.GONE);
         mHomeSearchBar = (LinearLayout)view.findViewById(R.id.search_bar);
         mSearchContent = (EditText)view.findViewById(R.id.search_content);
         mSearchContent.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
@@ -106,16 +121,16 @@ public class HomeFragment extends Fragment implements QuickView {
         };
         mActivity.registerMyTouchListener(HomeFragmentListener);
 
-        mUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                boolean isLogin=Util.getInstance().getLoginState();
-                if(isLogin){
-                    activity.replaceFragment(new SettingFragment());
-                }
-                else{activity.replaceFragment(new LoginFragment());}
-            }
-        });
+//        mUser.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                boolean isLogin=Util.getInstance().getLoginState();
+//                if(isLogin){
+//                    activity.replaceFragment(new SettingFragment());
+//                }
+//                else{activity.replaceFragment(new LoginFragment());}
+//            }
+//        });
         mSearchContent.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
@@ -251,6 +266,9 @@ public class HomeFragment extends Fragment implements QuickView {
         AlertDialog dialog = builder.create();
         dialog.setCanceledOnTouchOutside(true);//点dialog的外面隐藏
         dialog.show();
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.orange_theme_color));
+        dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(getResources().getColor(R.color.orange_theme_color));
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.orange_theme_color));
 
     }
 
@@ -287,6 +305,7 @@ public class HomeFragment extends Fragment implements QuickView {
         builder.setCancelable(true); //点返回是否隐藏
         builder.setTitle("添加快捷页");
 
+
         builder.setNegativeButton("取消",null)
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
@@ -307,6 +326,8 @@ public class HomeFragment extends Fragment implements QuickView {
         AlertDialog dialog = builder.create();
         dialog.setCanceledOnTouchOutside(true);//点dialog的外面隐藏
         dialog.show();
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.orange_theme_color));
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.orange_theme_color));
 
     }
 

@@ -7,13 +7,14 @@
     android:layout_height="match_parent">
 
 <!--登录头部导航栏-->
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="7dp">
         <ImageView
-            android:id="@+id/login_back"
+            android:id="@+id/back_btn"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_marginLeft="10dp"
@@ -21,43 +22,96 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20dp"
+            android:textSize="18dp"
             android:textStyle="bold"
-            android:layout_centerInParent = "true"
-            android:text="@string/login_title"/>
+            android:text="@string/login_btn"
+            android:layout_centerInParent = "true" />
     </RelativeLayout>
 
-    <View
+
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:background="@color/menu_line"/>
+        android:layout_height="140dp"
+        android:layout_marginTop="50dp"
+        android:src="@drawable/home_logo"
+        android:layout_gravity="center"/>
     <!--登录的输入框-->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="388dp"
-        android:layout_marginTop="120dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
         android:gravity="center"
         android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/user_phone"
-            android:layout_width="360dp"
-            android:layout_height="100dp"
-            android:autofillHints="@string/phone_hint"
-            android:ems="13"
-            android:hint="@string/phone_hint"
-            android:inputType="phone"
-            android:theme="@style/MyEditText"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="40dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:background="@drawable/login_register_edittext_border"
+            android:layout_marginRight="40dp"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="15dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/login_register_edit_user"/>
+            <EditText
+                android:id="@+id/user_phone"
+                android:inputType="phone"
+                android:hint="@string/phone_hint"
+                android:autofillHints="@string/phone_hint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:layout_marginBottom="7dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:textCursorDrawable="@drawable/cursor_style"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:maxLength="11"
+                android:textSize="14sp"
+                android:background="@null"/>
 
-        <EditText
-            android:id="@+id/user_password"
-            android:layout_width="360dp"
-            android:layout_height="100dp"
-            android:autofillHints="@string/password_hint"
-            android:ems="10"
-            android:hint="@string/password_hint"
-            android:inputType="textPassword"
-            android:theme="@style/MyEditText"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="40dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:background="@drawable/login_register_edittext_border"
+            android:layout_marginRight="40dp"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="15dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/login_register_edit_password"/>
+            <EditText
+                android:id="@+id/user_password"
+                android:inputType="textPassword"
+                android:hint="@string/password_hint"
+                android:autofillHints="@string/password_hint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:layout_marginBottom="7dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:textSize="14sp"
+                android:textCursorDrawable="@drawable/cursor_style"
+                android:background="@null"/>
+
+        </RelativeLayout>
 
         <Button
             android:id="@+id/login_btn"
@@ -66,18 +120,20 @@
             android:layout_marginTop="40dp"
             android:background="@drawable/login_btn_shape"
             android:gravity="center"
-            android:textSize="18sp"
+            android:textSize="16sp"
+            android:textColor="@color/white"
             android:text="@string/login_btn" />
 
         <LinearLayout
-            android:layout_width="300dp"
-            android:layout_height="100dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:gravity="center"
+            android:layout_marginTop="15dp"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:text="@string/not_register"
                 android:textColor="#000000"
                 android:textSize="16sp" />
@@ -85,7 +141,7 @@
             <TextView
                 android:id="@+id/to_register"
                 android:layout_width="wrap_content"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:text="@string/now_to_register"
                 android:textColor="#91AFC6"
                 android:textSize="16sp" />

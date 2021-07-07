@@ -66,7 +66,7 @@ public class Util {
     }
 
     public static Boolean getNight() {
-        return mSP.getBoolean("night", false);
+        return mSP.getBoolean("night", true);
     }
 
     public static void setNoHistory(Boolean ifNoHistory) {

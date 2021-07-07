@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-<item  android:state_enabled="true">
+<item  android:state_enabled="true"  android:height="30dp">
     <shape android:shape="rectangle">
-        <solid android:color="@color/main_color"/>
-        <corners android:radius="15dip"/>
+        <solid android:color="@color/orange_theme_color"/>
+        <corners android:radius="20dp"/>
     </shape>
 </item>
-<item android:state_enabled="false">
+<item android:state_enabled="false" android:height="30dp">
     <shape android:shape="rectangle">
         <solid android:color="@color/btn_disable_color"/>
-        <corners android:radius="15dip"/>
+        <corners android:radius="20dp"/>
     </shape>
 </item>
 </selector>
+
+

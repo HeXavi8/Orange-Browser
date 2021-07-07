@@ -1,38 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="400dp"
+xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:orientation="vertical"
+android:gravity="center_horizontal"
+android:background="@drawable/setting_image_window_shape">
+<LinearLayout
+    android:layout_width="295dp"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:gravity="center_horizontal"
-    android:background="@drawable/setting_name_window_shape">
-
-
-    <TextView
-        android:id="@+id/change_name_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:text="@string/change_image_text"
-        android:gravity="center"
-        android:layout_marginTop="10dp"
-        android:textSize="25sp"/>
+    android:layout_gravity="center_horizontal">
     <View
-        android:layout_height="5dp"
-        android:background="@color/menu_line"
+        android:layout_height="10dp"
         android:layout_width="fill_parent">
     </View>
 
     <TextView
         android:id="@+id/from_photo_btn"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="45dp"
         android:background="@color/white"
         android:text="@string/from_photo_text"
         android:gravity="center"
-        android:textSize="20sp"/>
+        android:textColor="#cc000000"
+        android:textSize="18sp"/>
     <View
-        android:layout_height="5dp"
+        android:layout_height="1dp"
         android:layout_width="fill_parent"
         android:background="@color/menu_line"
         >
@@ -44,6 +38,27 @@
         android:background="@color/white"
         android:text="@string/take_photo_text"
         android:gravity="center"
-        android:textSize="20sp"/>
+        android:textColor="#cc000000"
+        android:textSize="18sp"/>
+    <View
+        android:layout_height="5dp"
+        android:layout_width="fill_parent"
+        android:background="@color/menu_line"
+        >
+    </View>
+    <TextView
+        android:id="@+id/cancel_change_btn"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/white"
+        android:text="@string/cancel"
+        android:gravity="center"
+        android:textColor="#cc000000"
+        android:textSize="18sp"/>
+    <View
+        android:layout_height="10dp"
+        android:layout_width="fill_parent">
+    </View>
 
+</LinearLayout>
 </LinearLayout>

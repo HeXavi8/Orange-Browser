@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#8D7AA8</color>
-    <color name="colorPrimaryDark">#666073</color>
+    <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#5C7572</color>
     <!--lixiaofei-->
     <color name="search_button_background_color">#8095AC</color>
     <color name="pop_window_background_color">#AA9F9F</color>
-    <color name="white">#3E3C3C</color>
+    <color name="white">#181818</color>
     <color name="background">#605454</color>
     <color name="menu_line">#000000</color>
     <color name="navigation_bar_line">#7E7676</color>
@@ -19,4 +19,5 @@
     <color name="no_focus_color">#AEADAD</color>
     <color name="btn_disable_color">#887E79</color>
     <color name="delete_all_color">#502C33</color>
+    <color name="white_and_black_color">#000000</color>
 </resources>

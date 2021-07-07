@@ -9,14 +9,18 @@
         android:id="@+id/iv_headImg"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:src="@mipmap/ic_launcher"
-        android:layout_marginLeft="5dp"/>
+        android:layout_marginTop="10dp"
+        android:padding="15dp"
+        android:src="@drawable/lnk_default_item"
+        android:layout_marginLeft="10dp"/>
 
     <RelativeLayout
         android:id="@+id/rel_"
         android:layout_width="0dp"
+        android:layout_marginTop="10dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
+        android:layout_marginRight="25dp"
         android:layout_weight="1">
 
         <LinearLayout
@@ -29,11 +33,14 @@
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="名称："
+                android:text="名称:   "
                 android:textSize="15sp"/>
             <EditText
                 android:id="@+id/et_title"
-                android:layout_width="200dp"
+                android:layout_width="180dp"
+                android:singleLine="true"
+                android:textSize="16dp"
+                android:theme="@style/MyEditText"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/tv_title"/>
         </LinearLayout>
@@ -49,11 +56,14 @@
                 android:id="@+id/tv_url"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="URL："
+                android:text="URL:    "
                 android:textSize="15sp"/>
             <EditText
                 android:id="@+id/et_url"
-                android:layout_width="200dp"
+                android:layout_width="180dp"
+                android:singleLine="true"
+                android:textSize="16dp"
+                android:theme="@style/MyEditText"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/tv_url"/>
         </LinearLayout>

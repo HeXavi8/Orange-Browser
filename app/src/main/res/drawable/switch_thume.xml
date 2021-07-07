@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle" >
+
+    <!-- 高度40 -->
+    <size android:height="20sp" android:width="20sp"/>
+    <!-- 圆角弧度 20 -->
+    <corners android:radius="18sp"/>
+
+    <!-- 变化率 -->
+    <gradient
+        android:endColor="#f1f5f8"
+        android:startColor="#f1f5f8" />
+
+<!--    <stroke android:width="1dp"-->
+<!--        android:color="@color/orange_theme_color"/>-->
+</shape>

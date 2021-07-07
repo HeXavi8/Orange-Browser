@@ -8,6 +8,7 @@ import android.os.IBinder;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -44,6 +45,25 @@ public class LoginFragment extends Fragment implements LoginView {
     private String username;
     private String password;
     private LoginPresenter loginPresenter;
+    private MainActivity.MyTouchListener myTouchListener;
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if(event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_BACK){
+                    activity.unRegisterMyTouchListener(myTouchListener);
+                    activity.onBackPressed();
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
 
     @Nullable
     @Override
@@ -51,15 +71,18 @@ public class LoginFragment extends Fragment implements LoginView {
         View view = inflater.inflate(R.layout.login_fragment, container, false);
         loginPresenter = new LoginPresenter(this);
         TextView toRegister = view.findViewById(R.id.to_register);
+        ((MainActivity)getActivity()).getNavigationBar().setVisibility(View.GONE);
+        ((MainActivity)getActivity()).getTopSearch().setVisibility(View.GONE);
         EditText userPhone =view.findViewById(R.id.user_phone);
         EditText userPassword=view.findViewById(R.id.user_password);
-        ImageView backBtn=view.findViewById(R.id.login_back);
+        backBtn=view.findViewById(R.id.back_btn);
         Button loginBtn=view.findViewById(R.id.login_btn);
+
         loginBtn.setEnabled(false);
 //        登录成功的时候:调用两个（utils/登录状态改变，登录用户名）
         activity = (MainActivity) getActivity();
         //点击 空白处，收起键盘的事件绑定
-        MainActivity.MyTouchListener myTouchListener = new MainActivity.MyTouchListener() {
+        myTouchListener = new MainActivity.MyTouchListener() {
             @Override
             public void onTouchEvent(MotionEvent event) {
                 hideInputWhenTouchOtherView(getActivity(), event, getExcludeTouchHideInputViews());
@@ -75,7 +98,7 @@ public class LoginFragment extends Fragment implements LoginView {
                 activity.replaceFragment(new RegisterFragment());
             }
         });
-//        点击回退按钮，回到首页
+       // 点击回退按钮，回到首页
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,6 +144,7 @@ public class LoginFragment extends Fragment implements LoginView {
                 // 查询手机号
                 else {
                    loginPresenter.login(inputPhone,inputPassword);
+
                 }
             }
         });
@@ -137,6 +161,7 @@ public class LoginFragment extends Fragment implements LoginView {
         Util.getInstance().setProfile(user.getProfile());
         //跳转到首页
         activity.replaceFragment((new HomeFragment()));
+        activity.getNavigationBar().setVisibility(View.VISIBLE);
     }
 
     @Override

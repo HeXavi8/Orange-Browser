@@ -37,6 +37,7 @@
         android:layout_height="wrap_content"
         android:visibility="invisible"
         android:layout_alignParentRight="true"
+        android:theme="@style/MyCheckBox"
         android:layout_centerVertical="true"
         android:layout_marginRight="20dp" />
 

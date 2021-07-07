@@ -12,17 +12,22 @@
     <color name="navigation_bar_line">#BEBEBE</color>
     <color name="black">#000000</color>
     <color name="icon">#707070</color>
-    <color name="search_hint">#FB7A34</color>
-    <color name="home_search_bar_color">#F1F1F1</color>
-    <color name="home_lnk_bg_color">#F6F6F6</color>
+
+    <color name="orange_theme_color">#f0bf9d</color>
+    <color name="home_search_bar_color">#E8E8E8</color>
+>>>>>>> 06fc1eee53bdac4700f24877172e77577ae3a53d
+    <color name="home_lnk_bg_color">#F2F2F2</color>
     <!--lixiaofei-->
 
     <!--Xavi He-->
     <color name="LightGrey">#D3D3D3</color>
-
+    <color name="edittext_bg">#F2F3F7</color>
+    <color name="subject_color">#F0BF9D</color>
 <!--    walden 的颜色-->
     <color name="main_color">#EAB7B7</color>
-    <color name="no_focus_color">#AEADAD</color>
-    <color name="btn_disable_color">#E7E5E4</color>
+    <color name="no_focus_color">#F5D7C1</color>
+    <color name="white_and_black_color">#ffffff</color>
+<!--    <color name="btn_disable_color">#E7E5E4</color>-->
+    <color name="btn_disable_color">#FAEBD7</color>
     <color name="delete_all_color">#C93756</color>
 </resources>

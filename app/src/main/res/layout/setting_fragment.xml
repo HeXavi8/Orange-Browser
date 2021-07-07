@@ -1,102 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:background="@color/background"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white_and_black_color"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="7dp">
+
         <ImageView
             android:id="@+id/setting_back"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_marginLeft="10dp"
-            android:src="@drawable/back_page_enabled"/>
+            android:src="@drawable/back_page_enabled" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            android:layout_centerInParent = "true"
-            android:text="@string/setting"/>
+            android:layout_centerInParent="true"
+            android:text="@string/setting"
+            android:textSize="18dp"
+            android:textStyle="bold" />
     </RelativeLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:background="@color/menu_line"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:paddingTop="15dp"
-        >
+        android:paddingTop="15dp">
+
         <LinearLayout
             android:id="@+id/setting_user_field"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <ImageView
                 android:id="@+id/setting_user_photo"
-                android:background="@drawable/user_image"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_marginLeft="15dp"
-                android:src="@drawable/user"/>
+                android:src="@drawable/setting_user" />
+
             <TextView
                 android:id="@+id/setting_user_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="25dp"
-                android:textStyle="bold"
                 android:layout_gravity="center"
                 android:layout_marginLeft="15dp"
-                android:text="@string/to_login"/>
+                android:text="@string/to_login"
+                android:textSize="18dp"
+                android:textStyle="bold" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="12dp"
-            android:paddingBottom="12dp"
             android:layout_below="@id/setting_user_field"
-            android:gravity="center">
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingBottom="12dp">
+
             <LinearLayout
                 android:id="@+id/to_collection"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_toLeftOf="@id/setting_my_collection"
+                    android:src="@drawable/collection" />
+
                 <TextView
+                    android:id="@+id/setting_my_collection"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15dp"
-                    android:text="@string/my_collection"/>
+
+                    android:layout_gravity="center"
+                    android:text="@string/my_collection"
+                    android:textSize="15dp" />
             </LinearLayout>
+
             <View
                 android:layout_width="1dp"
                 android:layout_height="25dp"
-                android:background="@color/navigation_bar_line"/>
+                android:background="@color/navigation_bar_line" />
+
             <LinearLayout
                 android:id="@+id/to_history"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_weight="1"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginRight="5dp"
+                    android:src="@drawable/history" />
+
                 <TextView
+                    android:id="@+id/setting_my_history"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15dp"
-                    android:text="@string/history"/>
+                    android:text="@string/history"
+                    android:textSize="15dp" />
             </LinearLayout>
         </LinearLayout>
 
@@ -106,7 +127,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="10dp"
-        android:background="@color/menu_line"/>
+        android:background="@color/menu_line" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -116,196 +137,237 @@
 
         <RelativeLayout
             android:id="@+id/setting_usr_phone"
-            android:clickable="true"
-            android:background="@drawable/logout_btn_shape"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/logout_btn_shape"
+            android:clickable="true"
             android:visibility="gone">
+
             <TextView
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/usr_phone"
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="20dp"
-                android:textSize="16dp"/>
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:text="@string/usr_phone"
+                android:textSize="16dp" />
 
             <TextView
                 android:id="@+id/phone_number"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="130****0887"
                 android:layout_alignParentRight="true"
+                android:layout_marginTop="16dp"
                 android:layout_marginRight="20dp"
-                android:textSize="16dp"/>
+                android:layout_marginBottom="16dp"
+                android:textSize="16dp"
+                tools:text="130****0887" />
 
         </RelativeLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:background="@color/menu_line"/>
+            android:background="@color/menu_line" />
+
         <RelativeLayout
             android:id="@+id/setting_change_usr_name"
             android:layout_width="match_parent"
-            android:clickable="true"
-            android:background="@drawable/logout_btn_shape"
             android:layout_height="wrap_content"
+            android:background="@drawable/logout_btn_shape"
+            android:clickable="true"
             android:visibility="gone">
+
             <TextView
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/change_usr_name"
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="20dp"
-                android:textSize="16dp"/>
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:text="@string/change_usr_name"
+                android:textSize="16dp" />
 
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:src="@drawable/go_page_enabled"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"/>
+                android:layout_marginRight="10dp"
+                android:src="@drawable/go_page_enabled" />
         </RelativeLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:background="@color/menu_line"/>
+            android:background="@color/menu_line" />
+
         <RelativeLayout
             android:id="@+id/setting_change_usr_password"
             android:layout_width="match_parent"
-            android:clickable="true"
-            android:background="@drawable/logout_btn_shape"
             android:layout_height="wrap_content"
+            android:background="@drawable/logout_btn_shape"
+            android:clickable="true"
             android:visibility="gone">
+
             <TextView
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/change_usr_password"
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="20dp"
-                android:textSize="16dp"/>
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:text="@string/change_usr_password"
+                android:textSize="16dp" />
+
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:src="@drawable/go_page_enabled"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"/>
+                android:layout_marginRight="10dp"
+                android:src="@drawable/go_page_enabled" />
         </RelativeLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:background="@color/menu_line"/>
+            android:background="@color/menu_line" />
+
         <RelativeLayout
             android:id="@+id/close_account"
             android:layout_width="match_parent"
-            android:clickable="true"
-            android:background="@drawable/logout_btn_shape"
             android:layout_height="wrap_content"
+            android:background="@drawable/logout_btn_shape"
+            android:clickable="true"
             android:visibility="gone">
+
             <TextView
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/close_account"
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="20dp"
-                android:textSize="16dp"/>
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:text="@string/close_account"
+                android:textSize="16dp" />
+
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:src="@drawable/go_page_enabled"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"/>
+                android:layout_marginRight="10dp"
+                android:src="@drawable/go_page_enabled" />
         </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="10dp"
-            android:background="@color/menu_line"/>
+            android:background="@color/menu_line" />
 
         <RelativeLayout
             android:id="@+id/setting_dark_mode"
             android:layout_width="match_parent"
-            android:clickable="true"
+            android:layout_height="wrap_content"
             android:background="@drawable/logout_btn_shape"
-            android:layout_height="wrap_content">
+            android:clickable="true">
+
             <TextView
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/dark_mode"
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="20dp"
-                android:textSize="16dp"/>
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:text="@string/dark_mode"
+                android:textSize="16dp" />
+
             <Switch
                 android:id="@+id/dark_mode_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"/>
+                android:layout_marginRight="20dp"
+                android:thumb="@drawable/switch_thume"
+                android:track="@drawable/switch_style" />
         </RelativeLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:background="@color/menu_line"/>
+            android:background="@color/menu_line" />
+
         <RelativeLayout
             android:id="@+id/setting_wuhen_mode"
             android:layout_width="match_parent"
-            android:clickable="true"
+            android:layout_height="wrap_content"
             android:background="@drawable/logout_btn_shape"
-            android:layout_height="wrap_content">
+            android:clickable="true">
+
             <TextView
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/wuhen_mode"
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="20dp"
-                android:textSize="16dp"/>
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:text="@string/wuhen_mode"
+                android:textSize="16dp" />
+
             <Switch
                 android:id="@+id/wohen_mode_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"/>
+                android:layout_marginRight="20dp"
+                android:thumb="@drawable/switch_thume"
+                android:track="@drawable/switch_style" />
         </RelativeLayout>
     </LinearLayout>
 
-    <RelativeLayout
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@color/menu_line" />
+
         <Button
             android:id="@+id/logout_btn"
-            android:background="@drawable/logout_btn_shape"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/logout"
-            android:layout_marginBottom="30dp"
-            android:layout_alignParentBottom="true"/>
-    </RelativeLayout>
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/logout_btn_shape"
+            android:text="@string/logout" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@color/menu_line" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white_and_black_color"
+        android:orientation="vertical"></LinearLayout>
+
 
 </LinearLayout>
