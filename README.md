@@ -1,7 +1,10 @@
 # Orange Browser
 
 Orange Browser is a android application developed during a 6-weeks training program organized by ByteDance and South China university of Technology.
-<img src='https://github.com/HeXavi8/Orange-Browser/blob/main/images/bytedance_logo.png' width='50'/> × <img src='https://github.com/HeXavi8/Orange-Browser/blob/main/images/scut_logo.png' width='50'/>
+
+<img src='https://github.com/HeXavi8/Orange-Browser/blob/main/images/bytedance_logo.png' width='50'/> 
+<img src='https://github.com/HeXavi8/Orange-Browser/blob/main/images/and.png' width='50'/> 
+<img src='https://github.com/HeXavi8/Orange-Browser/blob/main/images/scut_logo.png' width='50'/>
 
 
 ## Table of Contents
