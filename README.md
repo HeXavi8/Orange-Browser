@@ -17,7 +17,7 @@ Orange Browser is a android application which developed in a 6-weeks training pr
 
 ## Snapshots <a name="Snapshots"></a>
 
-<img src='https://github.com/HeXavi8/Orange-Browser/blob/main/images/home_light.png' width='220'/> <img src='https://github.com/HeXavi8/Orange-Browser/blob/main/images/home_dark.png' width='220'/>
+<img src='https://github.com/HeXavi8/Orange-Browser/blob/main/images/home_light.png' width='220'/>&emsp;<img src='https://github.com/HeXavi8/Orange-Browser/blob/main/images/home_dark.png' width='220'/>
 
 ## Functions <a name="Functions"></a>
 
