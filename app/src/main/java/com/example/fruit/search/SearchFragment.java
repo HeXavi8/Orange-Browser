@@ -470,7 +470,6 @@ public class SearchFragment extends Fragment{
     //webview开启夜间模式
     private void openNigth() throws IOException {
         InputStream is = mActivity.getResources().openRawResource(R.raw.night);
-        System.out.print("打开夜间模式");
         byte[] buffer = new byte[0];
         try {
             buffer = new byte[is.available()];
@@ -487,7 +486,6 @@ public class SearchFragment extends Fragment{
         String nightcode = Base64.encodeToString(buffer, Base64.NO_WRAP);
         mSearchRes.loadUrl("" +
                 "javascript:(function() {" +
-                "console.log('he');"+
                 "var parent = document.getElementsByTagName('head').item(0);" +
                 "var style = document.createElement('style');" + "style.type = 'text/css';" +
                 "style.innerHTML = window.atob('" + nightcode + "');" + "parent.appendChild(style)" + "})();");

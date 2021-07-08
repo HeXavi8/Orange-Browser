@@ -554,9 +554,16 @@ public class SettingFragment extends Fragment implements View.OnClickListener, S
         mSettingImageWindow.setAnimationStyle(R.style.pop_window_anim_style);
         View rootView=LayoutInflater.from(mActivity).inflate(R.layout.setting_fragment,null);
         mSettingImageWindow.showAtLocation(rootView,Gravity.CENTER,0,0);
-
+        mSettingImageWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                mLayoutParams.alpha = 1.0f;
+                mWindow.setAttributes(mLayoutParams);
+            }
+        });
         TextView fromPhotoBtn=contentView.findViewById(R.id.from_photo_btn);
         TextView takePthotoBtn=contentView.findViewById(R.id.take_photo_btn);
+        TextView cancelChangeBtn=contentView.findViewById(R.id.cancel_change_btn);
         fromPhotoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -565,6 +572,8 @@ public class SettingFragment extends Fragment implements View.OnClickListener, S
                 intent1.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
                 startActivityForResult(intent1, 1);
                 mSettingImageWindow.dismiss();
+                mLayoutParams.alpha = 1.0f;
+                mWindow.setAttributes(mLayoutParams);
 
 
             }
@@ -579,9 +588,21 @@ public class SettingFragment extends Fragment implements View.OnClickListener, S
                 intent2.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 startActivityForResult(intent2, 2);// 采用ForResult打开
                 mSettingImageWindow.dismiss();
+                mLayoutParams.alpha = 1.0f;
+                mWindow.setAttributes(mLayoutParams);
 
             }
         });
+        cancelChangeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSettingImageWindow.dismiss();
+                mLayoutParams.alpha = 1.0f;
+                mWindow.setAttributes(mLayoutParams);
+
+            }
+        });
+
 
     }
     @Override

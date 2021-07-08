@@ -68,9 +68,10 @@ dependencies {
 ## Project Members <a name="Project_Members"></a>
 
 - [Xavi](https://github.com/HeXavi8) - **Xavi He** &lt; 825308876@qq.com&gt; (he/him)
+- [Lixiaofei](https://github.com/Makka-Pakka111) - **Lixiaofei** &lt;1040314319@qq.com&gt; (she/her)
+- [Walden](https://github.com/Aoliao-w) - **Walden** &lt;1215454179@qq.com&gt; (she/her)
 
-
-If you have any suggestions or would like to cooperate with us, please feel free to contact us. </br>
+Our code and design are far from perfect. If you have any suggestions or would like to contribute code, please feel free to contact us or make pull requests. </br>
 
 ## License <a name="License"></a>
 [Apache-2.0 License](https://github.com/HeXavi8/Orange-Browser/blob/main/LICENSE)
