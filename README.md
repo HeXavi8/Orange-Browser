@@ -75,7 +75,7 @@ dependencies {
 Our code and design are far from perfect. If you have any suggestions or would like to contribute code, please feel free to contact us or make pull requests. </br>
 
 ## Gifs
-<img src='https://github.com/HeXavi8/Orange-Browser/blob/main/images/splash.gif' width='100'/>&emsp;<img src='https://github.com/HeXavi8/Orange-Browser/blob/main/images/search.gif' width='100'/>&emsp;<img src='https://github.com/HeXavi8/Orange-Browser/blob/main/images/history_bookmark.gif' width='100'/>&emsp;<img src='https://github.com/HeXavi8/Orange-Browser/blob/main/images/quick_page.gif' width='100'/>&emsp;<img src='https://github.com/HeXavi8/Orange-Browser/blob/main/images/dark_mode.gif' width='100'/>
+<img src='https://github.com/HeXavi8/Orange-Browser/blob/main/images/splash.gif' width='160'/>&emsp;<img src='https://github.com/HeXavi8/Orange-Browser/blob/main/images/search.gif' width='150'/>&emsp;<img src='https://github.com/HeXavi8/Orange-Browser/blob/main/images/history_bookmark.gif' width='150'/>&emsp;<img src='https://github.com/HeXavi8/Orange-Browser/blob/main/images/quick_page.gif' width='150'/>&emsp;<img src='https://github.com/HeXavi8/Orange-Browser/blob/main/images/dark_mode.gif' width='150'/>
 
 ## License <a name="License"></a>
 [Apache-2.0 License](https://github.com/HeXavi8/Orange-Browser/blob/main/LICENSE)
