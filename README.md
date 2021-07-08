@@ -12,12 +12,13 @@ Orange Browser is a android application which developed in a 6-weeks training pr
 * [Documentations](#Documentations)
 * [Design](#Design)
 * [Project Members](#Project_Members)
+* [Gifs](#Gifs)
 * [License](#License)
 
 
 ## Snapshots <a name="Snapshots"></a>
 
-<img src='https://github.com/HeXavi8/Orange-Browser/blob/main/images/home_light.png' width='220'/>&emsp;<img src='https://github.com/HeXavi8/Orange-Browser/blob/main/images/home_dark.png' width='220'/>
+<img src='https://github.com/HeXavi8/Orange-Browser/blob/main/images/home_light.png' width='200'/>&emsp;<img src='https://github.com/HeXavi8/Orange-Browser/blob/main/images/home_dark.png' width='200'/>
 
 ## Functions <a name="Functions"></a>
 
@@ -72,6 +73,9 @@ dependencies {
 - [Walden](https://github.com/Aoliao-w) - **Walden** &lt;1215454179@qq.com&gt; (she/her)
 
 Our code and design are far from perfect. If you have any suggestions or would like to contribute code, please feel free to contact us or make pull requests. </br>
+
+## Gifs
+<img src='https://github.com/HeXavi8/Orange-Browser/blob/main/images/splash.gif' width='100'/>&emsp;<img src='https://github.com/HeXavi8/Orange-Browser/blob/main/images/search.gif' width='100'/>&emsp;<img src='https://github.com/HeXavi8/Orange-Browser/blob/main/images/history_bookmark.gif' width='100'/>&emsp;<img src='https://github.com/HeXavi8/Orange-Browser/blob/main/images/quick_page.gif' width='100'/>&emsp;<img src='https://github.com/HeXavi8/Orange-Browser/blob/main/images/dark_mode.gif' width='100'/>
 
 ## License <a name="License"></a>
 [Apache-2.0 License](https://github.com/HeXavi8/Orange-Browser/blob/main/LICENSE)
