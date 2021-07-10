@@ -64,12 +64,15 @@ dependencies {
 * [Technical Design Documentation](https://gmja06lqlv.feishu.cn/docs/doccnA3Ya4Bk4qzcJY2D772wJcb#)
 
 ## Design <a name="Design"></a>
- 
+
+<img src='https://github.com/HeXavi8/Orange-Browser/blob/main/images/logo_text.png' height='60'/>
+
+Our logo and user interface were designed by Zixuan and Xavi.
 
 ## Project Members <a name="Project_Members"></a>
 
 - [Xavi](https://github.com/HeXavi8) - **Xavi He** &lt; 825308876@qq.com&gt; (he/him)
-- [Lixiaofei](https://github.com/Makka-Pakka111) - **Li Xiaofei** &lt;1040314319@qq.com&gt; (she/her)
+- [Li Xiaofei](https://github.com/Makka-Pakka111) - **Li Xiaofei** &lt;1040314319@qq.com&gt; (she/her)
 - [Walden](https://github.com/Aoliao-w) - **Walden** &lt;1215454179@qq.com&gt; (she/her)
 
 Our code and design are far from perfect. If you have any suggestions or would like to contribute code, please feel free to contact us or make pull requests. </br>
