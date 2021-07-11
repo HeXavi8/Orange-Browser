@@ -68,7 +68,7 @@ dependencies {
 
 <img src='../images/logo_text.png' height='60'/>
 
-我们的Logo和用户界面设计是由 [Zixuan](https://github.com/coddlly) 和 [Xavi](https://github.com/HeXavi8) 完成的.
+我们的Logo和用户界面设计是由 [Zixuan](https://github.com/coddlly) 和 [Xavi](https://github.com/HeXavi8) 完成的。
 
 ## 项目成员 <a name="Project_Members"></a>
 
