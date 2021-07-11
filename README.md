@@ -1,8 +1,8 @@
-# <img src='https://github.com/HeXavi8/Orange-Browser/blob/main/images/title.png' height='60'/>
+# <img src='./images/title.png' height='60'/>
 
 Orange Browser is a android application which developed during a six-week training program jointly held by ByteDance and South China University of Technology(SCUT).
 
-<img src='https://github.com/HeXavi8/Orange-Browser/blob/main/images/unity.png' height='60'/>
+<img src='./images/unity.png' height='60'/>
 
 
 ## Table of Contents
@@ -18,7 +18,7 @@ Orange Browser is a android application which developed during a six-week traini
 
 ## Snapshots <a name="Snapshots"></a>
 
-<img src='https://github.com/HeXavi8/Orange-Browser/blob/main/images/home_light.png' width='200'/>&emsp;<img src='https://github.com/HeXavi8/Orange-Browser/blob/main/images/home_dark.png' width='200'/>
+<img src='./images/home_light.png' width='200'/>&emsp;<img src='./images/home_dark.png' width='200'/>
 
 ## Functions <a name="Functions"></a>
 
@@ -65,20 +65,21 @@ dependencies {
 
 ## Design <a name="Design"></a>
 
-<img src='https://github.com/HeXavi8/Orange-Browser/blob/main/images/logo_text.png' height='60'/>
+<img src='./images/logo_text.png' height='60'/>
 
-Our logo and user interface were designed by Zixuan and Xavi.
+Our logo and user interface were designed by [Zixuan](https://github.com/coddlly) and [Xavi](https://github.com/HeXavi8).
 
 ## Project Members <a name="Project_Members"></a>
 
 - [Xavi](https://github.com/HeXavi8) - **Xavi He** &lt; 825308876@qq.com&gt; (he/him)
 - [Li Xiaofei](https://github.com/Makka-Pakka111) - **Li Xiaofei** &lt;1040314319@qq.com&gt; (she/her)
 - [Walden](https://github.com/Aoliao-w) - **Walden** &lt;1215454179@qq.com&gt; (she/her)
+- [Zixuan](https://github.com/coddlly) - **Zixuan** &lt;1906377395@qq.com&gt; (she/her)
 
 Our code and design are far from perfect. If you have any suggestions or would like to contribute code, please feel free to contact us or make pull requests. </br>
 
 ## Gifs
-<img src='https://github.com/HeXavi8/Orange-Browser/blob/main/images/splash.gif' width='160'/>&emsp;<img src='https://github.com/HeXavi8/Orange-Browser/blob/main/images/search.gif' width='150'/>&emsp;<img src='https://github.com/HeXavi8/Orange-Browser/blob/main/images/history_bookmark.gif' width='150'/>&emsp;<img src='https://github.com/HeXavi8/Orange-Browser/blob/main/images/quick_page.gif' width='150'/>&emsp;<img src='https://github.com/HeXavi8/Orange-Browser/blob/main/images/dark_mode.gif' width='150'/>
+<img src='./images/splash.gif' width='160'/>&emsp;<img src='./images/search.gif' width='150'/>&emsp;<img src='./images/history_bookmark.gif' width='150'/>&emsp;<img src='./images/quick_page.gif' width='150'/>&emsp;<img src='./images/dark_mode.gif' width='150'/>
 
 ## License <a name="License"></a>
-[Apache-2.0 License](https://github.com/HeXavi8/Orange-Browser/blob/main/LICENSE)
+[Apache-2.0 License](./LICENSE)
