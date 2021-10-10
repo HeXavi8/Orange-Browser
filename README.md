@@ -1,7 +1,7 @@
 ### English | [中文](./Chinese_Introduction)
 # <img src='./images/title.png' height='60'/>
 
-Orange Browser is a android application which developed during a six-week training program jointly held by ByteDance and South China University of Technology(SCUT).
+Orange Browser is an android application which developed during a six-week training program jointly held by ByteDance and South China University of Technology(SCUT).
 
 <img src='./images/unity.png' height='60'/>
 
