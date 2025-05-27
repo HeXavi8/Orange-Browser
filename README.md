@@ -72,7 +72,7 @@ Our logo and user interface were designed by [Zixuan](https://github.com/coddlly
 
 ## Project Members <a name="Project_Members"></a>
 
-- [Xavi](https://github.com/HeXavi8) - **Xavi He** &lt;xavihe.work@outlook.com&gt;(he/him)
+- [Xavi](https://github.com/HeXavi8) - **Xavi He** &lt;xavihe.work@outlook.com&gt; (he/him)
 - [Li Xiaofei](https://github.com/Makka-Pakka111) - **Li Xiaofei** &lt;1040314319@qq.com&gt; (she/her)
 - [Walden](https://github.com/Aoliao-w) - **Walden** &lt;1215454179@qq.com&gt; (she/her)
 - [Zixuan](https://github.com/coddlly) - **Zixuan** &lt;1906377395@qq.com&gt; (she/her)
